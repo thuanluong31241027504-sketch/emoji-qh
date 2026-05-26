@@ -43,21 +43,29 @@ st.markdown("""
     footer {visibility: hidden;}
     header {visibility: hidden;}
     
+    /* Fix 2 nút đen chữ trắng */
     .stButton button {
-        background-color: #000000;
-        color: #FFFFFF;
-        border: none;
-        border-radius: 0px;
-        padding: 0.5rem 1rem;
-        font-weight: 500;
-        font-size: 0.8rem;
-        width: 100%;
-        transition: 0.2s;
+        background-color: #000000 !important;
+        color: #FFFFFF !important;
+        border: none !important;
+        border-radius: 0px !important;
+        padding: 0.5rem 1rem !important;
+        font-weight: 500 !important;
+        font-size: 0.8rem !important;
+        width: 100% !important;
+        transition: 0.2s !important;
     }
     
     .stButton button:hover {
-        background-color: #333333;
-        color: #FFFFFF;
+        background-color: #333333 !important;
+        color: #FFFFFF !important;
+        border: none !important;
+    }
+    
+    /* Bỏ viền khi focus */
+    .stButton button:focus {
+        outline: none !important;
+        box-shadow: none !important;
     }
     
     .prediction-box {
@@ -66,7 +74,7 @@ st.markdown("""
         font-weight: 700;
         padding: 1rem;
         margin-top: 1.5rem;
-        border-top: 1px solid #e0e0e0;
+        border-top: none;
         border-bottom: 1px solid #e0e0e0;
     }
     
@@ -95,7 +103,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown('<div class="big-title">EMOJI CLASSIFIER</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-text">draw → confirm → AI predicts</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-text">by Multi-Layer Perceptron (MLP) Neural Network</div>', unsafe_allow_html=True)
 
 # ------------------- HÀM TRAIN MODEL -------------------
 @st.cache_resource
@@ -215,8 +223,6 @@ with col2:
                 st.warning("draw something first")
 
 if st.session_state.prediction:
-    st.markdown("---")
-    
     display_name = class_display.get(st.session_state.prediction, st.session_state.prediction.upper())
     st.markdown(f"""
     <div class="prediction-box">
@@ -234,4 +240,4 @@ if st.session_state.prediction:
         st.markdown(f'<div class="prob-text">{"  |  ".join(prob_lines)}</div>', unsafe_allow_html=True)
 
 st.markdown("---")
-st.markdown('<div style="text-align: center; font-size: 0.65rem; color: #9aa0a6;">Source Code Pro · TensorFlow</div>', unsafe_allow_html=True)
+st.markdown('<div style="text-align: center; font-size: 0.65rem; color: #9aa0a6;">Source Code Pro · TensorFlow · MLP</div>', unsafe_allow_html=True)
