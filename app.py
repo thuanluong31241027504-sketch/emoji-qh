@@ -136,8 +136,11 @@ if not st.session_state.show_app:
 # ==================== APP CHÍNH ====================
 st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
-# Đường dẫn ảnh
-decor_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/qq32.png"
+# Đường dẫn ảnh hoa và mây
+hoa1_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa1.png"
+hoa2_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa2.png"
+hoa3_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa3.png"
+may1_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/may1.png"
 
 st.markdown(f"""
 <style>
@@ -161,15 +164,38 @@ st.markdown(f"""
         margin-bottom: 2rem;
     }}
     
-    .decor-app {{
-        text-align: center;
-        margin-top: 1rem;
-        margin-bottom: 0.5rem;
+    /* Ảnh mây phía trên - góc trái */
+    .cloud-decor {{
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 100;
+        opacity: 0.5;
     }}
     
-    .decor-app img {{
-        width: 40px;
-        opacity: 0.4;
+    .cloud-decor img {{
+        width: 60px;
+    }}
+    
+    /* Hàng hoa phía dưới */
+    .flower-row {{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-top: 2rem;
+        padding: 1rem 0;
+        flex-wrap: wrap;
+        gap: 10px;
+    }}
+    
+    .flower-row img {{
+        width: 35px;
+        opacity: 0.5;
+        transition: opacity 0.2s;
+    }}
+    
+    .flower-row img:hover {{
+        opacity: 0.8;
     }}
     
     #MainMenu, footer, header {{
@@ -239,9 +265,11 @@ st.markdown(f"""
     }}
 </style>
 
-<div class="decor-app">
-    <img src="{decor_url}" alt="decor">
+<!-- Ảnh mây góc trái phía trên -->
+<div class="cloud-decor">
+    <img src="{may1_url}" alt="cloud">
 </div>
+
 <div class="title">EMOJI CLASSIFIER</div>
 <div class="sub">by MLP model v1.0 - 2026</div>
 """, unsafe_allow_html=True)
@@ -337,3 +365,14 @@ if st.session_state.pred:
     if st.session_state.probs is not None:
         text = "  |  ".join([f"{c}: {st.session_state.probs[i]:.2%}" for i, c in enumerate(classes)])
         st.markdown(f'<div class="probs">{text}</div>', unsafe_allow_html=True)
+
+# ==================== HÀNG HOA PHÍA DƯỚI ====================
+# Tạo chuỗi hoa xen kẽ: hoa1, hoa2, hoa3, hoa1, hoa2, hoa3...
+flowers = [hoa1_url, hoa2_url, hoa3_url] * 8  # lặp 8 lần = 24 bông hoa
+
+flower_html = '<div class="flower-row">'
+for i, url in enumerate(flowers):
+    flower_html += f'<img src="{url}" alt="flower">'
+flower_html += '</div>'
+
+st.markdown(flower_html, unsafe_allow_html=True)
