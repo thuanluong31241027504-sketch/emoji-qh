@@ -57,7 +57,7 @@ if not st.session_state.show_app:
             margin: 0.3rem 0;
         }
         
-        /* Nút START bên dưới khung đen */
+        /* Nút START 3D block bên dưới khung đen */
         .start-btn-container {
             margin-top: 1.5rem;
             text-align: center;
@@ -69,27 +69,30 @@ if not st.session_state.show_app:
         }
         
         .start-btn-container .stButton button {
-            background: #000000 !important;
-            color: #FFFFFF !important;
-            border: 1px solid #333333 !important;
-            border-radius: 40px !important;
+            background: #FFFFFF !important;
+            color: #000000 !important;
+            border: 2px solid #000000 !important;
+            border-radius: 0px !important;
             padding: 0.6rem 2rem !important;
-            font-weight: 600 !important;
-            font-size: 0.9rem !important;
+            font-weight: 700 !important;
+            font-size: 1rem !important;
             font-family: 'Source Code Pro', monospace !important;
             cursor: pointer !important;
-            box-shadow: none !important;
-            transition: all 0.2s !important;
+            box-shadow: 0 5px 0 #000000 !important;
+            transition: all 0.05s linear !important;
+            letter-spacing: 1px !important;
         }
         
         .start-btn-container .stButton button:hover {
-            background: #1A1A1A !important;
-            border: 1px solid #555555 !important;
-            transform: scale(1.02) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 7px 0 #000000 !important;
+            background: #FAFAFA !important;
         }
         
         .start-btn-container .stButton button:active {
-            transform: scale(0.98) !important;
+            transform: translateY(3px) !important;
+            box-shadow: 0 2px 0 #000000 !important;
+            transition: all 0.02s linear !important;
         }
         
         #MainMenu, footer, header {
@@ -118,9 +121,9 @@ if not st.session_state.show_app:
         </div>
         """, unsafe_allow_html=True)
         
-        # Nút START bên dưới khung đen
+        # Nút START 3D block
         st.markdown('<div class="start-btn-container">', unsafe_allow_html=True)
-        if st.button("▶ START", key="start_btn"):
+        if st.button("START!", key="start_btn"):
             st.session_state.show_app = True
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
