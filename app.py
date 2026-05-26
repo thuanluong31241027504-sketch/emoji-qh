@@ -1,3 +1,7 @@
+cd ~/Desktop/emoji-qh
+
+# Tạo file app.py mới
+cat > app.py << 'EOF'
 import streamlit as st
 import numpy as np
 import cv2
@@ -109,3 +113,9 @@ def format_label(label):
 
 st.markdown("---")
 st.caption("Model được train trên dataset emoji với MLP architecture")
+EOF
+
+# Commit và push
+git add app.py
+git commit -m "Update app.py with better UI"
+git push origin main
