@@ -12,17 +12,11 @@ import os
 
 st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
-# CSS - tất cả font code, nút block 3D
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;700;800&display=swap');
     
-    /* Tất cả font chữ đều là Source Code Pro */
     * {
-        font-family: 'Source Code Pro', 'Courier New', monospace !important;
-    }
-    
-    html, body, .stApp, div, p, span, h1, h2, h3, h4, h5, h6, button, label, input {
         font-family: 'Source Code Pro', 'Courier New', monospace !important;
     }
     
@@ -31,76 +25,77 @@ st.markdown("""
         font-weight: 800;
         text-align: center;
         margin-top: 1rem;
-        margin-bottom: 0rem;
         letter-spacing: -1px;
     }
     
     .sub-text {
         font-size: 0.8rem;
-        font-weight: 400;
         text-align: center;
         color: #5f6368;
         margin-bottom: 2rem;
     }
     
-    /* Ẩn mấy thứ linh tinh */
     #MainMenu, footer, header, .stActionButton, .stCanvasToolbar {
         display: none !important;
     }
     
-    /* Container nút - căn giữa */
     .stButton {
         display: flex !important;
         justify-content: center !important;
         margin-top: 2rem !important;
     }
     
-    /* Nút hình vuông, khối Block 3D */
+    /* Nút 3D block - vát bình hành */
     .stButton button {
-        background-color: #FFFFFF !important;
+        background: #FFFFFF !important;
         color: #000000 !important;
-        border: 2px solid #000000 !important;
-        border-radius: 0px !important;
+        border: none !important;
         padding: 0.8rem 2rem !important;
-        font-weight: 700 !important;
+        font-weight: 800 !important;
         font-size: 1rem !important;
-        font-family: 'Source Code Pro', monospace !important;
-        width: auto !important;
         min-width: 160px !important;
         cursor: pointer !important;
-        letter-spacing: 1.5px !important;
+        letter-spacing: 2px !important;
+        position: relative !important;
         
-        /* Hiệu ứng Block 3D */
-        box-shadow: 0 6px 0 #000000 !important;
+        /* Tạo khối 3D bằng clip-path vát bình hành */
+        clip-path: polygon(8% 0%, 100% 0%, 92% 100%, 0% 100%) !important;
+        
+        /* Bóng đổ 3 cạnh (trái, phải, dưới) */
+        box-shadow: 
+            -4px 4px 0 #888888,
+            4px 4px 0 #888888,
+            0 6px 0 #666666 !important;
+        
         transition: all 0.05s linear !important;
-        
-        /* Xóa viền focus */
         outline: none !important;
     }
     
-    /* Hover - giữ nguyên, không đổi */
-    .stButton button:hover {
-        background-color: #FFFFFF !important;
-        color: #000000 !important;
-        border: 2px solid #000000 !important;
-        box-shadow: 0 6px 0 #000000 !important;
-        transform: none !important;
-        outline: none !important;
-    }
-    
-    /* Hiệu ứng nhấn - lún xuống */
+    /* Hiệu ứng nhấn - lún và tối màu */
     .stButton button:active {
-        transform: translateY(4px) !important;
-        box-shadow: 0 2px 0 #000000 !important;
-        transition: all 0.02s linear !important;
+        transform: translateY(3px) !important;
+        box-shadow: 
+            -2px 1px 0 #888888,
+            2px 1px 0 #888888,
+            0 2px 0 #666666 !important;
+        background: #F0F0F0 !important;
     }
     
-    /* Focus - xóa viền */
-    .stButton button:focus, 
-    .stButton button:focus-visible {
+    .stButton button:hover {
+        transform: translateY(-1px) !important;
+        box-shadow: 
+            -5px 5px 0 #888888,
+            5px 5px 0 #888888,
+            0 7px 0 #666666 !important;
+        background: #FFFFFF !important;
+    }
+    
+    .stButton button:focus {
         outline: none !important;
-        box-shadow: 0 6px 0 #000000 !important;
-        border: 2px solid #000000 !important;
+        box-shadow: 
+            -4px 4px 0 #888888,
+            4px 4px 0 #888888,
+            0 6px 0 #666666 !important;
     }
     
     .prediction-box {
@@ -109,14 +104,12 @@ st.markdown("""
         font-weight: 700;
         padding: 1rem;
         margin-top: 1.5rem;
-        border-top: none;
-        border-bottom: 2px solid #e0e0e0;
+        border-bottom: 2px solid #000000;
     }
     
     .confidence-text {
         text-align: center;
         font-size: 0.75rem;
-        font-weight: 500;
         color: #5f6368;
         margin-top: 0.5rem;
     }
@@ -124,29 +117,13 @@ st.markdown("""
     .prob-text {
         text-align: center;
         font-size: 0.7rem;
-        font-weight: 400;
-        color: #000000;
         margin-top: 1rem;
         line-height: 1.6;
-        letter-spacing: 0.5px;
     }
     
     hr {
         margin-top: 2rem;
-        margin-bottom: 2rem;
         border-color: #e0e0e0;
-    }
-    
-    /* Style cho canvas */
-    .canvas-wrapper {
-        display: flex;
-        justify-content: center;
-    }
-    
-    /* Style cho warning */
-    .stAlert {
-        font-family: 'Source Code Pro', monospace !important;
-        font-size: 0.8rem !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -231,38 +208,25 @@ with col2:
         key=f"canvas_{st.session_state.canvas_key}",
     )
     
-    # Nút CONFIRM - hình vuông, block 3D
-    if st.button("CONFIRM", key="confirm_btn"):
-        if canvas_result.image_data is not None:
-            if np.sum(canvas_result.image_data[:, :, 3]) > 100:
-                img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
-                processed = preprocess_image(img)
-                predictions = model.predict(processed, verbose=0)[0]
-                st.session_state.last_probs = predictions
-                predicted_idx = np.argmax(predictions)
-                st.session_state.prediction = class_names[predicted_idx]
-                st.session_state.confidence = predictions[predicted_idx]
-            else:
-                st.warning("draw something first")
+    if st.button("CONFIRM"):
+        if canvas_result.image_data is not None and np.sum(canvas_result.image_data[:, :, 3]) > 100:
+            img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
+            pred = model.predict(preprocess_image(img), verbose=0)[0]
+            st.session_state.last_probs = pred
+            st.session_state.prediction = class_names[np.argmax(pred)]
+            st.session_state.confidence = max(pred)
         else:
             st.warning("draw something first")
 
 if st.session_state.prediction:
-    display_name = class_display.get(st.session_state.prediction, st.session_state.prediction.upper())
     st.markdown(f"""
-    <div class="prediction-box">
-        {display_name}
-    </div>
-    <div class="confidence-text">
-        confidence: {st.session_state.confidence:.2%}
-    </div>
+    <div class="prediction-box">{class_display.get(st.session_state.prediction, st.session_state.prediction.upper())}</div>
+    <div class="confidence-text">confidence: {st.session_state.confidence:.2%}</div>
     """, unsafe_allow_html=True)
     
     if st.session_state.last_probs is not None:
-        prob_lines = []
-        for i, name in enumerate(class_names):
-            prob_lines.append(f"{name}: {st.session_state.last_probs[i]:.2%}")
-        st.markdown(f'<div class="prob-text">{"  |  ".join(prob_lines)}</div>', unsafe_allow_html=True)
+        prob_text = "  |  ".join([f"{n}: {st.session_state.last_probs[i]:.2%}" for i, n in enumerate(class_names)])
+        st.markdown(f'<div class="prob-text">{prob_text}</div>', unsafe_allow_html=True)
 
 st.markdown("---")
 st.markdown('<div style="text-align: center; font-size: 0.7rem; color: #9aa0a6;">Source Code Pro · TensorFlow · MLP</div>', unsafe_allow_html=True)
