@@ -5,19 +5,33 @@ from PIL import Image
 import tensorflow as tf
 import os
 
-st.set_page_config(page_title="Emoji Classifier", page_icon="🎨", layout="centered")
-
+st.set_page_config(page_title="Emoji Classifier", page_icon="🎨")
 st.title("🎨 Nhận diện Emoji với AI")
-st.markdown("*Vẽ hoặc upload ảnh emoji - Hệ thống sẽ nhận diện*")
+
+# DEBUG: Xem thư mục có file gì
+st.write("### Debug: Các file trong thư mục hiện tại:")
+st.write(os.listdir('.'))
+
+# Tìm file model
+h5_files = [f for f in os.listdir('.') if f.endswith('.h5')]
+keras_files = [f for f in os.listdir('.') if f.endswith('.keras')]
+
+st.write(f"File .h5 tìm thấy: {h5_files}")
+st.write(f"File .keras tìm thấy: {keras_files}")
 
 @st.cache_resource
 def load_model():
-    model_path = 'emoji_modelqh5.keras'
-    if not os.path.exists(model_path):
-        st.error(f"❌ Không tìm thấy file model: {model_path}")
+    # Thử load .keras trước
+    if 'emoji_modelqh5.keras' in keras_files:
+        st.success("✅ Đang load file .keras")
+        return tf.keras.models.load_model('emoji_modelqh5.keras')
+    # Thử load .h5
+    elif 'emoji_modelqh5.h5' in h5_files:
+        st.success("✅ Đang load file .h5")
+        return tf.keras.models.load_model('emoji_modelqh5.h5')
+    else:
+        st.error("❌ Không tìm thấy file model nào!")
         return None
-    model = tf.keras.models.load_model(model_path)
-    return model
 
 @st.cache_data
 def get_class_names():
@@ -34,8 +48,7 @@ def preprocess_image(image):
     if img_array.mean() > 0:
         img_array = img_array * (target_mean / img_array.mean())
         img_array = np.clip(img_array, 0, 1)
-    img_array = img_array.reshape(1, 28, 28)
-    return img_array
+    return img_array.reshape(1, 28, 28)
 
 model = load_model()
 class_names = get_class_names()
@@ -46,46 +59,22 @@ if model is None:
 tab1, tab2 = st.tabs(["✏️ Vẽ Emoji", "📤 Upload ảnh"])
 
 with tab1:
-    drawing = st.canvas(
-        "",
-        width=280,
-        height=280,
-        background_color="#FFFFFF",
-        stroke_color="#000000",
-        stroke_width=15,
-        update_streamlit=True,
-        key="canvas"
-    )
-    
-    if drawing.image_data is not None:
-        if st.button("🔍 Nhận diện", key="predict_draw"):
-            with st.spinner("Đang xử lý..."):
-                canvas_img = Image.fromarray(drawing.image_data.astype('uint8'), mode='RGBA')
-                canvas_img = canvas_img.convert('L')
-                processed = preprocess_image(canvas_img)
-                predictions = model.predict(processed, verbose=0)[0]
-                predicted_idx = np.argmax(predictions)
-                predicted_label = class_names[predicted_idx]
-                confidence = predictions[predicted_idx]
-                st.success(f"### 🎯 Kết quả: {predicted_label}")
-                st.metric("Độ tin cậy", f"{confidence:.2%}")
+    drawing = st.canvas("", width=280, height=280, background_color="#FFFFFF", 
+                        stroke_color="#000000", stroke_width=15, key="canvas")
+    if drawing.image_data is not None and st.button("🔍 Nhận diện", key="draw"):
+        with st.spinner("Đang xử lý..."):
+            img = Image.fromarray(drawing.image_data.astype('uint8'), mode='RGBA').convert('L')
+            processed = preprocess_image(img)
+            pred = model.predict(processed, verbose=0)[0]
+            label = class_names[np.argmax(pred)]
+            st.success(f"### 🎯 Kết quả: {label}")
 
 with tab2:
-    uploaded_file = st.file_uploader("Chọn ảnh emoji", type=['png', 'jpg', 'jpeg'])
-    
-    if uploaded_file is not None:
-        image = Image.open(uploaded_file)
-        st.image(image, caption="Ảnh của bạn", width=200)
-        
-        if st.button("🔍 Nhận diện", key="predict_upload"):
-            with st.spinner("Đang xử lý..."):
-                processed = preprocess_image(image)
-                predictions = model.predict(processed, verbose=0)[0]
-                predicted_idx = np.argmax(predictions)
-                predicted_label = class_names[predicted_idx]
-                confidence = predictions[predicted_idx]
-                st.success(f"### 🎯 Kết quả: {predicted_label}")
-                st.metric("Độ tin cậy", f"{confidence:.2%}")
-
-st.markdown("---")
-st.caption("Model được train trên dataset emoji với MLP architecture")
+    uploaded = st.file_uploader("Chọn ảnh", type=['png', 'jpg', 'jpeg'])
+    if uploaded and st.button("🔍 Nhận diện", key="upload"):
+        img = Image.open(uploaded)
+        st.image(img, width=200)
+        processed = preprocess_image(img)
+        pred = model.predict(processed, verbose=0)[0]
+        label = class_names[np.argmax(pred)]
+        st.success(f"### 🎯 Kết quả: {label}")
