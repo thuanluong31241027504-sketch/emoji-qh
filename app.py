@@ -36,34 +36,40 @@ if not st.session_state.show_app:
             border-radius: 0px;
         }
         
-        /* Nút X - nằm chồng lên góc trên bên phải của khung đen */
+        /* Nút X - hình vuông, nằm chồng góc trên bên phải */
         .stButton {
             position: absolute !important;
-            top: 0px !important;
-            right: 0px !important;
+            top: -12px !important;
+            right: -12px !important;
             z-index: 100 !important;
             margin: 0 !important;
             padding: 0 !important;
+            width: 32px !important;
+            height: 32px !important;
         }
         
         .stButton button {
             background: #FFFFFF !important;
             color: #000000 !important;
-            border: none !important;
+            border: 1px solid #CCCCCC !important;
             border-radius: 0px !important;
-            padding: 4px 8px !important;
-            font-size: 0.9rem !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            font-size: 1rem !important;
             font-family: 'Source Code Pro', monospace !important;
             font-weight: 600 !important;
             box-shadow: none !important;
-            width: auto !important;
-            min-width: unset !important;
-            margin: 0 !important;
+            width: 32px !important;
+            height: 32px !important;
+            min-width: 32px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
             cursor: pointer !important;
         }
         
         .stButton button:hover {
-            background: #F0F0F0 !important;
+            background: #F5F5F5 !important;
             color: #000000 !important;
             transform: none !important;
             box-shadow: none !important;
@@ -104,15 +110,12 @@ if not st.session_state.show_app:
     
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        # Wrapper để định vị nút X
         st.markdown('<div class="splash-wrapper">', unsafe_allow_html=True)
         
-        # Nút X ở góc trên bên phải (nền trắng)
         if st.button("✕", key="close_btn"):
             st.session_state.show_app = True
             st.rerun()
         
-        # Khung đen nội dung
         st.markdown("""
         <div class="splash-box">
             <div class="splash-text">
