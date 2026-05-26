@@ -57,7 +57,7 @@ if not st.session_state.show_app:
             margin: 0.3rem 0;
         }
         
-        /* Style nút START - selector mạnh hơn */
+        /* NÚT START - 3D BLOCK + FONT CODE */
         .splash-wrapper .stButton {
             display: flex !important;
             justify-content: center !important;
@@ -89,7 +89,6 @@ if not st.session_state.show_app:
         .splash-wrapper .stButton button:active {
             transform: translateY(3px) !important;
             box-shadow: 0 3px 0 #000000 !important;
-            transition: all 0.02s linear !important;
         }
         
         #MainMenu, footer, header {
@@ -102,7 +101,6 @@ if not st.session_state.show_app:
     with col2:
         st.markdown('<div class="splash-wrapper">', unsafe_allow_html=True)
         
-        # Khung đen nội dung
         st.markdown("""
         <div class="splash-box">
             <div class="splash-text">
@@ -118,7 +116,6 @@ if not st.session_state.show_app:
         </div>
         """, unsafe_allow_html=True)
         
-        # Nút START
         if st.button("START!"):
             st.session_state.show_app = True
             st.rerun()
@@ -161,6 +158,7 @@ st.markdown("""
         justify-content: center !important;
     }
     
+    /* NÚT CONFIRM - 3D BLOCK + FONT CODE */
     .stButton {
         display: flex !important;
         justify-content: center !important;
@@ -177,6 +175,7 @@ st.markdown("""
         padding: 0.7rem 2rem !important;
         font-weight: 600 !important;
         font-size: 1rem !important;
+        font-family: 'Source Code Pro', monospace !important;
         cursor: pointer !important;
         box-shadow: 0 6px 0 #000000 !important;
         transition: none !important;
