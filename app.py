@@ -57,10 +57,9 @@ st.markdown("""
         margin-top: 1.5rem !important;
     }
     
-    /* NÚT 3D - TRẮNG VIỀN ĐEN (giữ nguyên kiểu 3D) */
+    /* NÚT 3D - NỀN TRẮNG, BÓNG ĐỔ ĐEN */
     .stButton button {
         background: #FFFFFF !important;
-        background: linear-gradient(135deg, #FFFFFF 0%, #F5F5F5 100%) !important;
         color: #000000 !important;
         border: 2px solid #000000 !important;
         border-radius: 40px !important;
@@ -71,7 +70,7 @@ st.markdown("""
         width: auto !important;
         min-width: 180px !important;
         cursor: pointer !important;
-        box-shadow: 0 8px 0 #888888, 0 4px 12px rgba(0,0,0,0.1) !important;
+        box-shadow: 0 8px 0 #000000, 0 4px 12px rgba(0,0,0,0.1) !important;
         transition: all 0.08s linear !important;
         letter-spacing: 0.5px !important;
     }
@@ -79,21 +78,21 @@ st.markdown("""
     /* Hiệu ứng khi hover */
     .stButton button:hover {
         transform: translateY(-2px) !important;
-        box-shadow: 0 10px 0 #888888, 0 6px 16px rgba(0,0,0,0.15) !important;
-        background: linear-gradient(135deg, #FFFFFF 0%, #FAFAFA 100%) !important;
+        box-shadow: 0 10px 0 #000000, 0 6px 16px rgba(0,0,0,0.15) !important;
+        background: #FAFAFA !important;
     }
     
     /* Hiệu ứng khi nhấn (pressed) */
     .stButton button:active {
         transform: translateY(4px) !important;
-        box-shadow: 0 4px 0 #888888, 0 2px 8px rgba(0,0,0,0.1) !important;
+        box-shadow: 0 4px 0 #000000, 0 2px 8px rgba(0,0,0,0.1) !important;
         transition: all 0.02s linear !important;
     }
     
     .stButton button:focus, 
     .stButton button:focus-visible {
         outline: none !important;
-        box-shadow: 0 8px 0 #888888, 0 4px 12px rgba(0,0,0,0.1) !important;
+        box-shadow: 0 8px 0 #000000, 0 4px 12px rgba(0,0,0,0.1) !important;
     }
     
     .prediction-box {
@@ -225,7 +224,6 @@ with col2:
         key=f"canvas_{st.session_state.canvas_key}",
     )
     
-    # Nút 3D - trắng viền đen, chữ CONFIRM!
     if st.button("CONFIRM!", key="confirm_btn"):
         if canvas_result.image_data is not None:
             if np.sum(canvas_result.image_data[:, :, 3]) > 100:
