@@ -26,6 +26,7 @@ if not st.session_state.show_app:
         .splash-wrapper {
             max-width: 420px;
             margin: 100px auto 0 auto;
+            text-align: center;
         }
         
         .splash-box {
@@ -57,8 +58,12 @@ if not st.session_state.show_app:
             margin: 0.3rem 0;
         }
         
-        /* NÚT START 3D BLOCK - CSS MẠNH NHẤT */
-        .splash-wrapper button[kind="secondary"] {
+        /* Nút START 3D - dùng st.button nhưng style lại */
+        .stButton {
+            margin-top: 1.5rem !important;
+        }
+        
+        .stButton button {
             background: #FFFFFF !important;
             color: #000000 !important;
             border: 2px solid #000000 !important;
@@ -72,21 +77,18 @@ if not st.session_state.show_app:
             transition: all 0.05s linear !important;
             width: auto !important;
             min-width: 120px !important;
-            margin-top: 1.5rem !important;
-            display: block !important;
-            margin-left: auto !important;
-            margin-right: auto !important;
         }
         
-        .splash-wrapper button[kind="secondary"]:hover {
+        .stButton button:hover {
             transform: translateY(-2px) !important;
             box-shadow: 0 8px 0 #000000 !important;
             background: #FAFAFA !important;
         }
         
-        .splash-wrapper button[kind="secondary"]:active {
+        .stButton button:active {
             transform: translateY(3px) !important;
             box-shadow: 0 3px 0 #000000 !important;
+            transition: all 0.02s linear !important;
         }
         
         #MainMenu, footer, header {
@@ -99,6 +101,7 @@ if not st.session_state.show_app:
     with col2:
         st.markdown('<div class="splash-wrapper">', unsafe_allow_html=True)
         
+        # Khung đen nội dung
         st.markdown("""
         <div class="splash-box">
             <div class="splash-text">
@@ -114,7 +117,8 @@ if not st.session_state.show_app:
         </div>
         """, unsafe_allow_html=True)
         
-        if st.button("START!"):
+        # Nút START - dùng st.button nhưng đã CSS style 3D
+        if st.button("START!", key="start_btn"):
             st.session_state.show_app = True
             st.rerun()
         
@@ -156,7 +160,6 @@ st.markdown("""
         justify-content: center !important;
     }
     
-    /* NÚT CONFIRM 3D BLOCK */
     .stButton {
         display: flex !important;
         justify-content: center !important;
@@ -173,7 +176,6 @@ st.markdown("""
         padding: 0.7rem 2rem !important;
         font-weight: 600 !important;
         font-size: 1rem !important;
-        font-family: 'Source Code Pro', monospace !important;
         cursor: pointer !important;
         box-shadow: 0 6px 0 #000000 !important;
         transition: none !important;
