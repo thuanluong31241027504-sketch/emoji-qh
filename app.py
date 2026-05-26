@@ -38,7 +38,6 @@ st.markdown("""
         display: none !important;
     }
     
-    /* Force căn giữa nút */
     div[data-testid="column"] {
         display: flex !important;
         flex-direction: column !important;
@@ -49,55 +48,81 @@ st.markdown("""
         display: flex !important;
         justify-content: center !important;
         width: 100% !important;
+        margin-top: 20px !important;
     }
     
-    /* Nút Block 3D - đủ 4 cạnh (trái, phải, dưới) */
+    /* Nút Block 3D - dùng pseudo-element tạo mặt bên */
     .stButton button {
         background-color: #FFFFFF !important;
         color: #000000 !important;
         border: 2px solid #000000 !important;
         border-radius: 0px !important;
-        padding: 0.8rem 2rem !important;
+        padding: 10px 24px !important;
         font-weight: 800 !important;
-        font-size: 1rem !important;
+        font-size: 16px !important;
         cursor: pointer !important;
-        
-        /* Block 3D: mặt dưới + mặt phải + mặt trái */
-        box-shadow: 
-            -3px 3px 0 #888888,
-            3px 3px 0 #888888,
-            0 6px 0 #000000 !important;
-        
-        transition: all 0.05s linear !important;
+        position: relative !important;
         outline: none !important;
+        transition: all 0.05s linear !important;
+        z-index: 1 !important;
     }
     
-    /* Hover - nhấc lên, bóng đổ to hơn */
-    .stButton button:hover {
-        transform: translate(-1px, -2px) !important;
-        box-shadow: 
-            -4px 4px 0 #888888,
-            4px 4px 0 #888888,
-            0 8px 0 #000000 !important;
-        background-color: #FAFAFA !important;
+    /* Mặt dưới (bottom face) */
+    .stButton button::after {
+        content: '' !important;
+        position: absolute !important;
+        bottom: -6px !important;
+        left: 2px !important;
+        width: 100% !important;
+        height: 6px !important;
+        background-color: #666666 !important;
+        z-index: -1 !important;
     }
     
-    /* Active - lún xuống, bóng đổ nhỏ lại */
+    /* Mặt phải (right face) */
+    .stButton button::before {
+        content: '' !important;
+        position: absolute !important;
+        top: 2px !important;
+        right: -6px !important;
+        width: 6px !important;
+        height: 100% !important;
+        background-color: #888888 !important;
+        z-index: -1 !important;
+    }
+    
+    /* Hiệu ứng nhấn - lún */
     .stButton button:active {
-        transform: translate(1px, 3px) !important;
-        box-shadow: 
-            -1px 1px 0 #888888,
-            1px 1px 0 #888888,
-            0 2px 0 #000000 !important;
-        transition: all 0.02s linear !important;
+        transform: translate(3px, 3px) !important;
+    }
+    
+    .stButton button:active::before {
+        right: -3px !important;
+        top: 1px !important;
+    }
+    
+    .stButton button:active::after {
+        bottom: -3px !important;
+        left: 1px !important;
+    }
+    
+    .stButton button:hover {
+        background-color: #F8F9FA !important;
+        transform: translate(-1px, -1px) !important;
+    }
+    
+    .stButton button:hover::before {
+        right: -4px !important;
+        top: 1px !important;
+    }
+    
+    .stButton button:hover::after {
+        bottom: -4px !important;
+        left: 1px !important;
     }
     
     .stButton button:focus {
         outline: none !important;
-        box-shadow: 
-            -3px 3px 0 #888888,
-            3px 3px 0 #888888,
-            0 6px 0 #000000 !important;
     }
     
     .prediction-box {
