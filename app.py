@@ -1,7 +1,3 @@
-cd ~/Desktop/emoji-qh
-
-# Tạo file app.py mới
-cat > app.py << 'EOF'
 import streamlit as st
 import numpy as np
 import cv2
@@ -91,31 +87,5 @@ with tab2:
                 st.success(f"### 🎯 Kết quả: {predicted_label}")
                 st.metric("Độ tin cậy", f"{confidence:.2%}")
 
-def get_emoji_icon(label):
-    icons = {
-        'cloud': '☁️',
-        'grinning_face': '😀',
-        'heart': '❤️',
-        'smiling_horns': '👿',
-        'thumb': '👍'
-    }
-    return icons.get(label, '🎨')
-
-def format_label(label):
-    names = {
-        'cloud': 'Cloud',
-        'grinning_face': 'Smiley Face',
-        'heart': 'Heart',
-        'smiling_horns': 'Horned Smiley',
-        'thumb': 'Thumbs Up'
-    }
-    return names.get(label, label)
-
 st.markdown("---")
 st.caption("Model được train trên dataset emoji với MLP architecture")
-EOF
-
-# Commit và push
-git add app.py
-git commit -m "Update app.py with better UI"
-git push origin main
