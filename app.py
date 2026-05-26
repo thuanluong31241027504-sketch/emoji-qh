@@ -19,17 +19,15 @@ if not st.session_state.show_app:
     
     st.markdown("""
     <style>
-        /* Nền trắng xung quanh */
         .stApp {
             background-color: #FFFFFF !important;
         }
         
-        /* Khung đen vuông ở giữa */
         .splash-box {
             background-color: #000000;
-            max-width: 400px;
+            max-width: 420px;
             margin: 0 auto;
-            margin-top: 120px;
+            margin-top: 100px;
             padding: 2rem;
             padding-top: 2.5rem;
             text-align: center;
@@ -37,7 +35,6 @@ if not st.session_state.show_app:
             position: relative;
         }
         
-        /* Nút X góc phải trên - không viền, màu trắng */
         .close-x {
             position: absolute;
             top: 10px;
@@ -50,62 +47,58 @@ if not st.session_state.show_app:
             border: none;
             cursor: pointer;
             transition: opacity 0.2s;
-            text-decoration: none;
         }
         
         .close-x:hover {
             opacity: 0.6;
         }
         
-        .splash-title {
+        .splash-text {
             font-family: 'Source Code Pro', monospace;
-            font-size: 1.5rem;
-            font-weight: 700;
             color: #FFFFFF;
-            margin-bottom: 1rem;
+            text-align: left;
+            line-height: 1.8;
+        }
+        
+        .splash-desc {
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
         }
         
         .splash-rule {
-            font-family: 'Source Code Pro', monospace;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: #AAAAAA;
-            line-height: 1.6;
-            text-align: left;
-            margin: 1.5rem 0;
-            border-top: 1px solid #333;
-            border-bottom: 1px solid #333;
-            padding: 1rem 0;
+            margin-top: 1rem;
         }
         
         .splash-rule p {
             margin: 0.3rem 0;
         }
         
-        /* Ẩn các thành phần mặc định */
         #MainMenu, footer, header {
             display: none !important;
         }
     </style>
     """, unsafe_allow_html=True)
     
-    # Khung đen vuông giữa màn hình
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        # HTML với nút X góc phải
         st.markdown("""
         <div class="splash-box">
             <button class="close-x" onclick="parent.document.querySelector('button[kind=\'secondary\']').click()">✕</button>
-            <div class="splash-title">EMOJI CLASSIFIER</div>
-            <div class="splash-rule">
-                <p>> draw a simple emoji</p>
-                <p>> click CONFIRM</p>
-                <p>> AI will predict</p>
-                <p>> 5 classes available</p>
+            <div class="splash-text">
+                <div class="splash-desc">
+                    Ứng dụng dự đoán emoji từ nét vẽ chuột của bạn một cách nhanh chóng và chính xác, được xây dựng trên kiến trúc MLP — phiên bản v1.0-2026.
+                </div>
+                <div class="splash-rule">
+                    <p>> vẽ bất cứ thứ gì trong khung trắng</p>
+                    <p>> nhấn CONFIRM</p>
+                    <p>> nhận kết quả dự đoán từ model</p>
+                </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
         
-        # Button ẩn để xử lý đóng
         if st.button("", key="close_btn", help="Close"):
             st.session_state.show_app = True
             st.rerun()
