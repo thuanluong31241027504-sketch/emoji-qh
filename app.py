@@ -36,50 +36,29 @@ if not st.session_state.show_app:
             border-radius: 0px;
         }
         
-        /* Nút X - hình vuông 28x28, nằm chồng góc trên bên phải khung đen */
-        .stButton {
-            position: absolute !important;
-            top: -14px !important;
-            right: -14px !important;
-            z-index: 100 !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            width: 28px !important;
-            height: 28px !important;
-            min-width: 28px !important;
+        /* Nút X tự tạo bằng HTML - không dùng st.button */
+        .custom-close {
+            position: absolute;
+            top: -14px;
+            right: -14px;
+            width: 28px;
+            height: 28px;
+            background: #FFFFFF;
+            border: 1px solid #CCCCCC;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #000000;
+            z-index: 100;
+            transition: background 0.2s;
         }
         
-        .stButton button {
-            background: #FFFFFF !important;
-            color: #000000 !important;
-            border: 1px solid #CCCCCC !important;
-            border-radius: 0px !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            font-size: 0.9rem !important;
-            font-family: 'Source Code Pro', monospace !important;
-            font-weight: 600 !important;
-            box-shadow: none !important;
-            width: 28px !important;
-            height: 28px !important;
-            min-width: 28px !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            cursor: pointer !important;
-            line-height: 1 !important;
-        }
-        
-        .stButton button:hover {
-            background: #F5F5F5 !important;
-            color: #000000 !important;
-            transform: none !important;
-            box-shadow: none !important;
-        }
-        
-        .stButton button:active {
-            transform: none !important;
-            box-shadow: none !important;
+        .custom-close:hover {
+            background: #F0F0F0;
         }
         
         .splash-text {
@@ -107,32 +86,59 @@ if not st.session_state.show_app:
         #MainMenu, footer, header {
             display: none !important;
         }
+        
+        /* Ẩn button Streamlit mặc định */
+        .stButton {
+            display: none !important;
+        }
     </style>
+    
+    <script>
+        function goToApp() {
+            // Gửi request để chuyển trang
+            const event = new CustomEvent('streamlit:click', {
+                detail: {button: 'close'}
+            });
+            window.parent.document.dispatchEvent(event);
+            // Cách khác: tạo form submit
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/_stcore/stream';
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'set_session_state';
+            input.value = JSON.stringify({key: 'show_app', value: true});
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
     """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        st.markdown('<div class="splash-wrapper">', unsafe_allow_html=True)
-        
-        if st.button("✕", key="close_btn"):
-            st.session_state.show_app = True
-            st.rerun()
-        
         st.markdown("""
-        <div class="splash-box">
-            <div class="splash-text">
-                <div class="splash-desc">
-                    Ứng dụng dự đoán emoji từ nét vẽ chuột của bạn một cách nhanh chóng và chính xác, được xây dựng trên kiến trúc MLP — phiên bản v1.0-2026.
-                </div>
-                <div class="splash-rule">
-                    <p>> vẽ bất cứ thứ gì trong khung trắng</p>
-                    <p>> nhấn CONFIRM</p>
-                    <p>> nhận kết quả dự đoán từ model</p>
+        <div class="splash-wrapper">
+            <div class="custom-close" onclick="goToApp()">✕</div>
+            <div class="splash-box">
+                <div class="splash-text">
+                    <div class="splash-desc">
+                        Ứng dụng dự đoán emoji từ nét vẽ chuột của bạn một cách nhanh chóng và chính xác, được xây dựng trên kiến trúc MLP — phiên bản v1.0-2026.
+                    </div>
+                    <div class="splash-rule">
+                        <p>> vẽ bất cứ thứ gì trong khung trắng</p>
+                        <p>> nhấn CONFIRM</p>
+                        <p>> nhận kết quả dự đoán từ model</p>
+                    </div>
                 </div>
             </div>
         </div>
-        </div>
         """, unsafe_allow_html=True)
+        
+        # Button ẩn để xử lý chuyển trang
+        if st.button("_hidden", key="hidden_btn"):
+            st.session_state.show_app = True
+            st.rerun()
     
     st.stop()
 
