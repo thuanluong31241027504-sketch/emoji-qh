@@ -57,7 +57,7 @@ st.markdown("""
         margin-top: 1.5rem !important;
     }
     
-    /* Nút trắng viền đen - kiểu 3D, không viền chữ */
+    /* Nút trắng viền đen - không viền chữ */
     .stButton button {
         background-color: #FFFFFF !important;
         color: #000000 !important;
@@ -71,40 +71,49 @@ st.markdown("""
         min-width: 200px !important;
         cursor: pointer !important;
         letter-spacing: 1px !important;
-        
-        /* Hiệu ứng 3D - bóng đổ */
         box-shadow: 0 6px 0 #000000 !important;
         transition: all 0.08s linear !important;
         
-        /* QUAN TRỌNG: Bỏ viền chữ */
-        text-shadow: none !important;
+        /* QUAN TRỌNG: Xóa bỏ mọi viền/outline/shadow */
         outline: none !important;
-        -webkit-font-smoothing: antialiased !important;
+        outline-style: none !important;
+        box-shadow: 0 6px 0 #000000 !important;
+        text-shadow: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+        -webkit-focus-ring-color: transparent !important;
     }
     
-    /* Hiệu ứng hover - nhấc lên */
+    /* Hover */
     .stButton button:hover {
         transform: translateY(-3px) !important;
         box-shadow: 0 9px 0 #000000 !important;
         background-color: #F5F5F5 !important;
-        text-shadow: none !important;
+        outline: none !important;
     }
     
-    /* Hiệu ứng khi nhấn (pressed) - lún xuống */
+    /* Active (đang click) */
     .stButton button:active {
         transform: translateY(4px) !important;
         box-shadow: 0 2px 0 #000000 !important;
-        transition: all 0.02s linear !important;
-        text-shadow: none !important;
+        outline: none !important;
     }
     
-    /* Bỏ viền focus - đây là nguyên nhân gây viền trắng */
+    /* Focus - nguồn gốc của viền trắng */
     .stButton button:focus, 
-    .stButton button:focus-visible {
+    .stButton button:focus-visible,
+    .stButton button:focus-within,
+    .stButton button:focus:not(:focus-visible) {
         outline: none !important;
+        outline-style: none !important;
         box-shadow: 0 6px 0 #000000 !important;
         border: 2px solid #000000 !important;
         text-shadow: none !important;
+        background-color: #FFFFFF !important;
+    }
+    
+    /* Ẩn ring outline của trình duyệt */
+    .stButton button::-moz-focus-inner {
+        border: 0 !important;
     }
     
     .prediction-box {
@@ -236,7 +245,6 @@ with col2:
         key=f"canvas_{st.session_state.canvas_key}",
     )
     
-    # Nút CONFIRM - trắng viền đen, hiệu ứng 3D, không viền chữ
     if st.button("CONFIRM", key="confirm_btn"):
         if canvas_result.image_data is not None:
             if np.sum(canvas_result.image_data[:, :, 3]) > 100:
