@@ -37,21 +37,22 @@ if not st.session_state.show_app:
         
         .close-x {
             position: absolute;
-            top: 10px;
-            right: 15px;
+            top: 8px;
+            right: 12px;
             font-family: 'Source Code Pro', monospace;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #FFFFFF;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #888888;
             background: transparent;
             border: none;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: color 0.2s;
             z-index: 10;
+            padding: 4px 8px;
         }
         
         .close-x:hover {
-            opacity: 0.6;
+            color: #FFFFFF;
         }
         
         .splash-text {
@@ -86,6 +87,7 @@ if not st.session_state.show_app:
     with col2:
         st.markdown("""
         <div class="splash-box">
+            <button class="close-x" onclick="window.parent.document.querySelector('button[kind=\"secondary\"]').click()">✕</button>
             <div class="splash-text">
                 <div class="splash-desc">
                     Ứng dụng dự đoán emoji từ nét vẽ chuột của bạn một cách nhanh chóng và chính xác, được xây dựng trên kiến trúc MLP — phiên bản v1.0-2026.
@@ -99,12 +101,10 @@ if not st.session_state.show_app:
         </div>
         """, unsafe_allow_html=True)
         
-        # Nút START để vào app
-        col_btn1, col_btn2, col_btn3 = st.columns([1, 2, 1])
-        with col_btn2:
-            if st.button("▶ START", key="start_btn"):
-                st.session_state.show_app = True
-                st.rerun()
+        # Button ẩn để nhận sự kiện từ nút X
+        if st.button("", key="hidden_close_btn"):
+            st.session_state.show_app = True
+            st.rerun()
     
     st.stop()
 
@@ -134,6 +134,11 @@ st.markdown("""
     }
     
     #MainMenu, footer, header {
+        display: none !important;
+    }
+    
+    /* Ẩn button hidden */
+    .stButton:has(button[kind="secondary"]) {
         display: none !important;
     }
     
