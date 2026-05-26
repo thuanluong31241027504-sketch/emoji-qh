@@ -36,16 +36,17 @@ if not st.session_state.show_app:
             border-radius: 0px;
         }
         
-        /* Nút X - hình vuông, nằm chồng góc trên bên phải */
+        /* Nút X - hình vuông 28x28, nằm chồng góc trên bên phải khung đen */
         .stButton {
             position: absolute !important;
-            top: -12px !important;
-            right: -12px !important;
+            top: -14px !important;
+            right: -14px !important;
             z-index: 100 !important;
             margin: 0 !important;
             padding: 0 !important;
-            width: 32px !important;
-            height: 32px !important;
+            width: 28px !important;
+            height: 28px !important;
+            min-width: 28px !important;
         }
         
         .stButton button {
@@ -55,17 +56,18 @@ if not st.session_state.show_app:
             border-radius: 0px !important;
             padding: 0 !important;
             margin: 0 !important;
-            font-size: 1rem !important;
+            font-size: 0.9rem !important;
             font-family: 'Source Code Pro', monospace !important;
             font-weight: 600 !important;
             box-shadow: none !important;
-            width: 32px !important;
-            height: 32px !important;
-            min-width: 32px !important;
+            width: 28px !important;
+            height: 28px !important;
+            min-width: 28px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
             cursor: pointer !important;
+            line-height: 1 !important;
         }
         
         .stButton button:hover {
