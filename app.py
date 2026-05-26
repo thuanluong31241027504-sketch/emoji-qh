@@ -36,30 +36,35 @@ if not st.session_state.show_app:
             border-radius: 0px;
         }
         
-        /* Button X - đặt góc trên bên phải của wrapper */
+        /* Nút X - nằm chồng lên góc trên bên phải của khung đen */
         .stButton {
             position: absolute !important;
-            top: -10px !important;
-            right: -10px !important;
+            top: 0px !important;
+            right: 0px !important;
             z-index: 100 !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
         
         .stButton button {
-            background: #000000 !important;
-            color: #888888 !important;
+            background: #FFFFFF !important;
+            color: #000000 !important;
             border: none !important;
             border-radius: 0px !important;
             padding: 4px 8px !important;
-            font-size: 1rem !important;
+            font-size: 0.9rem !important;
             font-family: 'Source Code Pro', monospace !important;
+            font-weight: 600 !important;
             box-shadow: none !important;
             width: auto !important;
             min-width: unset !important;
+            margin: 0 !important;
+            cursor: pointer !important;
         }
         
         .stButton button:hover {
-            color: #FFFFFF !important;
-            background: #000000 !important;
+            background: #F0F0F0 !important;
+            color: #000000 !important;
             transform: none !important;
             box-shadow: none !important;
         }
@@ -102,7 +107,7 @@ if not st.session_state.show_app:
         # Wrapper để định vị nút X
         st.markdown('<div class="splash-wrapper">', unsafe_allow_html=True)
         
-        # Nút X ở góc trên bên phải
+        # Nút X ở góc trên bên phải (nền trắng)
         if st.button("✕", key="close_btn"):
             st.session_state.show_app = True
             st.rerun()
