@@ -72,6 +72,11 @@ st.markdown("""
         transform: translateY(-2px);
     }
     
+    /* Ẩn nút Streamlit gốc */
+    div[data-testid="stButton"] {
+        display: none !important;
+    }
+    
     .prediction-box {
         text-align: center;
         font-size: 2rem;
@@ -194,15 +199,24 @@ with col2:
     
     <script>
         document.getElementById('confirmBtn').addEventListener('click', () => {
-            // Tạo sự kiện click ảo lên Streamlit button ẩn
-            const btn = window.parent.document.querySelector('button[kind="secondary"]');
-            if (btn) btn.click();
+            // Gửi thông báo lên Streamlit
+            const event = new CustomEvent('streamlit:click', {
+                detail: {button: 'confirm'}
+            });
+            window.parent.document.dispatchEvent(event);
         });
     </script>
     """, height=100)
     
-    # Button ẩn để xử lý logic
-    if st.button("_confirm", key="hidden_btn", label_visibility="collapsed"):
+    # Button ẩn để xử lý logic - dùng session state
+    if 'clicked' not in st.session_state:
+        st.session_state.clicked = False
+    
+    if st.button("", key="hidden_btn"):
+        st.session_state.clicked = True
+    
+    if st.session_state.clicked:
+        st.session_state.clicked = False
         if canvas_result.image_data is not None and np.sum(canvas_result.image_data[:, :, 3]) > 100:
             img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
             pred = model.predict(preprocess_image(img), verbose=0)[0]
