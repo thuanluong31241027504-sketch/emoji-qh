@@ -38,11 +38,22 @@ st.markdown("""
         margin-bottom: 2rem;
     }
     
+    /* Ẩn toàn bộ thanh công cụ thừa */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
     
-    /* Nút CLEAR - đen chữ trắng */
+    /* Ẩn Send to Streamlit, Undo, Redo */
+    .stActionButton, .stActionButton button, [data-testid="baseActionButton"] {
+        display: none !important;
+    }
+    
+    /* Ẩn thanh công cụ của canvas */
+    .stCanvasToolbar {
+        display: none !important;
+    }
+    
+    /* Nút CLEAR và CONFIRM */
     .stButton button {
         background-color: #000000 !important;
         color: #FFFFFF !important;
@@ -62,24 +73,6 @@ st.markdown("""
     .stButton button:focus {
         outline: none !important;
         box-shadow: none !important;
-    }
-    
-    /* Nút DOWNLOAD - xám không viền */
-    .download-btn {
-        background-color: #808080 !important;
-        color: #FFFFFF !important;
-        border: none !important;
-        border-radius: 0px !important;
-        padding: 0.5rem 1rem !important;
-        font-weight: 500 !important;
-        font-size: 0.8rem !important;
-        width: 100% !important;
-        text-align: center;
-        cursor: pointer;
-    }
-    
-    .download-btn:hover {
-        background-color: #606060 !important;
     }
     
     .prediction-box {
@@ -221,8 +214,7 @@ with col2:
             st.rerun()
     
     with btn_col2:
-        # Nút DOWNLOAD màu xám
-        if st.button("DOWNLOAD"):
+        if st.button("CONFIRM"):
             if canvas_result.image_data is not None:
                 if np.sum(canvas_result.image_data[:, :, 3]) > 100:
                     img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
