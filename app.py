@@ -58,17 +58,14 @@ if not st.session_state.show_app:
         }
         
         /* Căn giữa nút START */
-        .start-btn-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 1.5rem;
+        div[data-testid="stButton"] {
+            display: flex !important;
+            justify-content: center !important;
+            margin-top: 1.8rem !important;
         }
         
-        .stButton {
-            margin: 0 !important;
-        }
-        
-        .stButton button {
+        /* Style nút START 3D block */
+        div[data-testid="stButton"] button {
             background: #FFFFFF !important;
             color: #000000 !important;
             border: 2px solid #000000 !important;
@@ -84,13 +81,13 @@ if not st.session_state.show_app:
             min-width: 120px !important;
         }
         
-        .stButton button:hover {
+        div[data-testid="stButton"] button:hover {
             transform: translateY(-2px) !important;
             box-shadow: 0 8px 0 #000000 !important;
             background: #FAFAFA !important;
         }
         
-        .stButton button:active {
+        div[data-testid="stButton"] button:active {
             transform: translateY(3px) !important;
             box-shadow: 0 3px 0 #000000 !important;
             transition: all 0.02s linear !important;
@@ -122,12 +119,10 @@ if not st.session_state.show_app:
         </div>
         """, unsafe_allow_html=True)
         
-        # Nút START - căn giữa
-        st.markdown('<div class="start-btn-container">', unsafe_allow_html=True)
-        if st.button("START!", key="start_btn"):
+        # Nút START - dùng st.button nhưng CSS đã style
+        if st.button("START!"):
             st.session_state.show_app = True
             st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
         
         st.markdown('</div>', unsafe_allow_html=True)
     
