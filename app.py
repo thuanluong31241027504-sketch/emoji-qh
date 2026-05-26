@@ -50,7 +50,14 @@ st.markdown("""
         display: none !important;
     }
     
-    /* Nút CONFIRM - trắng chữ đen */
+    /* Nút CONFIRM - trắng chữ đen, không hover xám */
+    .stButton {
+        display: flex !important;
+        justify-content: center !important;
+        margin-top: 1rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
     .stButton button {
         background-color: #FFFFFF !important;
         color: #000000 !important;
@@ -60,12 +67,19 @@ st.markdown("""
         font-weight: 500 !important;
         font-size: 0.8rem !important;
         width: auto !important;
-        margin: 0 auto !important;
-        display: inline-block !important;
+        min-width: 120px !important;
+        transition: none !important;
     }
     
     .stButton button:hover {
-        background-color: #f0f0f0 !important;
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
+        border: 1px solid #000000 !important;
+        transform: none !important;
+    }
+    
+    .stButton button:active {
+        background-color: #FFFFFF !important;
         color: #000000 !important;
         border: 1px solid #000000 !important;
     }
@@ -73,11 +87,6 @@ st.markdown("""
     .stButton button:focus {
         outline: none !important;
         box-shadow: none !important;
-    }
-    
-    /* Căn giữa nút */
-    .stButton {
-        text-align: center !important;
     }
     
     .prediction-box {
@@ -110,6 +119,12 @@ st.markdown("""
         margin-top: 2rem;
         margin-bottom: 2rem;
         border-color: #e0e0e0;
+    }
+    
+    /* Căn giữa canvas */
+    .canvas-container {
+        display: flex;
+        justify-content: center;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -195,8 +210,10 @@ if 'confidence' not in st.session_state:
 if 'last_probs' not in st.session_state:
     st.session_state.last_probs = None
 
+# Canvas và nút giữa màn hình
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
+    # Canvas vẽ
     canvas_result = st_canvas(
         fill_color="rgba(255, 255, 255, 0)",
         stroke_width=12,
@@ -209,7 +226,7 @@ with col2:
         key=f"canvas_{st.session_state.canvas_key}",
     )
     
-    # Chỉ 1 nút CONFIRM ở giữa
+    # Nút CONFIRM ở giữa
     if st.button("CONFIRM", key="confirm_btn"):
         if canvas_result.image_data is not None:
             if np.sum(canvas_result.image_data[:, :, 3]) > 100:
