@@ -14,7 +14,7 @@ st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;700;800&display=swap');
     
     * {
         font-family: 'Source Code Pro', 'Courier New', monospace !important;
@@ -45,35 +45,43 @@ st.markdown("""
         margin-top: 2rem !important;
     }
     
-    /* Nút kiểu Got It! */
+    /* Nút khối 3D - vuông vức */
     .stButton button {
         background-color: #FFFFFF !important;
-        color: #1A73E8 !important;
-        border: 1px solid #DADCE0 !important;
-        border-radius: 8px !important;
-        padding: 0.6rem 2rem !important;
-        font-weight: 600 !important;
-        font-size: 0.9rem !important;
+        color: #000000 !important;
+        border: 2px solid #000000 !important;
+        border-radius: 0px !important;
+        padding: 0.7rem 2rem !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
         cursor: pointer !important;
-        transition: all 0.2s !important;
-        box-shadow: none !important;
+        
+        /* Hiệu ứng khối 3D: mặt dưới + mặt phải */
+        box-shadow: 
+            4px 4px 0 #000000,
+            0 0 0 0 transparent !important;
+        
+        transition: all 0.05s linear !important;
         outline: none !important;
     }
     
+    /* Hiệu ứng khi hover */
     .stButton button:hover {
-        background-color: #F8F9FA !important;
-        border: 1px solid #DADCE0 !important;
-        color: #1A73E8 !important;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.1) !important;
+        transform: translate(-1px, -1px) !important;
+        box-shadow: 6px 6px 0 #000000 !important;
+        background-color: #FAFAFA !important;
     }
     
+    /* Hiệu ứng khi nhấn - lún xuống */
     .stButton button:active {
-        transform: translateY(1px) !important;
+        transform: translate(2px, 2px) !important;
+        box-shadow: 1px 1px 0 #000000 !important;
+        transition: all 0.02s linear !important;
     }
     
     .stButton button:focus {
         outline: none !important;
-        box-shadow: 0 0 0 2px rgba(26,115,232,0.2) !important;
+        box-shadow: 4px 4px 0 #000000 !important;
     }
     
     .prediction-box {
@@ -82,7 +90,7 @@ st.markdown("""
         font-weight: 700;
         padding: 1rem;
         margin-top: 1.5rem;
-        border-bottom: 1px solid #e0e0e0;
+        border-bottom: 2px solid #e0e0e0;
     }
     
     .confidence-text {
