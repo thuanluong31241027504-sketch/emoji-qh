@@ -10,6 +10,88 @@ from sklearn.model_selection import train_test_split
 from streamlit_drawable_canvas import st_canvas
 import os
 
+# ==================== MÀN HÌNH GIỚI THIỆU ====================
+if 'show_app' not in st.session_state:
+    st.session_state.show_app = False
+
+if not st.session_state.show_app:
+    st.set_page_config(page_title="Emoji Classifier", layout="centered")
+    
+    # Màn hình đen chữ trắng
+    st.markdown("""
+    <style>
+        .stApp {
+            background-color: #000000 !important;
+        }
+        .splash {
+            display: flex;
+            flex-direction: column;
+            justifyify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            padding: 2rem;
+        }
+        .splash-title {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 1rem;
+        }
+        .splash-sub {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 1.2rem;
+            color: #CCCCCC;
+            margin-bottom: 2rem;
+        }
+        .splash-desc {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.9rem;
+            color: #888888;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .splash-button {
+            margin-top: 2rem;
+        }
+        .splash-button button {
+            background: #FFFFFF !important;
+            color: #000000 !important;
+            border: none !important;
+            border-radius: 40px !important;
+            padding: 0.7rem 2rem !important;
+            font-family: 'Source Code Pro', monospace !important;
+            font-weight: 600 !important;
+            font-size: 1rem !important;
+            cursor: pointer !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.markdown("""
+        <div class="splash">
+            <div class="splash-title">✏️ EMOJI CLASSIFIER</div>
+            <div class="splash-sub">by MLP model v1.0 - 2026</div>
+            <div class="splash-desc">
+                Draw an emoji with your mouse or finger.<br>
+                The AI will try to recognize it.<br>
+                <br>
+                Supported: ☁️ CLOUD | 😀 SMILEY | ❤️ HEART | 👿 HORNED | 👍 THUMB
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        if st.button("▶ START", key="start_btn"):
+            st.session_state.show_app = True
+            st.rerun()
+    
+    st.stop()
+
+# ==================== APP CHÍNH ====================
 st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
 st.markdown("""
@@ -43,7 +125,6 @@ st.markdown("""
         justify-content: center !important;
     }
     
-    /* CHỈNH NÚT THẤP XUỐNG GIỮA CANVAS */
     .stButton {
         display: flex !important;
         justify-content: center !important;
@@ -97,6 +178,7 @@ st.markdown("""
         text-align: center;
         font-size: 0.7rem;
         margin-top: 1rem;
+        line-height: 1.6;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -160,7 +242,6 @@ if 'key' not in st.session_state:
     st.session_state.conf = None
     st.session_state.probs = None
 
-# 2 cột: canvas + nút
 col_canvas, col_button = st.columns([2, 1])
 
 with col_canvas:
@@ -176,10 +257,9 @@ with col_canvas:
     )
 
 with col_button:
-    # Thêm khoảng trống để đẩy nút xuống giữa
     st.write("")
     st.write("")
-    if st.button("CONFIRM!", key="confirm_btn"):
+    if st.button("CONFIRM!"):
         if canvas.image_data is not None and np.sum(canvas.image_data[:, :, 3]) > 100:
             img = Image.fromarray(canvas.image_data.astype('uint8'), mode='RGBA').convert('L').resize((28, 28))
             arr = 1.0 - np.array(img).astype('float32') / 255.0
@@ -190,7 +270,6 @@ with col_button:
         else:
             st.warning("draw something")
 
-# Kết quả
 if st.session_state.pred:
     st.markdown(f'<div class="prediction">{display.get(st.session_state.pred, st.session_state.pred.upper())}</div>', unsafe_allow_html=True)
     st.markdown(f'<div class="confidence">{st.session_state.conf:.2%}</div>', unsafe_allow_html=True)
@@ -198,3 +277,6 @@ if st.session_state.pred:
     if st.session_state.probs is not None:
         text = "  |  ".join([f"{c}: {st.session_state.probs[i]:.2%}" for i, c in enumerate(classes)])
         st.markdown(f'<div class="probs">{text}</div>', unsafe_allow_html=True)
+
+st.markdown("---")
+st.markdown('<div style="text-align: center; font-size: 0.65rem; color: #9aa0a6;">Source Code Pro · TensorFlow · MLP</div>', unsafe_allow_html=True)
