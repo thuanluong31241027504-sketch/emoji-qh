@@ -13,7 +13,7 @@ import os
 st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
 # ==================== THAM SỐ DỊCH CHUYỂN ====================
-CANVAS_SHIFT = 0      # Dịch canvas (px) - số dương sang phải, âm sang trái
+CANVAS_SHIFT = 20     # Dịch canvas (px) - số dương sang phải, âm sang trái
 BUTTON_SHIFT = 0      # Dịch nút (px) - số dương sang phải, âm sang trái
 
 st.markdown(f"""
