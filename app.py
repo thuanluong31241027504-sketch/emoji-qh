@@ -57,7 +57,7 @@ st.markdown("""
         margin-top: 1.5rem !important;
     }
     
-    /* Nút trắng viền đen - không viền chữ */
+    /* Nút trắng viền đen - KHÔNG VIỀN CHỮ NHẬT */
     .stButton button {
         background-color: #FFFFFF !important;
         color: #000000 !important;
@@ -74,13 +74,21 @@ st.markdown("""
         box-shadow: 0 6px 0 #000000 !important;
         transition: all 0.08s linear !important;
         
-        /* QUAN TRỌNG: Xóa bỏ mọi viền/outline/shadow */
+        /* Xóa tất cả viền focus */
         outline: none !important;
         outline-style: none !important;
+        outline-width: 0 !important;
+        outline-color: transparent !important;
+        
+        /* Xóa box-shadow mặc định của trình duyệt */
         box-shadow: 0 6px 0 #000000 !important;
+        
+        /* Xóa viền chữ */
         text-shadow: none !important;
+        
+        /* Xóa highlight trên mobile */
         -webkit-tap-highlight-color: transparent !important;
-        -webkit-focus-ring-color: transparent !important;
+        -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
     }
     
     /* Hover */
@@ -98,22 +106,29 @@ st.markdown("""
         outline: none !important;
     }
     
-    /* Focus - nguồn gốc của viền trắng */
+    /* Focus - xóa viền trắng hình chữ nhật */
     .stButton button:focus, 
     .stButton button:focus-visible,
     .stButton button:focus-within,
     .stButton button:focus:not(:focus-visible) {
         outline: none !important;
         outline-style: none !important;
+        outline-width: 0 !important;
         box-shadow: 0 6px 0 #000000 !important;
         border: 2px solid #000000 !important;
-        text-shadow: none !important;
         background-color: #FFFFFF !important;
     }
     
-    /* Ẩn ring outline của trình duyệt */
+    /* Xóa ring outline */
     .stButton button::-moz-focus-inner {
         border: 0 !important;
+        outline: none !important;
+    }
+    
+    /* Xóa ring của tất cả element khi focus */
+    *:focus {
+        outline: none !important;
+        outline-style: none !important;
     }
     
     .prediction-box {
