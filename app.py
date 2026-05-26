@@ -31,8 +31,30 @@ if not st.session_state.show_app:
             margin: 0 auto;
             margin-top: 120px;
             padding: 2rem;
+            padding-top: 2.5rem;
             text-align: center;
             border-radius: 0px;
+            position: relative;
+        }
+        
+        /* Nút X góc phải trên - không viền, màu trắng */
+        .close-x {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            text-decoration: none;
+        }
+        
+        .close-x:hover {
+            opacity: 0.6;
         }
         
         .splash-title {
@@ -59,36 +81,9 @@ if not st.session_state.show_app:
             margin: 0.3rem 0;
         }
         
-        /* Nút X (close) */
-        .close-btn {
-            font-family: 'Source Code Pro', monospace;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #FFFFFF;
-            background: transparent;
-            border: 1px solid #FFFFFF;
-            width: 40px;
-            height: 40px;
-            border-radius: 0px;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 1rem;
-        }
-        
-        .close-btn:hover {
-            background-color: #FFFFFF;
-            color: #000000;
-        }
-        
         /* Ẩn các thành phần mặc định */
         #MainMenu, footer, header {
             display: none !important;
-        }
-        
-        /* Căn giữa nút */
-        div[data-testid="column"] {
-            display: flex;
-            justify-content: center;
         }
     </style>
     """, unsafe_allow_html=True)
@@ -96,8 +91,10 @@ if not st.session_state.show_app:
     # Khung đen vuông giữa màn hình
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
+        # HTML với nút X góc phải
         st.markdown("""
         <div class="splash-box">
+            <button class="close-x" onclick="parent.document.querySelector('button[kind=\'secondary\']').click()">✕</button>
             <div class="splash-title">EMOJI CLASSIFIER</div>
             <div class="splash-rule">
                 <p>> draw a simple emoji</p>
@@ -108,8 +105,8 @@ if not st.session_state.show_app:
         </div>
         """, unsafe_allow_html=True)
         
-        # Nút X
-        if st.button("✕", key="close_btn"):
+        # Button ẩn để xử lý đóng
+        if st.button("", key="close_btn", help="Close"):
             st.session_state.show_app = True
             st.rerun()
     
