@@ -14,8 +14,8 @@ st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
 # ==================== THAM SỐ DỊCH CHUYỂN (CỨNG) ====================
 # CHỈ CẦN SỬA 2 SỐ NÀY
-CANVAS_SHIFT = 70      # Dịch canvas sang phải (px), tăng lên: 80, 90, 100...
-BUTTON_SHIFT = 60     # Dịch nút sang phải (px)
+CANVAS_SHIFT = 90      # Dịch canvas sang phải (px), tăng lên: 80, 90, 100...
+BUTTON_SHIFT = 55     # Dịch nút sang phải (px)
 
 st.markdown(f"""
 <style>
