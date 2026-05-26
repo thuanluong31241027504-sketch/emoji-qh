@@ -129,9 +129,8 @@ st.set_page_config(page_title="Emoji Classifier", layout="centered")
 hoa1_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa1.png"
 hoa2_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa2.png"
 hoa3_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa3.png"
-emo1_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/emo1.png"
-emo2_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/emo2.png"
-emo3_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/emo3.png"
+hoa4_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa4.png"
+may1_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/may1.png"
 
 st.markdown(f"""
 <style>
@@ -264,24 +263,25 @@ st.markdown(f"""
     }}
 </style>
 
-<div class="decor-item" style="top: 3%; left: 2%;"><img src="{emo1_url}"></div>
-<div class="decor-item" style="top: 8%; right: 5%;"><img src="{emo2_url}"></div>
-<div class="decor-item" style="top: 15%; left: 8%;"><img src="{emo3_url}"></div>
-<div class="decor-item" style="top: 22%; right: 3%;"><img src="{emo1_url}"></div>
-<div class="decor-item" style="top: 30%; left: 12%;"><img src="{emo2_url}"></div>
-<div class="decor-item" style="top: 38%; right: 8%;"><img src="{emo3_url}"></div>
-<div class="decor-item" style="top: 45%; left: 5%;"><img src="{emo1_url}"></div>
-<div class="decor-item" style="top: 52%; right: 12%;"><img src="{emo2_url}"></div>
-<div class="decor-item" style="top: 60%; left: 15%;"><img src="{emo3_url}"></div>
-<div class="decor-item" style="top: 68%; right: 6%;"><img src="{emo1_url}"></div>
-<div class="decor-item" style="top: 75%; left: 8%;"><img src="{emo2_url}"></div>
-<div class="decor-item" style="top: 82%; right: 10%;"><img src="{emo3_url}"></div>
-<div class="decor-item" style="top: 90%; left: 3%;"><img src="{emo1_url}"></div>
-<div class="decor-item" style="top: 12%; left: 25%;"><img src="{emo2_url}"></div>
-<div class="decor-item" style="top: 28%; right: 20%;"><img src="{emo3_url}"></div>
-<div class="decor-item" style="top: 48%; left: 30%;"><img src="{emo1_url}"></div>
-<div class="decor-item" style="top: 65%; right: 25%;"><img src="{emo2_url}"></div>
-<div class="decor-item" style="top: 85%; left: 20%;"><img src="{emo3_url}"></div>
+<!-- Trang trí may1 và hoa4 rải đều so le khắp màn hình -->
+<div class="decor-item" style="top: 3%; left: 2%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 8%; right: 5%;"><img src="{hoa4_url}"></div>
+<div class="decor-item" style="top: 15%; left: 8%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 22%; right: 3%;"><img src="{hoa4_url}"></div>
+<div class="decor-item" style="top: 30%; left: 12%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 38%; right: 8%;"><img src="{hoa4_url}"></div>
+<div class="decor-item" style="top: 45%; left: 5%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 52%; right: 12%;"><img src="{hoa4_url}"></div>
+<div class="decor-item" style="top: 60%; left: 15%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 68%; right: 6%;"><img src="{hoa4_url}"></div>
+<div class="decor-item" style="top: 75%; left: 8%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 82%; right: 10%;"><img src="{hoa4_url}"></div>
+<div class="decor-item" style="top: 90%; left: 3%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 12%; left: 25%;"><img src="{hoa4_url}"></div>
+<div class="decor-item" style="top: 28%; right: 20%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 48%; left: 30%;"><img src="{hoa4_url}"></div>
+<div class="decor-item" style="top: 65%; right: 25%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 85%; left: 20%;"><img src="{hoa4_url}"></div>
 
 <div class="title">EMOJI CLASSIFIER</div>
 <div class="sub">by MLP model v1.0 - 2026</div>
@@ -313,7 +313,6 @@ def load_model():
     
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
-    # Model với regularization để tránh học vẹt
     model = Sequential([
         Flatten(input_shape=(28, 28)),
         Dense(64, activation='relu', kernel_regularizer=l2(0.001)),
@@ -327,7 +326,6 @@ def load_model():
                   loss='categorical_crossentropy', 
                   metrics=['accuracy'])
     
-    # Early stopping để dừng khi val_loss không cải thiện
     early_stop = tf.keras.callbacks.EarlyStopping(
         monitor='val_loss',
         patience=5,
