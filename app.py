@@ -12,6 +12,25 @@ import os
 
 st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
+# JavaScript để xóa toolbar canvas
+st.markdown("""
+<script>
+    function removeCanvasToolbar() {
+        setTimeout(function() {
+            var toolbars = document.querySelectorAll('.stCanvasToolbar');
+            toolbars.forEach(function(toolbar) {
+                toolbar.style.display = 'none';
+            });
+            var btns = document.querySelectorAll('[data-testid="baseToolbar"]');
+            btns.forEach(function(btn) {
+                btn.style.display = 'none';
+            });
+        }, 100);
+    }
+    window.addEventListener('load', removeCanvasToolbar);
+</script>
+""", unsafe_allow_html=True)
+
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;700&display=swap');
@@ -38,21 +57,11 @@ st.markdown("""
         display: none !important;
     }
     
-    /* XÓA TOOLBAR CỦA CANVAS */
-    .stCanvasToolbar {
+    /* Ẩn toolbar canvas */
+    .stCanvasToolbar, .stCanvasToolbar *, [data-testid="baseToolbar"] {
         display: none !important;
-    }
-    
-    [data-testid="baseToolbar"] {
-        display: none !important;
-    }
-    
-    .element-container .stCanvasToolbar {
-        display: none !important;
-    }
-    
-    .canvas-toolbar, .stCanvasToolbar div, .stCanvasToolbar button {
-        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
     }
     
     .stCanvas {
