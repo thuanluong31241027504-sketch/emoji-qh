@@ -10,36 +10,91 @@ from sklearn.model_selection import train_test_split
 from streamlit_drawable_canvas import st_canvas
 import os
 
-st.set_page_config(page_title="Emoji Classifier", page_icon="✏️", layout="centered")
+st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
-# CSS
+# CSS font Source Code Pro
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500;600;700&display=swap');
+    
     html, body, .stApp, div, p, span, h1, h2, h3, h4, button, label {
         font-family: 'Source Code Pro', 'Courier New', monospace !important;
         background-color: #FFFFFF;
         color: #000000;
     }
-    .big-title { font-size: 2.5rem; font-weight: 700; text-align: center; margin-top: 1rem; }
-    .sub-text { font-size: 0.9rem; font-weight: 400; text-align: center; color: #5f6368; margin-bottom: 2rem; }
+    
+    .big-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-align: center;
+        margin-top: 1rem;
+        margin-bottom: 0rem;
+    }
+    
+    .sub-text {
+        font-size: 0.8rem;
+        font-weight: 400;
+        text-align: center;
+        color: #5f6368;
+        margin-bottom: 2rem;
+    }
+    
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
+    
     .stButton button {
-        background-color: #000000; color: #FFFFFF; border: 1px solid #000000;
-        border-radius: 4px; padding: 0.5rem 1rem; font-weight: 600; width: 100%;
+        background-color: #000000;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 0px;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        font-size: 0.8rem;
+        width: 100%;
+        transition: 0.2s;
     }
-    .stButton button:hover { background-color: #FFFFFF; color: #000000; }
-    .prediction-box { text-align: center; font-size: 2rem; font-weight: 700; padding: 1rem;
-        margin-top: 1rem; border: 2px solid #000000; background-color: #f8f9fa; }
-    .confidence-text { text-align: center; font-size: 0.8rem; color: #5f6368; margin-top: 0.5rem; }
-    hr { margin-top: 2rem; margin-bottom: 2rem; border-color: #e0e0e0; }
-    .debug-box { background-color: #f0f0f0; padding: 0.5rem; font-size: 0.7rem; margin-top: 1rem; border-left: 3px solid #000; }
+    
+    .stButton button:hover {
+        background-color: #333333;
+        color: #FFFFFF;
+    }
+    
+    .prediction-box {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+        padding: 1rem;
+        margin-top: 1.5rem;
+        border-top: 1px solid #e0e0e0;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .confidence-text {
+        text-align: center;
+        font-size: 0.8rem;
+        color: #5f6368;
+        margin-top: 0.5rem;
+    }
+    
+    .prob-text {
+        text-align: center;
+        font-size: 0.7rem;
+        font-family: 'Source Code Pro', monospace;
+        color: #000000;
+        margin-top: 1rem;
+        line-height: 1.6;
+    }
+    
+    hr {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        border-color: #e0e0e0;
+    }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="big-title">✏️ EMOJI CLASSIFIER</div>', unsafe_allow_html=True)
+st.markdown('<div class="big-title">EMOJI CLASSIFIER</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-text">draw → confirm → AI predicts</div>', unsafe_allow_html=True)
 
 # ------------------- HÀM TRAIN MODEL -------------------
@@ -97,27 +152,17 @@ def preprocess_image(image):
         image = image.convert('L')
     image = image.resize((28, 28))
     img_array = np.array(image).astype('float32') / 255.0
-    img_array = 1.0 - img_array  # Đảo màu
+    img_array = 1.0 - img_array
     return img_array.reshape(1, 28, 28)
 
-# Load model
 model, class_names = load_and_train_model()
 
-# HIỂN THỊ CLASS NAMES ĐỂ DEBUG
-st.markdown(f"""
-<div class="debug-box">
-📋 <strong>Model classes (5 classes):</strong><br>
-{', '.join(class_names)}
-</div>
-""", unsafe_allow_html=True)
-
-# Class display mapping
 class_display = {
     'cloud': 'CLOUD',
-    'grinning_face': 'SMILEY FACE',
+    'grinning_face': 'SMILEY',
     'heart': 'HEART',
-    'smiling_horns': 'HORNED SMILEY',
-    'thumb': 'THUMBS UP'
+    'smiling_horns': 'HORNED',
+    'thumb': 'THUMB'
 }
 
 # ------------------- GIAO DIỆN -------------------
@@ -132,10 +177,6 @@ if 'last_probs' not in st.session_state:
 
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    st.markdown('<div style="text-align: center; margin-bottom: 10px;">┌─────────────────┐</div>', unsafe_allow_html=True)
-    st.markdown('<div style="text-align: center; margin-bottom: 10px;">│   DRAW HERE     │</div>', unsafe_allow_html=True)
-    st.markdown('<div style="text-align: center; margin-bottom: 10px;">└─────────────────┘</div>', unsafe_allow_html=True)
-    
     canvas_result = st_canvas(
         fill_color="rgba(255, 255, 255, 0)",
         stroke_width=12,
@@ -169,20 +210,12 @@ with col2:
                     st.session_state.prediction = class_names[predicted_idx]
                     st.session_state.confidence = predictions[predicted_idx]
                 else:
-                    st.warning("Please draw something first")
+                    st.warning("draw something first")
             else:
-                st.warning("Please draw something first")
+                st.warning("draw something first")
 
-# Hiển thị kết quả
 if st.session_state.prediction:
     st.markdown("---")
-    
-    # Debug: Hiển thị xác suất từng class
-    if st.session_state.last_probs is not None:
-        debug_text = "📊 **Prediction probabilities:**\n"
-        for i, name in enumerate(class_names):
-            debug_text += f"  {name}: {st.session_state.last_probs[i]:.2%}\n"
-        st.markdown(f'<div class="debug-box" style="font-size:0.7rem">{debug_text}</div>', unsafe_allow_html=True)
     
     display_name = class_display.get(st.session_state.prediction, st.session_state.prediction.upper())
     st.markdown(f"""
@@ -190,9 +223,15 @@ if st.session_state.prediction:
         {display_name}
     </div>
     <div class="confidence-text">
-        confidence: {st.session_state.confidence:.2%}
+        {st.session_state.confidence:.2%}
     </div>
     """, unsafe_allow_html=True)
+    
+    if st.session_state.last_probs is not None:
+        prob_lines = []
+        for i, name in enumerate(class_names):
+            prob_lines.append(f"{name}: {st.session_state.last_probs[i]:.2%}")
+        st.markdown(f'<div class="prob-text">{"  |  ".join(prob_lines)}</div>', unsafe_allow_html=True)
 
 st.markdown("---")
-st.markdown('<div style="text-align: center; font-size: 0.7rem; color: #9aa0a6;">Source Code Pro · TensorFlow</div>', unsafe_allow_html=True)
+st.markdown('<div style="text-align: center; font-size: 0.65rem; color: #9aa0a6;">Source Code Pro · TensorFlow</div>', unsafe_allow_html=True)
