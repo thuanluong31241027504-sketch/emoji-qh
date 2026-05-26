@@ -12,25 +12,6 @@ import os
 
 st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
-# JavaScript để xóa toolbar canvas
-st.markdown("""
-<script>
-    function removeCanvasToolbar() {
-        setTimeout(function() {
-            var toolbars = document.querySelectorAll('.stCanvasToolbar');
-            toolbars.forEach(function(toolbar) {
-                toolbar.style.display = 'none';
-            });
-            var btns = document.querySelectorAll('[data-testid="baseToolbar"]');
-            btns.forEach(function(btn) {
-                btn.style.display = 'none';
-            });
-        }, 100);
-    }
-    window.addEventListener('load', removeCanvasToolbar);
-</script>
-""", unsafe_allow_html=True)
-
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;700&display=swap');
@@ -57,18 +38,12 @@ st.markdown("""
         display: none !important;
     }
     
-    /* Ẩn toolbar canvas */
-    .stCanvasToolbar, .stCanvasToolbar *, [data-testid="baseToolbar"] {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-    }
-    
     .stCanvas {
         display: flex !important;
         justify-content: center !important;
     }
     
+    /* CHỈNH NÚT THẤP XUỐNG GIỮA CANVAS */
     .stButton {
         display: flex !important;
         justify-content: center !important;
@@ -185,6 +160,7 @@ if 'key' not in st.session_state:
     st.session_state.conf = None
     st.session_state.probs = None
 
+# 2 cột: canvas + nút
 col_canvas, col_button = st.columns([2, 1])
 
 with col_canvas:
@@ -200,6 +176,7 @@ with col_canvas:
     )
 
 with col_button:
+    # Thêm khoảng trống để đẩy nút xuống giữa
     st.write("")
     st.write("")
     if st.button("CONFIRM!", key="confirm_btn"):
@@ -213,6 +190,7 @@ with col_button:
         else:
             st.warning("draw something")
 
+# Kết quả
 if st.session_state.pred:
     st.markdown(f'<div class="prediction">{display.get(st.session_state.pred, st.session_state.pred.upper())}</div>', unsafe_allow_html=True)
     st.markdown(f'<div class="confidence">{st.session_state.conf:.2%}</div>', unsafe_allow_html=True)
