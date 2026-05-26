@@ -26,6 +26,7 @@ if not st.session_state.show_app:
         .splash-wrapper {
             max-width: 420px;
             margin: 100px auto 0 auto;
+            text-align: center;
         }
         
         .splash-box {
@@ -57,66 +58,43 @@ if not st.session_state.show_app:
             margin: 0.3rem 0;
         }
         
-        /* Nút START 3D bằng HTML */
-        .start-btn-wrapper {
-            text-align: center;
-            margin-top: 1.5rem;
+        /* Nút START 3D - dùng st.button nhưng style lại */
+        .stButton {
+            margin-top: 1.5rem !important;
         }
         
-        .btn-3d {
-            background: #FFFFFF;
-            color: #000000;
-            border: 2px solid #000000;
-            padding: 10px 28px;
-            font-family: 'Source Code Pro', monospace;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 6px 0 #000000;
-            transition: all 0.05s linear;
-            display: inline-block;
+        .stButton button {
+            background: #FFFFFF !important;
+            color: #000000 !important;
+            border: 2px solid #000000 !important;
+            border-radius: 0px !important;
+            padding: 10px 28px !important;
+            font-family: 'Source Code Pro', monospace !important;
+            font-size: 1rem !important;
+            font-weight: 700 !important;
+            cursor: pointer !important;
+            box-shadow: 0 6px 0 #000000 !important;
+            transition: all 0.05s linear !important;
+            width: auto !important;
+            min-width: 120px !important;
         }
         
-        .btn-3d:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 0 #000000;
-            background: #FAFAFA;
+        .stButton button:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 0 #000000 !important;
+            background: #FAFAFA !important;
         }
         
-        .btn-3d:active {
-            transform: translateY(3px);
-            box-shadow: 0 3px 0 #000000;
+        .stButton button:active {
+            transform: translateY(3px) !important;
+            box-shadow: 0 3px 0 #000000 !important;
+            transition: all 0.02s linear !important;
         }
         
         #MainMenu, footer, header {
             display: none !important;
         }
-        
-        /* Ẩn button Streamlit */
-        .stButton {
-            display: none !important;
-        }
     </style>
-    
-    <script>
-        function goToApp() {
-            const event = new CustomEvent('streamlit:setComponentValue', {
-                detail: {value: true}
-            });
-            window.parent.document.dispatchEvent(event);
-            
-            fetch('/_stcore/stream', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    'type': 'set_session_state',
-                    'key': 'show_app',
-                    'value': true
-                })
-            });
-            window.location.reload();
-        }
-    </script>
     """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 2, 1])
@@ -139,19 +117,12 @@ if not st.session_state.show_app:
         </div>
         """, unsafe_allow_html=True)
         
-        # Nút START 3D HTML
-        st.markdown("""
-        <div class="start-btn-wrapper">
-            <button class="btn-3d" onclick="goToApp()">START!</button>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-        # Button ẩn để nhận sự kiện (bắt buộc để Streamlit rerun)
-        if st.button("_hidden", key="hidden_btn"):
+        # Nút START - dùng st.button nhưng đã CSS style 3D
+        if st.button("START!", key="start_btn"):
             st.session_state.show_app = True
             st.rerun()
+        
+        st.markdown('</div>', unsafe_allow_html=True)
     
     st.stop()
 
