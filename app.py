@@ -14,18 +14,18 @@ st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;700&display=swap');
     
     * {
         font-family: 'Source Code Pro', 'Courier New', monospace !important;
     }
     
     .big-title {
-        font-size: 2.8rem;
-        font-weight: 800;
+        font-size: 2.5rem;
+        font-weight: 700;
         text-align: center;
         margin-top: 1rem;
-        letter-spacing: -1px;
+        letter-spacing: -0.5px;
     }
     
     .sub-text {
@@ -45,57 +45,35 @@ st.markdown("""
         margin-top: 2rem !important;
     }
     
-    /* Nút 3D block - vát bình hành */
+    /* Nút kiểu Got It! */
     .stButton button {
-        background: #FFFFFF !important;
-        color: #000000 !important;
-        border: none !important;
-        padding: 0.8rem 2rem !important;
-        font-weight: 800 !important;
-        font-size: 1rem !important;
-        min-width: 160px !important;
+        background-color: #FFFFFF !important;
+        color: #1A73E8 !important;
+        border: 1px solid #DADCE0 !important;
+        border-radius: 8px !important;
+        padding: 0.6rem 2rem !important;
+        font-weight: 600 !important;
+        font-size: 0.9rem !important;
         cursor: pointer !important;
-        letter-spacing: 2px !important;
-        position: relative !important;
-        
-        /* Tạo khối 3D bằng clip-path vát bình hành */
-        clip-path: polygon(8% 0%, 100% 0%, 92% 100%, 0% 100%) !important;
-        
-        /* Bóng đổ 3 cạnh (trái, phải, dưới) */
-        box-shadow: 
-            -4px 4px 0 #888888,
-            4px 4px 0 #888888,
-            0 6px 0 #666666 !important;
-        
-        transition: all 0.05s linear !important;
+        transition: all 0.2s !important;
+        box-shadow: none !important;
         outline: none !important;
     }
     
-    /* Hiệu ứng nhấn - lún và tối màu */
-    .stButton button:active {
-        transform: translateY(3px) !important;
-        box-shadow: 
-            -2px 1px 0 #888888,
-            2px 1px 0 #888888,
-            0 2px 0 #666666 !important;
-        background: #F0F0F0 !important;
+    .stButton button:hover {
+        background-color: #F8F9FA !important;
+        border: 1px solid #DADCE0 !important;
+        color: #1A73E8 !important;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1) !important;
     }
     
-    .stButton button:hover {
-        transform: translateY(-1px) !important;
-        box-shadow: 
-            -5px 5px 0 #888888,
-            5px 5px 0 #888888,
-            0 7px 0 #666666 !important;
-        background: #FFFFFF !important;
+    .stButton button:active {
+        transform: translateY(1px) !important;
     }
     
     .stButton button:focus {
         outline: none !important;
-        box-shadow: 
-            -4px 4px 0 #888888,
-            4px 4px 0 #888888,
-            0 6px 0 #666666 !important;
+        box-shadow: 0 0 0 2px rgba(26,115,232,0.2) !important;
     }
     
     .prediction-box {
@@ -104,7 +82,7 @@ st.markdown("""
         font-weight: 700;
         padding: 1rem;
         margin-top: 1.5rem;
-        border-bottom: 2px solid #000000;
+        border-bottom: 1px solid #e0e0e0;
     }
     
     .confidence-text {
