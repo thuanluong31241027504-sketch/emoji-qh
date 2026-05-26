@@ -43,18 +43,22 @@ st.markdown(f"""
         display: none !important;
     }}
     
-    /* CĂN CHỈNH THEO THANH TRƯỢT */
     .main .block-container {{
         max-width: 500px !important;
         margin: 0 auto !important;
         padding-top: 2rem !important;
     }}
     
-    canvas {{
+    /* DỊCH TOÀN BỘ KHUNG CANVAS */
+    .element-container:has(canvas) {{
         margin-left: {margin_left}px !important;
+    }}
+    
+    canvas {{
         display: block !important;
     }}
     
+    /* DỊCH NÚT */
     .stButton {{
         display: flex !important;
         justify-content: center !important;
