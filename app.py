@@ -44,85 +44,89 @@ st.markdown("""
         align-items: center !important;
     }
     
-    .stButton {
-        display: flex !important;
-        justify-content: center !important;
-        width: 100% !important;
-        margin-top: 20px !important;
+    /* === NÚT 3D BLOCK ĐÚNG CHUẨN === */
+    .block-btn {
+        position: relative;
+        display: inline-block;
+        background: none;
+        border: none;
+        cursor: pointer;
+        margin-top: 20px;
     }
     
-    /* Nút Block 3D - dùng pseudo-element tạo mặt bên */
-    .stButton button {
-        background-color: #FFFFFF !important;
-        color: #000000 !important;
-        border: 2px solid #000000 !important;
-        border-radius: 0px !important;
-        padding: 10px 24px !important;
-        font-weight: 800 !important;
-        font-size: 16px !important;
-        cursor: pointer !important;
-        position: relative !important;
-        outline: none !important;
-        transition: all 0.05s linear !important;
-        z-index: 1 !important;
+    /* Mặt chính (front face) */
+    .block-btn .front {
+        display: block;
+        padding: 12px 28px;
+        background-color: #FFFFFF;
+        color: #000000;
+        font-size: 16px;
+        font-weight: 800;
+        text-decoration: none;
+        border: 2px solid #000000;
+        transition: all 0.08s linear;
+        position: relative;
+        z-index: 2;
     }
     
-    /* Mặt dưới (bottom face) */
-    .stButton button::after {
-        content: '' !important;
-        position: absolute !important;
-        bottom: -6px !important;
-        left: 2px !important;
-        width: 100% !important;
-        height: 6px !important;
-        background-color: #666666 !important;
-        z-index: -1 !important;
+    /* Mặt dưới (bottom face) - tạo chiều dày khối */
+    .block-btn .bottom {
+        position: absolute;
+        bottom: -8px;
+        left: 0px;
+        width: 100%;
+        height: 8px;
+        background-color: #666666;
+        border-left: 2px solid #000000;
+        border-right: 2px solid #000000;
+        border-bottom: 2px solid #000000;
+        box-sizing: border-box;
+        z-index: 1;
     }
     
     /* Mặt phải (right face) */
-    .stButton button::before {
-        content: '' !important;
-        position: absolute !important;
-        top: 2px !important;
-        right: -6px !important;
-        width: 6px !important;
-        height: 100% !important;
-        background-color: #888888 !important;
-        z-index: -1 !important;
+    .block-btn .right {
+        position: absolute;
+        top: 0px;
+        right: -8px;
+        width: 8px;
+        height: 100%;
+        background-color: #888888;
+        border-top: 2px solid #000000;
+        border-right: 2px solid #000000;
+        border-bottom: 2px solid #000000;
+        box-sizing: border-box;
+        z-index: 1;
     }
     
-    /* Hiệu ứng nhấn - lún */
-    .stButton button:active {
-        transform: translate(3px, 3px) !important;
+    /* Hiệu ứng hover - nhấc lên */
+    .block-btn:hover .front {
+        transform: translate(-2px, -2px);
     }
     
-    .stButton button:active::before {
-        right: -3px !important;
-        top: 1px !important;
+    .block-btn:hover .bottom {
+        bottom: -10px;
+        height: 10px;
     }
     
-    .stButton button:active::after {
-        bottom: -3px !important;
-        left: 1px !important;
+    .block-btn:hover .right {
+        right: -10px;
+        width: 10px;
     }
     
-    .stButton button:hover {
-        background-color: #F8F9FA !important;
-        transform: translate(-1px, -1px) !important;
+    /* Hiệu ứng click - lún xuống */
+    .block-btn:active .front {
+        transform: translate(3px, 3px);
     }
     
-    .stButton button:hover::before {
-        right: -4px !important;
-        top: 1px !important;
+    .block-btn:active .bottom {
+        bottom: -3px;
+        height: 3px;
     }
     
-    .stButton button:hover::after {
-        bottom: -4px !important;
-        left: 1px !important;
-    }
-    
-    .stButton button:focus {
-        outline: none !important;
+    .block-btn:active .right {
+        right: -3px;
+        width: 3px;
     }
     
     .prediction-box {
@@ -235,13 +239,37 @@ with col2:
         key=f"canvas_{st.session_state.canvas_key}",
     )
     
-    if st.button("CONFIRM!"):
+    # Nút 3D Block bằng HTML/CSS
+    import streamlit.components.v1 as components
+    
+    components.html(f"""
+    <div style="display: flex; justify-content: center; margin-top: 20px;">
+        <button class="block-btn" id="btn_confirm">
+            <span class="front">CONFIRM!</span>
+            <span class="bottom"></span>
+            <span class="right"></span>
+        </button>
+    </div>
+    
+    <script>
+        document.getElementById('btn_confirm').addEventListener('click', () => {{
+            const canvasData = window.parent.document.querySelector('.stCanvas').getAttribute('data');
+            // Gửi sự kiện lên Streamlit
+            window.parent.postMessage({{type: 'streamlit:setComponentValue', value: true}}, '*');
+        }});
+    </script>
+    """, height=100)
+    
+    # Streamlit button để xử lý logic (ẩn)
+    col_placeholder = st.empty()
+    if col_placeholder.button("CONFIRM!", key="real_btn", use_container_width=False):
         if canvas_result.image_data is not None and np.sum(canvas_result.image_data[:, :, 3]) > 100:
             img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
             pred = model.predict(preprocess_image(img), verbose=0)[0]
             st.session_state.last_probs = pred
             st.session_state.prediction = class_names[np.argmax(pred)]
             st.session_state.confidence = max(pred)
+            st.rerun()
         else:
             st.warning("draw something first")
 
