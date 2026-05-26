@@ -14,7 +14,7 @@ st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
 # ==================== THAM SỐ CĂN CHỈNH ====================
 # CHỈ CẦN SỬA 2 SỐ NÀY
-LEFT_COL = 10      # Cột trái (tăng lên -> canvas sang phải)
+LEFT_COL = 3      # Cột trái (tăng lên -> canvas sang phải)
 RIGHT_COL = 1     # Cột phải (tăng lên -> canvas sang trái)
 BUTTON_SHIFT = 55 # Dịch nút sang phải
 
