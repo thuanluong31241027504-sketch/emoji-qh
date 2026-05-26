@@ -57,7 +57,7 @@ st.markdown("""
         margin-top: 1.5rem !important;
     }
     
-    /* Nút trắng viền đen - kiểu 3D */
+    /* Nút trắng viền đen - kiểu 3D, không viền chữ */
     .stButton button {
         background-color: #FFFFFF !important;
         color: #000000 !important;
@@ -76,8 +76,10 @@ st.markdown("""
         box-shadow: 0 6px 0 #000000 !important;
         transition: all 0.08s linear !important;
         
-        /* Bỏ outline mặc định */
+        /* QUAN TRỌNG: Bỏ viền chữ */
+        text-shadow: none !important;
         outline: none !important;
+        -webkit-font-smoothing: antialiased !important;
     }
     
     /* Hiệu ứng hover - nhấc lên */
@@ -85,6 +87,7 @@ st.markdown("""
         transform: translateY(-3px) !important;
         box-shadow: 0 9px 0 #000000 !important;
         background-color: #F5F5F5 !important;
+        text-shadow: none !important;
     }
     
     /* Hiệu ứng khi nhấn (pressed) - lún xuống */
@@ -92,14 +95,16 @@ st.markdown("""
         transform: translateY(4px) !important;
         box-shadow: 0 2px 0 #000000 !important;
         transition: all 0.02s linear !important;
+        text-shadow: none !important;
     }
     
-    /* Bỏ viền focus */
+    /* Bỏ viền focus - đây là nguyên nhân gây viền trắng */
     .stButton button:focus, 
     .stButton button:focus-visible {
         outline: none !important;
         box-shadow: 0 6px 0 #000000 !important;
         border: 2px solid #000000 !important;
+        text-shadow: none !important;
     }
     
     .prediction-box {
@@ -231,7 +236,7 @@ with col2:
         key=f"canvas_{st.session_state.canvas_key}",
     )
     
-    # Nút CONFIRM - trắng viền đen, hiệu ứng 3D
+    # Nút CONFIRM - trắng viền đen, hiệu ứng 3D, không viền chữ
     if st.button("CONFIRM", key="confirm_btn"):
         if canvas_result.image_data is not None:
             if np.sum(canvas_result.image_data[:, :, 3]) > 100:
