@@ -50,50 +50,55 @@ st.markdown("""
         display: none !important;
     }
     
-    /* Container nút - căn giữa */
+    /* CĂN GIỮA NÚT - BẠN TỰ CHỈNH 3 THAM SỐ NÀY */
     .stButton {
         display: flex !important;
-        justify-content: center !important;
-        margin-top: 1.5rem !important;
+        justify-content: center !important;  /* center, flex-start, flex-end */
+        align-items: center !important;
+        margin-top: 1.5rem !important;       /* tăng/giảm để dịch lên/xuống */
+        margin-bottom: 0rem !important;
     }
     
-    /* Nút 3D kiểu Google Quick Draw */
+    /* NÚT TRẮNG VIỀN ĐEN - KHÔNG HOVER */
     .stButton button {
-        background: #4CAF50 !important;
-        background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%) !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 40px !important;
-        padding: 0.8rem 2.5rem !important;
-        font-weight: 600 !important;
-        font-size: 1.1rem !important;
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
+        border: 2px solid #000000 !important;
+        border-radius: 0px !important;
+        padding: 0.7rem 2rem !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
         font-family: 'Source Code Pro', monospace !important;
         width: auto !important;
-        min-width: 180px !important;
+        min-width: 160px !important;
         cursor: pointer !important;
-        box-shadow: 0 8px 0 #1B5E20, 0 4px 12px rgba(0,0,0,0.1) !important;
-        transition: all 0.08s linear !important;
-        letter-spacing: 0.5px !important;
+        transition: none !important;
+        letter-spacing: 1px !important;
+        outline: none !important;
+        box-shadow: none !important;
     }
     
-    /* Hiệu ứng khi hover */
+    /* KHÔNG CÓ HIỆU ỨNG HOVER */
     .stButton button:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 10px 0 #1B5E20, 0 6px 16px rgba(0,0,0,0.15) !important;
-        background: linear-gradient(135deg, #5CB860 0%, #388E3C 100%) !important;
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
+        border: 2px solid #000000 !important;
+        transform: none !important;
+        box-shadow: none !important;
     }
     
-    /* Hiệu ứng khi nhấn (pressed) */
+    /* KHÔNG CÓ HIỆU ỨNG CLICK (active) */
     .stButton button:active {
-        transform: translateY(4px) !important;
-        box-shadow: 0 4px 0 #1B5E20, 0 2px 8px rgba(0,0,0,0.1) !important;
-        transition: all 0.02s linear !important;
+        transform: none !important;
+        background-color: #FFFFFF !important;
     }
     
+    /* KHÔNG VIỀN KHI FOCUS */
     .stButton button:focus, 
     .stButton button:focus-visible {
         outline: none !important;
-        box-shadow: 0 8px 0 #1B5E20, 0 4px 12px rgba(0,0,0,0.1) !important;
+        box-shadow: none !important;
+        border: 2px solid #000000 !important;
     }
     
     .prediction-box {
@@ -225,8 +230,8 @@ with col2:
         key=f"canvas_{st.session_state.canvas_key}",
     )
     
-    # Nút 3D màu xanh lá
-    if st.button("LET'S DRAW!", key="confirm_btn"):
+    # Nút CONFIRM! trắng viền đen - không hover
+    if st.button("CONFIRM!", key="confirm_btn"):
         if canvas_result.image_data is not None:
             if np.sum(canvas_result.image_data[:, :, 3]) > 100:
                 img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
