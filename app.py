@@ -12,7 +12,6 @@ import os
 
 st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
-# CSS gọn - chỉ căn giữa
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;700&display=swap');
@@ -35,31 +34,22 @@ st.markdown("""
         margin-bottom: 2rem;
     }
     
-    /* Ẩn mấy thứ linh tinh */
     #MainMenu, footer, header {
         display: none !important;
     }
     
-    /* ĐƯA NÚT LÊN CÙNG HÀNG VỚI CANVAS */
-    .row-widget {
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        gap: 20px !important;
-        justify-content: center !important;
-    }
-    
-    /* Căn giữa canvas */
     .stCanvas {
         display: flex !important;
         justify-content: center !important;
     }
     
-    /* Nút bên phải canvas */
+    /* CHỈNH NÚT THẤP XUỐNG GIỮA CANVAS */
     .stButton {
         display: flex !important;
         justify-content: center !important;
-        margin-top: 0 !important;
+        align-items: center !important;
+        height: 100% !important;
+        margin-top: 70px !important;
     }
     
     .stButton button {
@@ -73,7 +63,6 @@ st.markdown("""
         cursor: pointer !important;
         box-shadow: 0 6px 0 #000000 !important;
         transition: none !important;
-        height: 50px !important;
         white-space: nowrap !important;
     }
     
@@ -108,15 +97,6 @@ st.markdown("""
         text-align: center;
         font-size: 0.7rem;
         margin-top: 1rem;
-    }
-    
-    /* Container cho canvas + nút */
-    .flex-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 20px;
-        flex-wrap: wrap;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -180,7 +160,7 @@ if 'key' not in st.session_state:
     st.session_state.conf = None
     st.session_state.probs = None
 
-# DÙNG COLUMNS ĐỂ ĐƯA NÚT LÊN CÙNG HÀNG VỚI CANVAS
+# 2 cột: canvas + nút
 col_canvas, col_button = st.columns([2, 1])
 
 with col_canvas:
@@ -196,7 +176,9 @@ with col_canvas:
     )
 
 with col_button:
-    # Nút đặt bên phải canvas
+    # Thêm khoảng trống để đẩy nút xuống giữa
+    st.write("")
+    st.write("")
     if st.button("CONFIRM!", key="confirm_btn"):
         if canvas.image_data is not None and np.sum(canvas.image_data[:, :, 3]) > 100:
             img = Image.fromarray(canvas.image_data.astype('uint8'), mode='RGBA').convert('L').resize((28, 28))
