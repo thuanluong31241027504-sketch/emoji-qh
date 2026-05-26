@@ -16,8 +16,10 @@ st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500;600;700&display=swap');
     
-    * {
+    html, body, .stApp, div, p, span, h1, h2, h3, h4, button, label {
         font-family: 'Source Code Pro', 'Courier New', monospace !important;
+        background-color: #FFFFFF;
+        color: #000000;
     }
     
     .big-title {
@@ -25,17 +27,74 @@ st.markdown("""
         font-weight: 700;
         text-align: center;
         margin-top: 1rem;
+        margin-bottom: 0rem;
     }
     
     .sub-text {
         font-size: 0.8rem;
+        font-weight: 400;
         text-align: center;
         color: #5f6368;
         margin-bottom: 2rem;
     }
     
-    #MainMenu, footer, header, .stActionButton, .stCanvasToolbar {
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    
+    .stActionButton, .stActionButton button, [data-testid="baseActionButton"] {
         display: none !important;
+    }
+    
+    .stCanvasToolbar {
+        display: none !important;
+    }
+    
+    /* Căn giữa nút */
+    .stButton {
+        display: flex !important;
+        justify-content: center !important;
+        margin-top: 1.5rem !important;
+    }
+    
+    /* NÚT 3D - NỀN TRẮNG, BÓNG ĐỔ ĐEN, KHÔNG HOVER */
+    .stButton button {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        border: 2px solid #000000 !important;
+        border-radius: 40px !important;
+        padding: 0.8rem 2.5rem !important;
+        font-weight: 600 !important;
+        font-size: 1.1rem !important;
+        font-family: 'Source Code Pro', monospace !important;
+        width: auto !important;
+        min-width: 180px !important;
+        cursor: pointer !important;
+        box-shadow: 0 8px 0 #000000, 0 4px 12px rgba(0,0,0,0.1) !important;
+        transition: none !important;
+        letter-spacing: 0.5px !important;
+    }
+    
+    /* KHÔNG CÓ HIỆU ỨNG HOVER - giữ nguyên */
+    .stButton button:hover {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        border: 2px solid #000000 !important;
+        transform: none !important;
+        box-shadow: 0 8px 0 #000000, 0 4px 12px rgba(0,0,0,0.1) !important;
+    }
+    
+    /* Hiệu ứng khi nhấn (pressed) - vẫn giữ để tạo cảm giác bấm */
+    .stButton button:active {
+        transform: translateY(4px) !important;
+        box-shadow: 0 4px 0 #000000, 0 2px 8px rgba(0,0,0,0.1) !important;
+        transition: all 0.02s linear !important;
+    }
+    
+    .stButton button:focus, 
+    .stButton button:focus-visible {
+        outline: none !important;
+        box-shadow: 0 8px 0 #000000, 0 4px 12px rgba(0,0,0,0.1) !important;
     }
     
     .prediction-box {
@@ -44,12 +103,13 @@ st.markdown("""
         font-weight: 700;
         padding: 1rem;
         margin-top: 1.5rem;
-        border-bottom: 2px solid #000000;
+        border-top: none;
+        border-bottom: 1px solid #e0e0e0;
     }
     
     .confidence-text {
         text-align: center;
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         color: #5f6368;
         margin-top: 0.5rem;
     }
@@ -57,12 +117,15 @@ st.markdown("""
     .prob-text {
         text-align: center;
         font-size: 0.7rem;
+        font-family: 'Source Code Pro', monospace;
+        color: #000000;
         margin-top: 1rem;
         line-height: 1.6;
     }
     
     hr {
         margin-top: 2rem;
+        margin-bottom: 2rem;
         border-color: #e0e0e0;
     }
 </style>
@@ -122,8 +185,11 @@ def load_and_train_model():
     return model, unique_labels
 
 def preprocess_image(image):
-    img = image.convert('L').resize((28, 28))
-    img_array = 1.0 - (np.array(img).astype('float32') / 255.0)
+    if image.mode != 'L':
+        image = image.convert('L')
+    image = image.resize((28, 28))
+    img_array = np.array(image).astype('float32') / 255.0
+    img_array = 1.0 - img_array
     return img_array.reshape(1, 28, 28)
 
 model, class_names = load_and_train_model()
@@ -136,16 +202,17 @@ class_display = {
     'thumb': 'THUMB'
 }
 
-# ------------------- GIAO DIỆN - DÙNG COLUMNS ĐỂ CĂN GIỮA -------------------
+# ------------------- GIAO DIỆN -------------------
 if 'canvas_key' not in st.session_state:
     st.session_state.canvas_key = 0
+if 'prediction' not in st.session_state:
     st.session_state.prediction = None
+if 'confidence' not in st.session_state:
     st.session_state.confidence = None
+if 'last_probs' not in st.session_state:
     st.session_state.last_probs = None
 
-# TẠO 3 CỘT, ĐẶT CANVAS VÀO CỘT GIỮA
 col1, col2, col3 = st.columns([1, 2, 1])
-
 with col2:
     canvas_result = st_canvas(
         fill_color="rgba(255, 255, 255, 0)",
@@ -158,60 +225,38 @@ with col2:
         drawing_mode="freedraw",
         key=f"canvas_{st.session_state.canvas_key}",
     )
-
-# NÚT - CŨNG ĐẶT TRONG CỘT GIỮA
-with col2:
-    # CSS cho nút trong col2
-    st.markdown("""
-    <style>
-        div[data-testid="column"]:nth-of-type(2) .stButton {
-            display: flex !important;
-            justify-content: center !important;
-        }
-        div[data-testid="column"]:nth-of-type(2) .stButton button {
-            background: #FFFFFF !important;
-            color: #000000 !important;
-            border: 2px solid #000000 !important;
-            border-radius: 40px !important;
-            padding: 0.7rem 2rem !important;
-            font-weight: 600 !important;
-            font-size: 1rem !important;
-            cursor: pointer !important;
-            box-shadow: 0 6px 0 #000000 !important;
-            transition: none !important;
-        }
-        div[data-testid="column"]:nth-of-type(2) .stButton button:hover {
-            background: #FFFFFF !important;
-            transform: none !important;
-            box-shadow: 0 6px 0 #000000 !important;
-        }
-        div[data-testid="column"]:nth-of-type(2) .stButton button:active {
-            transform: translateY(3px) !important;
-            box-shadow: 0 3px 0 #000000 !important;
-        }
-    </style>
-    """, unsafe_allow_html=True)
     
-    if st.button("CONFIRM!"):
-        if canvas_result.image_data is not None and np.sum(canvas_result.image_data[:, :, 3]) > 100:
-            img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
-            pred = model.predict(preprocess_image(img), verbose=0)[0]
-            st.session_state.last_probs = pred
-            st.session_state.prediction = class_names[np.argmax(pred)]
-            st.session_state.confidence = max(pred)
-            st.rerun()
+    if st.button("CONFIRM!", key="confirm_btn"):
+        if canvas_result.image_data is not None:
+            if np.sum(canvas_result.image_data[:, :, 3]) > 100:
+                img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
+                processed = preprocess_image(img)
+                predictions = model.predict(processed, verbose=0)[0]
+                st.session_state.last_probs = predictions
+                predicted_idx = np.argmax(predictions)
+                st.session_state.prediction = class_names[predicted_idx]
+                st.session_state.confidence = predictions[predicted_idx]
+            else:
+                st.warning("draw something first")
         else:
             st.warning("draw something first")
 
 if st.session_state.prediction:
+    display_name = class_display.get(st.session_state.prediction, st.session_state.prediction.upper())
     st.markdown(f"""
-    <div class="prediction-box">{class_display.get(st.session_state.prediction, st.session_state.prediction.upper())}</div>
-    <div class="confidence-text">confidence: {st.session_state.confidence:.2%}</div>
+    <div class="prediction-box">
+        {display_name}
+    </div>
+    <div class="confidence-text">
+        {st.session_state.confidence:.2%}
+    </div>
     """, unsafe_allow_html=True)
     
     if st.session_state.last_probs is not None:
-        prob_text = "  |  ".join([f"{n}: {st.session_state.last_probs[i]:.2%}" for i, n in enumerate(class_names)])
-        st.markdown(f'<div class="prob-text">{prob_text}</div>', unsafe_allow_html=True)
+        prob_lines = []
+        for i, name in enumerate(class_names):
+            prob_lines.append(f"{name}: {st.session_state.last_probs[i]:.2%}")
+        st.markdown(f'<div class="prob-text">{"  |  ".join(prob_lines)}</div>', unsafe_allow_html=True)
 
 st.markdown("---")
-st.markdown('<div style="text-align: center; font-size: 0.7rem; color: #9aa0a6;">Source Code Pro · TensorFlow · MLP</div>', unsafe_allow_html=True)
+st.markdown('<div style="text-align: center; font-size: 0.65rem; color: #9aa0a6;">Source Code Pro · TensorFlow · MLP</div>', unsafe_allow_html=True)
