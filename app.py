@@ -25,8 +25,7 @@ if not st.session_state.show_app:
         
         .splash-wrapper {
             max-width: 420px;
-            margin: 100px auto 0 auto;
-            text-align: center;
+            margin: 80px auto 0 auto;
         }
         
         .splash-box {
@@ -58,12 +57,7 @@ if not st.session_state.show_app:
             margin: 0.3rem 0;
         }
         
-        /* Nút START 3D - dùng st.button nhưng style lại */
-        .stButton {
-            margin-top: 1.5rem !important;
-        }
-        
-        .stButton button {
+        .splash-wrapper button[kind="secondary"] {
             background: #FFFFFF !important;
             color: #000000 !important;
             border: 2px solid #000000 !important;
@@ -77,18 +71,31 @@ if not st.session_state.show_app:
             transition: all 0.05s linear !important;
             width: auto !important;
             min-width: 120px !important;
+            margin-top: 1.5rem !important;
+            display: block !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
         }
         
-        .stButton button:hover {
+        .splash-wrapper button[kind="secondary"]:hover {
             transform: translateY(-2px) !important;
             box-shadow: 0 8px 0 #000000 !important;
             background: #FAFAFA !important;
         }
         
-        .stButton button:active {
+        .splash-wrapper button[kind="secondary"]:active {
             transform: translateY(3px) !important;
             box-shadow: 0 3px 0 #000000 !important;
-            transition: all 0.02s linear !important;
+        }
+        
+        .decor-top {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .decor-top img {
+            width: 48px;
+            opacity: 0.6;
         }
         
         #MainMenu, footer, header {
@@ -101,7 +108,13 @@ if not st.session_state.show_app:
     with col2:
         st.markdown('<div class="splash-wrapper">', unsafe_allow_html=True)
         
-        # Khung đen nội dung
+        # Ảnh trang trí từ thư mục images
+        st.markdown("""
+        <div class="decor-top">
+            <img src="images/qq32.png" alt="decor">
+        </div>
+        """, unsafe_allow_html=True)
+        
         st.markdown("""
         <div class="splash-box">
             <div class="splash-text">
@@ -117,8 +130,7 @@ if not st.session_state.show_app:
         </div>
         """, unsafe_allow_html=True)
         
-        # Nút START - dùng st.button nhưng đã CSS style 3D
-        if st.button("START!", key="start_btn"):
+        if st.button("START!"):
             st.session_state.show_app = True
             st.rerun()
         
@@ -151,6 +163,17 @@ st.markdown("""
         margin-bottom: 2rem;
     }
     
+    .decor-app {
+        text-align: center;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .decor-app img {
+        width: 40px;
+        opacity: 0.4;
+    }
+    
     #MainMenu, footer, header {
         display: none !important;
     }
@@ -176,6 +199,7 @@ st.markdown("""
         padding: 0.7rem 2rem !important;
         font-weight: 600 !important;
         font-size: 1rem !important;
+        font-family: 'Source Code Pro', monospace !important;
         cursor: pointer !important;
         box-shadow: 0 6px 0 #000000 !important;
         transition: none !important;
@@ -216,6 +240,13 @@ st.markdown("""
         line-height: 1.6;
     }
 </style>
+""", unsafe_allow_html=True)
+
+# Ảnh trang trí trên app chính
+st.markdown("""
+<div class="decor-app">
+    <img src="images/qq32.png" alt="decor">
+</div>
 """, unsafe_allow_html=True)
 
 st.markdown('<div class="title">EMOJI CLASSIFIER</div>', unsafe_allow_html=True)
@@ -312,6 +343,3 @@ if st.session_state.pred:
     if st.session_state.probs is not None:
         text = "  |  ".join([f"{c}: {st.session_state.probs[i]:.2%}" for i, c in enumerate(classes)])
         st.markdown(f'<div class="probs">{text}</div>', unsafe_allow_html=True)
-
-st.markdown("---")
-st.markdown('<div style="text-align: center; font-size: 0.65rem; color: #9aa0a6;">Source Code Pro · TensorFlow · MLP</div>', unsafe_allow_html=True)
