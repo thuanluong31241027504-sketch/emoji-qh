@@ -12,10 +12,11 @@ import os
 
 st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
-# ==================== THAM SỐ CHỈNH VỊ TRÍ ====================
+# ==================== THAM SỐ CĂN CHỈNH ====================
 # CHỈ CẦN SỬA 2 SỐ NÀY
-CANVAS_SHIFT = 0   # Dịch canvas sang phải (px) - số dương: phải, âm: trái
-BUTTON_SHIFT = 0       # Dịch nút sang phải (px) - số dương: phải, âm: trái
+LEFT_COL = 1      # Cột trái (tăng lên -> canvas sang phải)
+RIGHT_COL = 1     # Cột phải (tăng lên -> canvas sang trái)
+BUTTON_SHIFT = 55 # Dịch nút sang phải
 
 st.markdown(f"""
 <style>
@@ -55,11 +56,6 @@ st.markdown(f"""
         display: none !important;
     }}
     
-    /* CHỈNH CANVAS - DÙNG TRANSFORM ĐỂ DỊCH */
-    canvas {{
-        transform: translateX({CANVAS_SHIFT}px) !important;
-    }}
-    
     /* CHỈNH NÚT */
     .stButton {{
         display: flex !important;
@@ -68,7 +64,6 @@ st.markdown(f"""
         margin-left: {BUTTON_SHIFT}px !important;
     }}
     
-    /* NÚT 3D */
     .stButton button {{
         background: #FFFFFF !important;
         color: #000000 !important;
@@ -221,8 +216,10 @@ if 'confidence' not in st.session_state:
 if 'last_probs' not in st.session_state:
     st.session_state.last_probs = None
 
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
+# DÙNG COLUMNS ĐỂ CĂN CANVAS - THAY ĐỔI 2 SỐ NÀY ĐỂ DỊCH
+col_left, col_mid, col_right = st.columns([LEFT_COL, 2, RIGHT_COL])
+
+with col_mid:
     canvas_result = st_canvas(
         fill_color="rgba(255, 255, 255, 0)",
         stroke_width=12,
