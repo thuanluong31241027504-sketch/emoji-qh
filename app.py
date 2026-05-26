@@ -12,7 +12,6 @@ import os
 
 st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
-# CSS font Source Code Pro
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500;600;700&display=swap');
@@ -43,7 +42,7 @@ st.markdown("""
     footer {visibility: hidden;}
     header {visibility: hidden;}
     
-    /* Fix 2 nút đen chữ trắng */
+    /* Nút CLEAR - đen chữ trắng */
     .stButton button {
         background-color: #000000 !important;
         color: #FFFFFF !important;
@@ -53,19 +52,34 @@ st.markdown("""
         font-weight: 500 !important;
         font-size: 0.8rem !important;
         width: 100% !important;
-        transition: 0.2s !important;
     }
     
     .stButton button:hover {
         background-color: #333333 !important;
         color: #FFFFFF !important;
-        border: none !important;
     }
     
-    /* Bỏ viền khi focus */
     .stButton button:focus {
         outline: none !important;
         box-shadow: none !important;
+    }
+    
+    /* Nút DOWNLOAD - xám không viền */
+    .download-btn {
+        background-color: #808080 !important;
+        color: #FFFFFF !important;
+        border: none !important;
+        border-radius: 0px !important;
+        padding: 0.5rem 1rem !important;
+        font-weight: 500 !important;
+        font-size: 0.8rem !important;
+        width: 100% !important;
+        text-align: center;
+        cursor: pointer;
+    }
+    
+    .download-btn:hover {
+        background-color: #606060 !important;
     }
     
     .prediction-box {
@@ -103,7 +117,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown('<div class="big-title">EMOJI CLASSIFIER</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-text">by Multi-Layer Perceptron (MLP) Neural Network</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-text">by MLP model v1.0 - 2026</div>', unsafe_allow_html=True)
 
 # ------------------- HÀM TRAIN MODEL -------------------
 @st.cache_resource
@@ -150,7 +164,7 @@ def load_and_train_model():
     
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     
-    with st.spinner("training model... (first time ~2-3 min)"):
+    with st.spinner("training model..."):
         model.fit(X_train, y_train, validation_split=0.1, epochs=20, batch_size=32, verbose=0)
     
     return model, unique_labels
@@ -207,7 +221,8 @@ with col2:
             st.rerun()
     
     with btn_col2:
-        if st.button("CONFIRM"):
+        # Nút DOWNLOAD màu xám
+        if st.button("DOWNLOAD"):
             if canvas_result.image_data is not None:
                 if np.sum(canvas_result.image_data[:, :, 3]) > 100:
                     img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
