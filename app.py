@@ -14,7 +14,7 @@ st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
 # ==================== THAM SỐ CHỈNH VỊ TRÍ ====================
 # CHỈ CẦN SỬA 2 SỐ NÀY
-CANVAS_SHIFT = 70      # Dịch canvas sang phải (px) - số dương: phải, âm: trái
+CANVAS_SHIFT = 90    # Dịch canvas sang phải (px) - số dương: phải, âm: trái
 BUTTON_SHIFT = 0       # Dịch nút sang phải (px) - số dương: phải, âm: trái
 
 st.markdown(f"""
