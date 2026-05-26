@@ -57,55 +57,48 @@ st.markdown("""
         margin-top: 1.5rem !important;
     }
     
-    /* Nút trắng viền đen - kiểu hoạt hình */
+    /* Nút trắng viền đen - kiểu 3D */
     .stButton button {
         background-color: #FFFFFF !important;
         color: #000000 !important;
         border: 2px solid #000000 !important;
-        border-radius: 0px !important;
+        border-radius: 48px !important;
         padding: 0.8rem 2.5rem !important;
-        font-weight: 600 !important;
-        font-size: 1rem !important;
+        font-weight: 700 !important;
+        font-size: 1.1rem !important;
         font-family: 'Source Code Pro', monospace !important;
         width: auto !important;
-        min-width: 180px !important;
+        min-width: 200px !important;
         cursor: pointer !important;
-        transition: all 0.3s ease !important;
-        letter-spacing: 0.5px !important;
-        position: relative !important;
-        overflow: hidden !important;
-        z-index: 1 !important;
-    }
-    
-    /* Hiệu ứng hover - background chạy từ trái sang phải */
-    .stButton button::before {
-        content: '' !important;
-        position: absolute !important;
-        top: 0 !important;
-        left: -100% !important;
-        width: 100% !important;
-        height: 100% !important;
-        background: #000000 !important;
-        transition: all 0.3s ease !important;
-        z-index: -1 !important;
-    }
-    
-    .stButton button:hover::before {
-        left: 0 !important;
-    }
-    
-    .stButton button:hover {
-        color: #FFFFFF !important;
-        border: 2px solid #000000 !important;
-        transform: scale(1.02) !important;
-    }
-    
-    /* Bỏ outline khi focus */
-    .stButton button:focus, 
-    .stButton button:focus-visible,
-    .stButton button:active {
+        letter-spacing: 1px !important;
+        
+        /* Hiệu ứng 3D - bóng đổ */
+        box-shadow: 0 6px 0 #000000 !important;
+        transition: all 0.08s linear !important;
+        
+        /* Bỏ outline mặc định */
         outline: none !important;
-        box-shadow: none !important;
+    }
+    
+    /* Hiệu ứng hover - nhấc lên */
+    .stButton button:hover {
+        transform: translateY(-3px) !important;
+        box-shadow: 0 9px 0 #000000 !important;
+        background-color: #F5F5F5 !important;
+    }
+    
+    /* Hiệu ứng khi nhấn (pressed) - lún xuống */
+    .stButton button:active {
+        transform: translateY(4px) !important;
+        box-shadow: 0 2px 0 #000000 !important;
+        transition: all 0.02s linear !important;
+    }
+    
+    /* Bỏ viền focus */
+    .stButton button:focus, 
+    .stButton button:focus-visible {
+        outline: none !important;
+        box-shadow: 0 6px 0 #000000 !important;
         border: 2px solid #000000 !important;
     }
     
@@ -238,7 +231,7 @@ with col2:
         key=f"canvas_{st.session_state.canvas_key}",
     )
     
-    # Nút CONFIRM trắng viền đen, font code
+    # Nút CONFIRM - trắng viền đen, hiệu ứng 3D
     if st.button("CONFIRM", key="confirm_btn"):
         if canvas_result.image_data is not None:
             if np.sum(canvas_result.image_data[:, :, 3]) > 100:
