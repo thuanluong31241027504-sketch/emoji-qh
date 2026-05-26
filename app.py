@@ -34,30 +34,33 @@ st.markdown("""
         margin-bottom: 2rem;
     }
     
-    /* Ẩn mấy thứ linh tinh */
     #MainMenu, footer, header, .stActionButton, .stCanvasToolbar {
         display: none !important;
     }
     
-    /* Căn giữa TOÀN BỘ nội dung */
+    /* CĂN GIỮA TẤT CẢ */
     .main .block-container {
         max-width: 500px !important;
-        padding-top: 2rem !important;
         margin: 0 auto !important;
+        padding-top: 2rem !important;
     }
     
-    /* Canvas căn giữa */
-    .canvas-wrapper {
+    /* Căn giữa canvas */
+    .stCanvas {
         display: flex !important;
         justify-content: center !important;
-        margin-bottom: 1rem !important;
     }
     
-    /* Nút căn giữa */
+    canvas {
+        margin: 0 auto !important;
+        display: block !important;
+    }
+    
+    /* Căn giữa nút */
     .stButton {
         display: flex !important;
         justify-content: center !important;
-        margin-top: 1rem !important;
+        margin-top: 1.5rem !important;
     }
     
     /* NÚT 3D - TRẮNG VIỀN ĐEN */
@@ -74,14 +77,12 @@ st.markdown("""
         transition: none !important;
     }
     
-    /* KHÔNG HOVER */
     .stButton button:hover {
         background: #FFFFFF !important;
         transform: none !important;
         box-shadow: 0 6px 0 #000000 !important;
     }
     
-    /* NHẤN LÚN */
     .stButton button:active {
         transform: translateY(3px) !important;
         box-shadow: 0 3px 0 #000000 !important;
@@ -192,7 +193,7 @@ if 'canvas_key' not in st.session_state:
     st.session_state.confidence = None
     st.session_state.last_probs = None
 
-# KHÔNG dùng columns nữa - căn giữa tự nhiên
+# Canvas + nút - đã được CSS căn giữa
 canvas_result = st_canvas(
     fill_color="rgba(255, 255, 255, 0)",
     stroke_width=12,
@@ -212,6 +213,7 @@ if st.button("CONFIRM!"):
         st.session_state.last_probs = pred
         st.session_state.prediction = class_names[np.argmax(pred)]
         st.session_state.confidence = max(pred)
+        st.rerun()
     else:
         st.warning("draw something first")
 
