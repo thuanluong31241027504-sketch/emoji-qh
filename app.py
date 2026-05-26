@@ -24,7 +24,6 @@ if not st.session_state.show_app:
         }
         
         .splash-wrapper {
-            position: relative;
             max-width: 420px;
             margin: 100px auto 0 auto;
         }
@@ -34,45 +33,6 @@ if not st.session_state.show_app:
             padding: 2rem;
             text-align: center;
             border-radius: 0px;
-        }
-        
-        /* Nút X - dùng CSS đè mạnh */
-        div[data-testid="stButton"] {
-            position: absolute !important;
-            top: -14px !important;
-            right: -14px !important;
-            left: auto !important;
-            width: 28px !important;
-            height: 28px !important;
-            min-width: 28px !important;
-            z-index: 100 !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-        
-        div[data-testid="stButton"] button {
-            width: 28px !important;
-            height: 28px !important;
-            min-width: 28px !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            background: #FFFFFF !important;
-            color: #000000 !important;
-            border: 1px solid #CCCCCC !important;
-            border-radius: 0px !important;
-            font-size: 0.9rem !important;
-            font-family: 'Source Code Pro', monospace !important;
-            font-weight: 600 !important;
-            box-shadow: none !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-        }
-        
-        div[data-testid="stButton"] button:hover {
-            background: #F0F0F0 !important;
-            transform: none !important;
-            box-shadow: none !important;
         }
         
         .splash-text {
@@ -97,6 +57,41 @@ if not st.session_state.show_app:
             margin: 0.3rem 0;
         }
         
+        /* Nút START bên dưới khung đen */
+        .start-btn-container {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+        
+        .start-btn-container .stButton {
+            display: flex !important;
+            justify-content: center !important;
+        }
+        
+        .start-btn-container .stButton button {
+            background: #000000 !important;
+            color: #FFFFFF !important;
+            border: 1px solid #333333 !important;
+            border-radius: 40px !important;
+            padding: 0.6rem 2rem !important;
+            font-weight: 600 !important;
+            font-size: 0.9rem !important;
+            font-family: 'Source Code Pro', monospace !important;
+            cursor: pointer !important;
+            box-shadow: none !important;
+            transition: all 0.2s !important;
+        }
+        
+        .start-btn-container .stButton button:hover {
+            background: #1A1A1A !important;
+            border: 1px solid #555555 !important;
+            transform: scale(1.02) !important;
+        }
+        
+        .start-btn-container .stButton button:active {
+            transform: scale(0.98) !important;
+        }
+        
         #MainMenu, footer, header {
             display: none !important;
         }
@@ -107,11 +102,7 @@ if not st.session_state.show_app:
     with col2:
         st.markdown('<div class="splash-wrapper">', unsafe_allow_html=True)
         
-        # Nút X - Streamlit button nhưng được CSS ép
-        if st.button("✕", key="close_btn"):
-            st.session_state.show_app = True
-            st.rerun()
-        
+        # Khung đen nội dung
         st.markdown("""
         <div class="splash-box">
             <div class="splash-text">
@@ -125,8 +116,16 @@ if not st.session_state.show_app:
                 </div>
             </div>
         </div>
-        </div>
         """, unsafe_allow_html=True)
+        
+        # Nút START bên dưới khung đen
+        st.markdown('<div class="start-btn-container">', unsafe_allow_html=True)
+        if st.button("▶ START", key="start_btn"):
+            st.session_state.show_app = True
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+        
+        st.markdown('</div>', unsafe_allow_html=True)
     
     st.stop()
 
