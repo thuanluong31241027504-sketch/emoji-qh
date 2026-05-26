@@ -10,86 +10,32 @@ from sklearn.model_selection import train_test_split
 from streamlit_drawable_canvas import st_canvas
 import os
 
-# ------------------- CẤU HÌNH TRANG -------------------
 st.set_page_config(page_title="Emoji Classifier", page_icon="✏️", layout="centered")
 
-# CSS font máy đánh chữ (monospace)
+# CSS
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500;600;700&display=swap');
-    
     html, body, .stApp, div, p, span, h1, h2, h3, h4, button, label {
         font-family: 'Source Code Pro', 'Courier New', monospace !important;
         background-color: #FFFFFF;
         color: #000000;
     }
-    
-    .big-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        text-align: center;
-        margin-top: 1rem;
-        margin-bottom: 0rem;
-        color: #000000;
-    }
-    
-    .sub-text {
-        font-size: 0.9rem;
-        font-weight: 400;
-        text-align: center;
-        color: #5f6368;
-        margin-bottom: 2rem;
-    }
-    
+    .big-title { font-size: 2.5rem; font-weight: 700; text-align: center; margin-top: 1rem; }
+    .sub-text { font-size: 0.9rem; font-weight: 400; text-align: center; color: #5f6368; margin-bottom: 2rem; }
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
-    
     .stButton button {
-        background-color: #000000;
-        color: #FFFFFF;
-        border: 1px solid #000000;
-        border-radius: 4px;
-        padding: 0.5rem 1rem;
-        font-weight: 600;
-        font-size: 0.9rem;
-        width: 100%;
-        transition: 0.2s;
+        background-color: #000000; color: #FFFFFF; border: 1px solid #000000;
+        border-radius: 4px; padding: 0.5rem 1rem; font-weight: 600; width: 100%;
     }
-    
-    .stButton button:hover {
-        background-color: #FFFFFF;
-        color: #000000;
-    }
-    
-    .prediction-box {
-        text-align: center;
-        font-size: 2rem;
-        font-weight: 700;
-        padding: 1rem;
-        margin-top: 1rem;
-        border: 2px solid #000000;
-        background-color: #f8f9fa;
-    }
-    
-    .confidence-text {
-        text-align: center;
-        font-size: 0.8rem;
-        color: #5f6368;
-        margin-top: 0.5rem;
-    }
-    
-    hr {
-        margin-top: 2rem;
-        margin-bottom: 2rem;
-        border-color: #e0e0e0;
-    }
-    
-    .stAlert {
-        background-color: #f8f9fa;
-        border-left: 3px solid #000000;
-        font-family: 'Source Code Pro', monospace;
-    }
+    .stButton button:hover { background-color: #FFFFFF; color: #000000; }
+    .prediction-box { text-align: center; font-size: 2rem; font-weight: 700; padding: 1rem;
+        margin-top: 1rem; border: 2px solid #000000; background-color: #f8f9fa; }
+    .confidence-text { text-align: center; font-size: 0.8rem; color: #5f6368; margin-top: 0.5rem; }
+    hr { margin-top: 2rem; margin-bottom: 2rem; border-color: #e0e0e0; }
+    .debug-box { background-color: #f0f0f0; padding: 0.5rem; font-size: 0.7rem; margin-top: 1rem; border-left: 3px solid #000; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -147,48 +93,43 @@ def load_and_train_model():
     return model, unique_labels
 
 def preprocess_image(image):
-    """Tiền xử lý ảnh từ canvas"""
-    # Chuyển sang grayscale
     if image.mode != 'L':
         image = image.convert('L')
-    
-    # Resize về 28x28
     image = image.resize((28, 28))
-    
-    # Chuyển thành numpy array và chuẩn hóa
     img_array = np.array(image).astype('float32') / 255.0
-    
-    # Đảo màu: ảnh vẽ có nền trắng (1), nét đen (0)
-    # Model train với nền đen (0), nét trắng (1) -> cần đảo
-    img_array = 1.0 - img_array
-    
-    # Reshape cho model
-    img_array = img_array.reshape(1, 28, 28)
-    
-    return img_array
+    img_array = 1.0 - img_array  # Đảo màu
+    return img_array.reshape(1, 28, 28)
 
 # Load model
 model, class_names = load_and_train_model()
 
-# Class names để hiển thị
+# HIỂN THỊ CLASS NAMES ĐỂ DEBUG
+st.markdown(f"""
+<div class="debug-box">
+📋 <strong>Model classes (5 classes):</strong><br>
+{', '.join(class_names)}
+</div>
+""", unsafe_allow_html=True)
+
+# Class display mapping
 class_display = {
     'cloud': 'CLOUD',
-    'grinning_face': 'SMILEY',
+    'grinning_face': 'SMILEY FACE',
     'heart': 'HEART',
-    'smiling_horns': 'HORNED',
-    'thumb': 'THUMB'
+    'smiling_horns': 'HORNED SMILEY',
+    'thumb': 'THUMBS UP'
 }
 
 # ------------------- GIAO DIỆN -------------------
-# Khởi tạo session state
 if 'canvas_key' not in st.session_state:
     st.session_state.canvas_key = 0
 if 'prediction' not in st.session_state:
     st.session_state.prediction = None
 if 'confidence' not in st.session_state:
     st.session_state.confidence = None
+if 'last_probs' not in st.session_state:
+    st.session_state.last_probs = None
 
-# Canvas vẽ
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     st.markdown('<div style="text-align: center; margin-bottom: 10px;">┌─────────────────┐</div>', unsafe_allow_html=True)
@@ -207,30 +148,27 @@ with col2:
         key=f"canvas_{st.session_state.canvas_key}",
     )
     
-    # Hai nút
     btn_col1, btn_col2 = st.columns(2)
     with btn_col1:
         if st.button("CLEAR"):
             st.session_state.canvas_key += 1
             st.session_state.prediction = None
             st.session_state.confidence = None
+            st.session_state.last_probs = None
             st.rerun()
     
     with btn_col2:
         if st.button("CONFIRM"):
             if canvas_result.image_data is not None:
-                # Kiểm tra xem có vẽ gì không
-                img_array = canvas_result.image_data
-                if np.sum(img_array[:, :, 3]) > 100:  # Có nét vẽ
-                    img = Image.fromarray(img_array.astype('uint8'), mode='RGBA')
+                if np.sum(canvas_result.image_data[:, :, 3]) > 100:
+                    img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
                     processed = preprocess_image(img)
                     predictions = model.predict(processed, verbose=0)[0]
+                    st.session_state.last_probs = predictions
                     predicted_idx = np.argmax(predictions)
                     st.session_state.prediction = class_names[predicted_idx]
                     st.session_state.confidence = predictions[predicted_idx]
                 else:
-                    st.session_state.prediction = None
-                    st.session_state.confidence = None
                     st.warning("Please draw something first")
             else:
                 st.warning("Please draw something first")
@@ -238,15 +176,23 @@ with col2:
 # Hiển thị kết quả
 if st.session_state.prediction:
     st.markdown("---")
+    
+    # Debug: Hiển thị xác suất từng class
+    if st.session_state.last_probs is not None:
+        debug_text = "📊 **Prediction probabilities:**\n"
+        for i, name in enumerate(class_names):
+            debug_text += f"  {name}: {st.session_state.last_probs[i]:.2%}\n"
+        st.markdown(f'<div class="debug-box" style="font-size:0.7rem">{debug_text}</div>', unsafe_allow_html=True)
+    
+    display_name = class_display.get(st.session_state.prediction, st.session_state.prediction.upper())
     st.markdown(f"""
     <div class="prediction-box">
-        {class_display.get(st.session_state.prediction, st.session_state.prediction.upper())}
+        {display_name}
     </div>
     <div class="confidence-text">
         confidence: {st.session_state.confidence:.2%}
     </div>
     """, unsafe_allow_html=True)
 
-# Footer
 st.markdown("---")
-st.markdown('<div style="text-align: center; font-size: 0.7rem; color: #9aa0a6;">Source Code Pro · 5 classes · TensorFlow</div>', unsafe_allow_html=True)
+st.markdown('<div style="text-align: center; font-size: 0.7rem; color: #9aa0a6;">Source Code Pro · TensorFlow</div>', unsafe_allow_html=True)
