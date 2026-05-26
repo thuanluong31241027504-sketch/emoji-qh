@@ -57,49 +57,56 @@ st.markdown("""
         margin-top: 1.5rem !important;
     }
     
-    /* Nút màu xanh dương - không viền trắng */
+    /* Nút trắng viền đen - kiểu hoạt hình */
     .stButton button {
-        background: #2196F3 !important;
-        background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%) !important;
-        color: #FFFFFF !important;
-        border: none !important;
-        border-radius: 40px !important;
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
+        border: 2px solid #000000 !important;
+        border-radius: 0px !important;
         padding: 0.8rem 2.5rem !important;
         font-weight: 600 !important;
-        font-size: 1.1rem !important;
+        font-size: 1rem !important;
         font-family: 'Source Code Pro', monospace !important;
         width: auto !important;
         min-width: 180px !important;
         cursor: pointer !important;
-        box-shadow: 0 6px 0 #0D47A1, 0 4px 12px rgba(0,0,0,0.1) !important;
-        transition: all 0.08s linear !important;
+        transition: all 0.3s ease !important;
         letter-spacing: 0.5px !important;
-        text-shadow: none !important;
-        outline: none !important;
+        position: relative !important;
+        overflow: hidden !important;
+        z-index: 1 !important;
     }
     
-    /* Bỏ viền trắng khi focus/active */
+    /* Hiệu ứng hover - background chạy từ trái sang phải */
+    .stButton button::before {
+        content: '' !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: -100% !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: #000000 !important;
+        transition: all 0.3s ease !important;
+        z-index: -1 !important;
+    }
+    
+    .stButton button:hover::before {
+        left: 0 !important;
+    }
+    
+    .stButton button:hover {
+        color: #FFFFFF !important;
+        border: 2px solid #000000 !important;
+        transform: scale(1.02) !important;
+    }
+    
+    /* Bỏ outline khi focus */
     .stButton button:focus, 
     .stButton button:focus-visible,
     .stButton button:active {
         outline: none !important;
-        box-shadow: 0 6px 0 #0D47A1, 0 4px 12px rgba(0,0,0,0.1) !important;
-        border: none !important;
-    }
-    
-    /* Hiệu ứng hover */
-    .stButton button:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 8px 0 #0D47A1, 0 6px 16px rgba(0,0,0,0.15) !important;
-        background: linear-gradient(135deg, #42A5F5 0%, #1565C0 100%) !important;
-        border: none !important;
-    }
-    
-    /* Hiệu ứng khi nhấn */
-    .stButton button:active {
-        transform: translateY(3px) !important;
-        box-shadow: 0 3px 0 #0D47A1, 0 2px 8px rgba(0,0,0,0.1) !important;
-        transition: all 0.02s linear !important;
+        box-shadow: none !important;
+        border: 2px solid #000000 !important;
     }
     
     .prediction-box {
@@ -231,8 +238,8 @@ with col2:
         key=f"canvas_{st.session_state.canvas_key}",
     )
     
-    # Nút CONFIRM! màu xanh dương
-    if st.button("CONFIRM!", key="confirm_btn"):
+    # Nút CONFIRM trắng viền đen, font code
+    if st.button("CONFIRM", key="confirm_btn"):
         if canvas_result.image_data is not None:
             if np.sum(canvas_result.image_data[:, :, 3]) > 100:
                 img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
