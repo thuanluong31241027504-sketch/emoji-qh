@@ -57,14 +57,8 @@ if not st.session_state.show_app:
             margin: 0.3rem 0;
         }
         
-        /* NÚT START - 3D BLOCK + FONT CODE */
-        .splash-wrapper .stButton {
-            display: flex !important;
-            justify-content: center !important;
-            margin-top: 1.8rem !important;
-        }
-        
-        .splash-wrapper .stButton button {
+        /* NÚT START 3D BLOCK - CSS MẠNH NHẤT */
+        .splash-wrapper button[kind="secondary"] {
             background: #FFFFFF !important;
             color: #000000 !important;
             border: 2px solid #000000 !important;
@@ -78,15 +72,19 @@ if not st.session_state.show_app:
             transition: all 0.05s linear !important;
             width: auto !important;
             min-width: 120px !important;
+            margin-top: 1.5rem !important;
+            display: block !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
         }
         
-        .splash-wrapper .stButton button:hover {
+        .splash-wrapper button[kind="secondary"]:hover {
             transform: translateY(-2px) !important;
             box-shadow: 0 8px 0 #000000 !important;
             background: #FAFAFA !important;
         }
         
-        .splash-wrapper .stButton button:active {
+        .splash-wrapper button[kind="secondary"]:active {
             transform: translateY(3px) !important;
             box-shadow: 0 3px 0 #000000 !important;
         }
@@ -158,7 +156,7 @@ st.markdown("""
         justify-content: center !important;
     }
     
-    /* NÚT CONFIRM - 3D BLOCK + FONT CODE */
+    /* NÚT CONFIRM 3D BLOCK */
     .stButton {
         display: flex !important;
         justify-content: center !important;
