@@ -12,48 +12,34 @@ import os
 
 st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
-# CSS gọn - chỉ căn giữa
-st.markdown("""
+# ==================== THAM SỐ DỊCH CHUYỂN ====================
+CANVAS_SHIFT = 0      # Dịch canvas (px) - số dương sang phải, âm sang trái
+BUTTON_SHIFT = 0      # Dịch nút (px) - số dương sang phải, âm sang trái
+
+st.markdown(f"""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;700&display=swap');
+    * {{ font-family: 'Source Code Pro', monospace !important; }}
     
-    * {
-        font-family: 'Source Code Pro', 'Courier New', monospace !important;
-    }
+    .title {{ font-size: 2.5rem; font-weight: 700; text-align: center; margin-top: 1rem; }}
+    .sub {{ font-size: 0.8rem; text-align: center; color: #5f6368; margin-bottom: 2rem; }}
     
-    .title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        text-align: center;
-        margin-top: 1rem;
-    }
+    #MainMenu, footer, header, .stActionButton, .stCanvasToolbar {{ display: none !important; }}
     
-    .sub {
-        font-size: 0.8rem;
-        text-align: center;
-        color: #5f6368;
-        margin-bottom: 2rem;
-    }
+    /* Dịch canvas - dùng margin */
+    .element-container:has(canvas) {{
+        margin-left: {CANVAS_SHIFT}px !important;
+    }}
     
-    /* Ẩn mấy thứ linh tinh */
-    #MainMenu, footer, header {
-        display: none !important;
-    }
-    
-    /* Căn giữa canvas */
-    .stCanvas {
-        display: flex !important;
-        justify-content: center !important;
-    }
-    
-    /* Căn giữa nút */
-    .stButton {
+    /* Dịch nút */
+    .stButton {{
+        margin-left: {BUTTON_SHIFT}px !important;
         display: flex !important;
         justify-content: center !important;
         margin-top: 1.5rem !important;
-    }
+    }}
     
-    .stButton button {
+    .stButton button {{
         background: #FFFFFF !important;
         color: #000000 !important;
         border: 2px solid #000000 !important;
@@ -61,43 +47,24 @@ st.markdown("""
         padding: 0.7rem 2rem !important;
         font-weight: 600 !important;
         font-size: 1rem !important;
-        cursor: pointer !important;
         box-shadow: 0 6px 0 #000000 !important;
         transition: none !important;
-    }
+    }}
     
-    .stButton button:hover {
+    .stButton button:hover {{
         background: #FFFFFF !important;
         transform: none !important;
         box-shadow: 0 6px 0 #000000 !important;
-    }
+    }}
     
-    .stButton button:active {
+    .stButton button:active {{
         transform: translateY(3px) !important;
         box-shadow: 0 3px 0 #000000 !important;
-    }
+    }}
     
-    .prediction {
-        text-align: center;
-        font-size: 2rem;
-        font-weight: 700;
-        padding: 1rem;
-        margin-top: 1.5rem;
-        border-bottom: 2px solid #000;
-    }
-    
-    .confidence {
-        text-align: center;
-        font-size: 0.75rem;
-        color: #5f6368;
-        margin-top: 0.5rem;
-    }
-    
-    .probs {
-        text-align: center;
-        font-size: 0.7rem;
-        margin-top: 1rem;
-    }
+    .prediction {{ text-align: center; font-size: 2rem; font-weight: 700; padding: 1rem; margin-top: 1.5rem; border-bottom: 2px solid #000; }}
+    .confidence {{ text-align: center; font-size: 0.75rem; color: #5f6368; margin-top: 0.5rem; }}
+    .probs {{ text-align: center; font-size: 0.7rem; margin-top: 1rem; }}
 </style>
 """, unsafe_allow_html=True)
 
