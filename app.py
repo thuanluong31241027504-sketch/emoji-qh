@@ -12,34 +12,57 @@ import os
 
 st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
-# ==================== THAM SỐ DỊCH CHUYỂN ====================
-CANVAS_SHIFT = 200     # Dịch canvas (px) - số dương sang phải, âm sang trái
-BUTTON_SHIFT = 100      # Dịch nút (px) - số dương sang phải, âm sang trái
-
-st.markdown(f"""
+# CSS gọn - chỉ căn giữa
+st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;700&display=swap');
-    * {{ font-family: 'Source Code Pro', monospace !important; }}
     
-    .title {{ font-size: 2.5rem; font-weight: 700; text-align: center; margin-top: 1rem; }}
-    .sub {{ font-size: 0.8rem; text-align: center; color: #5f6368; margin-bottom: 2rem; }}
+    * {
+        font-family: 'Source Code Pro', 'Courier New', monospace !important;
+    }
     
-    #MainMenu, footer, header, .stActionButton, .stCanvasToolbar {{ display: none !important; }}
+    .title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-align: center;
+        margin-top: 1rem;
+    }
     
-    /* Dịch canvas - dùng margin */
-    .element-container:has(canvas) {{
-        margin-left: {CANVAS_SHIFT}px !important;
-    }}
+    .sub {
+        font-size: 0.8rem;
+        text-align: center;
+        color: #5f6368;
+        margin-bottom: 2rem;
+    }
     
-    /* Dịch nút */
-    .stButton {{
-        margin-left: {BUTTON_SHIFT}px !important;
+    /* Ẩn mấy thứ linh tinh */
+    #MainMenu, footer, header {
+        display: none !important;
+    }
+    
+    /* ĐƯA NÚT LÊN CÙNG HÀNG VỚI CANVAS */
+    .row-widget {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 20px !important;
+        justify-content: center !important;
+    }
+    
+    /* Căn giữa canvas */
+    .stCanvas {
         display: flex !important;
         justify-content: center !important;
-        margin-top: 1.5rem !important;
-    }}
+    }
     
-    .stButton button {{
+    /* Nút bên phải canvas */
+    .stButton {
+        display: flex !important;
+        justify-content: center !important;
+        margin-top: 0 !important;
+    }
+    
+    .stButton button {
         background: #FFFFFF !important;
         color: #000000 !important;
         border: 2px solid #000000 !important;
@@ -47,24 +70,54 @@ st.markdown(f"""
         padding: 0.7rem 2rem !important;
         font-weight: 600 !important;
         font-size: 1rem !important;
+        cursor: pointer !important;
         box-shadow: 0 6px 0 #000000 !important;
         transition: none !important;
-    }}
+        height: 50px !important;
+        white-space: nowrap !important;
+    }
     
-    .stButton button:hover {{
+    .stButton button:hover {
         background: #FFFFFF !important;
         transform: none !important;
         box-shadow: 0 6px 0 #000000 !important;
-    }}
+    }
     
-    .stButton button:active {{
+    .stButton button:active {
         transform: translateY(3px) !important;
         box-shadow: 0 3px 0 #000000 !important;
-    }}
+    }
     
-    .prediction {{ text-align: center; font-size: 2rem; font-weight: 700; padding: 1rem; margin-top: 1.5rem; border-bottom: 2px solid #000; }}
-    .confidence {{ text-align: center; font-size: 0.75rem; color: #5f6368; margin-top: 0.5rem; }}
-    .probs {{ text-align: center; font-size: 0.7rem; margin-top: 1rem; }}
+    .prediction {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+        padding: 1rem;
+        margin-top: 1.5rem;
+        border-bottom: 2px solid #000;
+    }
+    
+    .confidence {
+        text-align: center;
+        font-size: 0.75rem;
+        color: #5f6368;
+        margin-top: 0.5rem;
+    }
+    
+    .probs {
+        text-align: center;
+        font-size: 0.7rem;
+        margin-top: 1rem;
+    }
+    
+    /* Container cho canvas + nút */
+    .flex-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -127,29 +180,33 @@ if 'key' not in st.session_state:
     st.session_state.conf = None
     st.session_state.probs = None
 
-# Canvas
-canvas = st_canvas(
-    fill_color="rgba(0,0,0,0)",
-    stroke_width=12,
-    stroke_color="#000000",
-    background_color="#FFFFFF",
-    height=280,
-    width=280,
-    drawing_mode="freedraw",
-    key=f"canvas_{st.session_state.key}",
-)
+# DÙNG COLUMNS ĐỂ ĐƯA NÚT LÊN CÙNG HÀNG VỚI CANVAS
+col_canvas, col_button = st.columns([2, 1])
 
-# Nút
-if st.button("CONFIRM!"):
-    if canvas.image_data is not None and np.sum(canvas.image_data[:, :, 3]) > 100:
-        img = Image.fromarray(canvas.image_data.astype('uint8'), mode='RGBA').convert('L').resize((28, 28))
-        arr = 1.0 - np.array(img).astype('float32') / 255.0
-        pred = model.predict(arr.reshape(1, 28, 28), verbose=0)[0]
-        st.session_state.probs = pred
-        st.session_state.pred = classes[np.argmax(pred)]
-        st.session_state.conf = max(pred)
-    else:
-        st.warning("draw something")
+with col_canvas:
+    canvas = st_canvas(
+        fill_color="rgba(0,0,0,0)",
+        stroke_width=12,
+        stroke_color="#000000",
+        background_color="#FFFFFF",
+        height=280,
+        width=280,
+        drawing_mode="freedraw",
+        key=f"canvas_{st.session_state.key}",
+    )
+
+with col_button:
+    # Nút đặt bên phải canvas
+    if st.button("CONFIRM!", key="confirm_btn"):
+        if canvas.image_data is not None and np.sum(canvas.image_data[:, :, 3]) > 100:
+            img = Image.fromarray(canvas.image_data.astype('uint8'), mode='RGBA').convert('L').resize((28, 28))
+            arr = 1.0 - np.array(img).astype('float32') / 255.0
+            pred = model.predict(arr.reshape(1, 28, 28), verbose=0)[0]
+            st.session_state.probs = pred
+            st.session_state.pred = classes[np.argmax(pred)]
+            st.session_state.conf = max(pred)
+        else:
+            st.warning("draw something")
 
 # Kết quả
 if st.session_state.pred:
