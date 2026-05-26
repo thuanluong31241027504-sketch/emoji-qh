@@ -125,12 +125,17 @@ if not st.session_state.show_app:
 # ==================== APP CHÍNH ====================
 st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
-# Đường dẫn ảnh
-hoa1_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa1.png"
-hoa2_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa2.png"
-hoa3_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa3.png"
-hoa4_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa4.png"
+# ==================== ĐƯỜNG DẪN ẢNH MỚI ====================
+# Ảnh thay thế cho hoa1, hoa2, hoa3
+thu1_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/thu1.png"
+thu2_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/thu2.png"
+thu3_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/thu3.png"
+thu4_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/thu4.png"
+
+# Ảnh rải khắp app
 may1_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/may1.png"
+may2_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/may2.png"
+hoa4_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa4.png"
 
 st.markdown(f"""
 <style>
@@ -161,8 +166,8 @@ st.markdown(f"""
     }}
     
     .decor-item img {{
-        width: 50px;
-        opacity: 0.7;
+        width: 55px;
+        opacity: 0.8;
     }}
     
     .flower-row {{
@@ -178,8 +183,8 @@ st.markdown(f"""
     }}
     
     .flower-row img {{
-        width: 42px;
-        opacity: 0.85;
+        width: 45px;
+        opacity: 0.9;
         transition: transform 0.2s;
         flex-shrink: 0;
     }}
@@ -263,25 +268,27 @@ st.markdown(f"""
     }}
 </style>
 
-<!-- Trang trí may1 và hoa4 rải đều so le khắp màn hình -->
+<!-- Rải ảnh may1, may2, hoa4 so le khắp màn hình -->
 <div class="decor-item" style="top: 3%; left: 2%;"><img src="{may1_url}"></div>
-<div class="decor-item" style="top: 8%; right: 5%;"><img src="{hoa4_url}"></div>
-<div class="decor-item" style="top: 15%; left: 8%;"><img src="{may1_url}"></div>
-<div class="decor-item" style="top: 22%; right: 3%;"><img src="{hoa4_url}"></div>
-<div class="decor-item" style="top: 30%; left: 12%;"><img src="{may1_url}"></div>
-<div class="decor-item" style="top: 38%; right: 8%;"><img src="{hoa4_url}"></div>
-<div class="decor-item" style="top: 45%; left: 5%;"><img src="{may1_url}"></div>
-<div class="decor-item" style="top: 52%; right: 12%;"><img src="{hoa4_url}"></div>
-<div class="decor-item" style="top: 60%; left: 15%;"><img src="{may1_url}"></div>
-<div class="decor-item" style="top: 68%; right: 6%;"><img src="{hoa4_url}"></div>
-<div class="decor-item" style="top: 75%; left: 8%;"><img src="{may1_url}"></div>
-<div class="decor-item" style="top: 82%; right: 10%;"><img src="{hoa4_url}"></div>
-<div class="decor-item" style="top: 90%; left: 3%;"><img src="{may1_url}"></div>
-<div class="decor-item" style="top: 12%; left: 25%;"><img src="{hoa4_url}"></div>
-<div class="decor-item" style="top: 28%; right: 20%;"><img src="{may1_url}"></div>
-<div class="decor-item" style="top: 48%; left: 30%;"><img src="{hoa4_url}"></div>
-<div class="decor-item" style="top: 65%; right: 25%;"><img src="{may1_url}"></div>
-<div class="decor-item" style="top: 85%; left: 20%;"><img src="{hoa4_url}"></div>
+<div class="decor-item" style="top: 7%; right: 5%;"><img src="{may2_url}"></div>
+<div class="decor-item" style="top: 12%; left: 8%;"><img src="{hoa4_url}"></div>
+<div class="decor-item" style="top: 18%; right: 3%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 24%; left: 12%;"><img src="{may2_url}"></div>
+<div class="decor-item" style="top: 30%; right: 8%;"><img src="{hoa4_url}"></div>
+<div class="decor-item" style="top: 36%; left: 5%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 42%; right: 12%;"><img src="{may2_url}"></div>
+<div class="decor-item" style="top: 48%; left: 15%;"><img src="{hoa4_url}"></div>
+<div class="decor-item" style="top: 54%; right: 6%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 60%; left: 8%;"><img src="{may2_url}"></div>
+<div class="decor-item" style="top: 66%; right: 10%;"><img src="{hoa4_url}"></div>
+<div class="decor-item" style="top: 72%; left: 3%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 78%; right: 15%;"><img src="{may2_url}"></div>
+<div class="decor-item" style="top: 84%; left: 10%;"><img src="{hoa4_url}"></div>
+<div class="decor-item" style="top: 90%; right: 5%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 15%; left: 25%;"><img src="{may2_url}"></div>
+<div class="decor-item" style="top: 35%; right: 22%;"><img src="{hoa4_url}"></div>
+<div class="decor-item" style="top: 55%; left: 28%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 75%; right: 28%;"><img src="{may2_url}"></div>
 
 <div class="title">EMOJI CLASSIFIER</div>
 <div class="sub">by MLP model v1.0 - 2026</div>
@@ -429,12 +436,12 @@ if st.session_state.pred:
         text = "  |  ".join([f"{c}: {st.session_state.probs[i]:.2%}" for i, c in enumerate(classes)])
         st.markdown(f'<div class="probs">{text}</div>', unsafe_allow_html=True)
 
-# ==================== HÀNG HOA PHÍA DƯỚI ====================
-flowers = [hoa1_url, hoa2_url, hoa3_url] * 12
+# ==================== HÀNG ẢNH PHÍA DƯỚI (thu1, thu2, thu3, thu4 so le) ====================
+thu_images = [thu1_url, thu2_url, thu3_url, thu4_url] * 10  # lặp 10 lần
 
-flower_html = '<div class="flower-row">'
-for url in flowers:
-    flower_html += f'<img src="{url}" alt="flower">'
-flower_html += '</div>'
+thu_html = '<div class="flower-row">'
+for url in thu_images:
+    thu_html += f'<img src="{url}" alt="thu">'
+thu_html += '</div>'
 
-st.markdown(flower_html, unsafe_allow_html=True)
+st.markdown(thu_html, unsafe_allow_html=True)
