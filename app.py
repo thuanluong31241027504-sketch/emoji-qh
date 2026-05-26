@@ -50,38 +50,38 @@ st.markdown("""
         display: none !important;
     }
     
-    /* Nút CONFIRM - trắng chữ đen, không hover xám */
+    /* Container nút - căn giữa */
     .stButton {
         display: flex !important;
         justify-content: center !important;
-        margin-top: 1rem !important;
+        margin-top: 1.5rem !important;
         margin-bottom: 1rem !important;
     }
     
+    /* Nút CONFIRM - đen chữ trắng, không viền */
     .stButton button {
-        background-color: #FFFFFF !important;
-        color: #000000 !important;
-        border: 1px solid #000000 !important;
+        background-color: #000000 !important;
+        color: #FFFFFF !important;
+        border: none !important;
         border-radius: 0px !important;
-        padding: 0.5rem 2rem !important;
+        padding: 0.6rem 2rem !important;
         font-weight: 500 !important;
         font-size: 0.8rem !important;
         width: auto !important;
         min-width: 120px !important;
-        transition: none !important;
+        transition: 0.2s !important;
+        cursor: pointer !important;
     }
     
     .stButton button:hover {
-        background-color: #FFFFFF !important;
-        color: #000000 !important;
-        border: 1px solid #000000 !important;
-        transform: none !important;
+        background-color: #333333 !important;
+        color: #FFFFFF !important;
+        border: none !important;
     }
     
     .stButton button:active {
-        background-color: #FFFFFF !important;
-        color: #000000 !important;
-        border: 1px solid #000000 !important;
+        background-color: #000000 !important;
+        color: #FFFFFF !important;
     }
     
     .stButton button:focus {
@@ -122,7 +122,7 @@ st.markdown("""
     }
     
     /* Căn giữa canvas */
-    .canvas-container {
+    .canvas-wrapper {
         display: flex;
         justify-content: center;
     }
@@ -226,7 +226,7 @@ with col2:
         key=f"canvas_{st.session_state.canvas_key}",
     )
     
-    # Nút CONFIRM ở giữa
+    # Nút CONFIRM - đen chữ trắng, căn giữa
     if st.button("CONFIRM", key="confirm_btn"):
         if canvas_result.image_data is not None:
             if np.sum(canvas_result.image_data[:, :, 3]) > 100:
