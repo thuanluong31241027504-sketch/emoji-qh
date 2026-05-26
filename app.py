@@ -17,75 +17,106 @@ if 'show_app' not in st.session_state:
 if not st.session_state.show_app:
     st.set_page_config(page_title="Emoji Classifier", layout="centered")
     
-    # Màn hình đen chữ trắng
     st.markdown("""
     <style>
         .stApp {
             background-color: #000000 !important;
         }
-        .splash {
-            display: flex;
-            flex-direction: column;
-            justifyify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
-            padding: 2rem;
-        }
-        .splash-title {
-            font-family: 'Source Code Pro', monospace;
-            font-size: 3rem;
-            font-weight: 700;
-            color: #FFFFFF;
-            margin-bottom: 1rem;
-        }
-        .splash-sub {
-            font-family: 'Source Code Pro', monospace;
-            font-size: 1.2rem;
-            color: #CCCCCC;
-            margin-bottom: 2rem;
-        }
-        .splash-desc {
-            font-family: 'Source Code Pro', monospace;
-            font-size: 0.9rem;
-            color: #888888;
+        
+        /* Container đen nhỏ giữa màn hình */
+        .splash-box {
+            background-color: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 16px;
             max-width: 500px;
             margin: 0 auto;
-            line-height: 1.6;
+            margin-top: 80px;
+            padding: 2rem;
+            text-align: center;
         }
-        .splash-button {
-            margin-top: 2rem;
+        
+        .splash-title {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 0.5rem;
         }
-        .splash-button button {
-            background: #FFFFFF !important;
-            color: #000000 !important;
-            border: none !important;
-            border-radius: 40px !important;
-            padding: 0.7rem 2rem !important;
-            font-family: 'Source Code Pro', monospace !important;
-            font-weight: 600 !important;
-            font-size: 1rem !important;
-            cursor: pointer !important;
+        
+        .splash-sub {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.8rem;
+            color: #888888;
+            margin-bottom: 1.5rem;
+        }
+        
+        .splash-desc {
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.75rem;
+            color: #666666;
+            line-height: 1.5;
+            margin-bottom: 2rem;
+        }
+        
+        /* Nút START 3D động */
+        .start-btn {
+            background: linear-gradient(135deg, #FFFFFF 0%, #E0E0E0 100%);
+            color: #000000;
+            border: none;
+            border-radius: 40px;
+            padding: 0.7rem 2rem;
+            font-family: 'Source Code Pro', monospace;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.08s linear;
+            box-shadow: 0 6px 0 #888888;
+            width: 100%;
+            max-width: 200px;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #888888;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F0F0F0 100%);
+        }
+        
+        .start-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 #888888;
+        }
+        
+        /* Ẩn các thành phần mặc định */
+        #MainMenu, footer, header {
+            display: none !important;
+        }
+        
+        /* Căn giữa nút */
+        div[data-testid="column"] {
+            display: flex;
+            justify-content: center;
         }
     </style>
     """, unsafe_allow_html=True)
     
+    # Box đen nhỏ giữa màn hình
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         st.markdown("""
-        <div class="splash">
+        <div class="splash-box">
             <div class="splash-title">✏️ EMOJI CLASSIFIER</div>
             <div class="splash-sub">by MLP model v1.0 - 2026</div>
             <div class="splash-desc">
-                Draw an emoji with your mouse or finger.<br>
-                The AI will try to recognize it.<br>
-                <br>
-                Supported: ☁️ CLOUD | 😀 SMILEY | ❤️ HEART | 👿 HORNED | 👍 THUMB
+                Draw an emoji • AI will recognize<br>
+                ☁️ CLOUD • 😀 SMILEY • ❤️ HEART • 👿 HORNED • 👍 THUMB
             </div>
         </div>
         """, unsafe_allow_html=True)
         
-        if st.button("▶ START", key="start_btn"):
+        # Nút START 3D động
+        if st.button("▶ START", key="start_btn", use_container_width=False):
             st.session_state.show_app = True
             st.rerun()
     
