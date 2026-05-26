@@ -5,3 +5,10 @@ opencv-python-headless
 pillow
 scikit-learn
 streamlit-drawable-canvas-fix
+streamlit
+tensorflow
+numpy
+opencv-python-headless
+pillow
+scikit-learn
+matplotlib
