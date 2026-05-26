@@ -12,64 +12,57 @@ import os
 
 st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
-# ==================== THAM SỐ DỊCH CHUYỂN (CỨNG) ====================
+# ==================== THAM SỐ CĂN CHỈNH ====================
 # CHỈ CẦN SỬA 2 SỐ NÀY
-CANVAS_SHIFT = 150    # Dịch canvas sang phải (px), tăng lên: 80, 90, 100...
-BUTTON_SHIFT = 55     # Dịch nút sang phải (px)
+LEFT_COL_WIDTH = 1      # Độ rộng cột trái (tăng lên -> canvas sang phải)
+RIGHT_COL_WIDTH = 1     # Độ rộng cột phải
 
-st.markdown(f"""
+st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500;600;700&display=swap');
     
-    html, body, .stApp, div, p, span, h1, h2, h3, h4, button, label {{
+    html, body, .stApp, div, p, span, h1, h2, h3, h4, button, label {
         font-family: 'Source Code Pro', 'Courier New', monospace !important;
         background-color: #FFFFFF;
         color: #000000;
-    }}
+    }
     
-    .big-title {{
+    .big-title {
         font-size: 2.5rem;
         font-weight: 700;
         text-align: center;
         margin-top: 1rem;
         margin-bottom: 0rem;
-    }}
+    }
     
-    .sub-text {{
+    .sub-text {
         font-size: 0.8rem;
         font-weight: 400;
         text-align: center;
         color: #5f6368;
         margin-bottom: 2rem;
-    }}
+    }
     
-    #MainMenu {{visibility: hidden;}}
-    footer {{visibility: hidden;}}
-    header {{visibility: hidden;}}
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
     
-    .stActionButton, .stActionButton button, [data-testid="baseActionButton"] {{
+    .stActionButton, .stActionButton button, [data-testid="baseActionButton"] {
         display: none !important;
-    }}
+    }
     
-    .stCanvasToolbar {{
+    .stCanvasToolbar {
         display: none !important;
-    }}
+    }
     
-    /* DỊCH CANVAS */
-    .element-container:has(canvas) {{
-        margin-left: {CANVAS_SHIFT}px !important;
-    }}
-    
-    /* Căn giữa nút + dịch */
-    .stButton {{
+    /* NÚT */
+    .stButton {
         display: flex !important;
         justify-content: center !important;
         margin-top: 1.5rem !important;
-        margin-left: {BUTTON_SHIFT}px !important;
-    }}
+    }
     
-    /* NÚT 3D - NỀN TRẮNG, BÓNG ĐỔ ĐEN */
-    .stButton button {{
+    .stButton button {
         background: #FFFFFF !important;
         color: #000000 !important;
         border: 2px solid #000000 !important;
@@ -84,31 +77,29 @@ st.markdown(f"""
         box-shadow: 0 8px 0 #000000, 0 4px 12px rgba(0,0,0,0.1) !important;
         transition: none !important;
         letter-spacing: 0.5px !important;
-    }}
+    }
     
-    /* KHÔNG HOVER */
-    .stButton button:hover {{
+    .stButton button:hover {
         background: #FFFFFF !important;
         color: #000000 !important;
         border: 2px solid #000000 !important;
         transform: none !important;
         box-shadow: 0 8px 0 #000000, 0 4px 12px rgba(0,0,0,0.1) !important;
-    }}
+    }
     
-    /* HIỆU ỨNG NHẤN */
-    .stButton button:active {{
+    .stButton button:active {
         transform: translateY(4px) !important;
         box-shadow: 0 4px 0 #000000, 0 2px 8px rgba(0,0,0,0.1) !important;
         transition: all 0.02s linear !important;
-    }}
+    }
     
     .stButton button:focus, 
-    .stButton button:focus-visible {{
+    .stButton button:focus-visible {
         outline: none !important;
         box-shadow: 0 8px 0 #000000, 0 4px 12px rgba(0,0,0,0.1) !important;
-    }}
+    }
     
-    .prediction-box {{
+    .prediction-box {
         text-align: center;
         font-size: 2rem;
         font-weight: 700;
@@ -116,29 +107,29 @@ st.markdown(f"""
         margin-top: 1.5rem;
         border-top: none;
         border-bottom: 1px solid #e0e0e0;
-    }}
+    }
     
-    .confidence-text {{
+    .confidence-text {
         text-align: center;
         font-size: 0.8rem;
         color: #5f6368;
         margin-top: 0.5rem;
-    }}
+    }
     
-    .prob-text {{
+    .prob-text {
         text-align: center;
         font-size: 0.7rem;
         font-family: 'Source Code Pro', monospace;
         color: #000000;
         margin-top: 1rem;
         line-height: 1.6;
-    }}
+    }
     
-    hr {{
+    hr {
         margin-top: 2rem;
         margin-bottom: 2rem;
         border-color: #e0e0e0;
-    }}
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -223,7 +214,9 @@ if 'confidence' not in st.session_state:
 if 'last_probs' not in st.session_state:
     st.session_state.last_probs = None
 
-col1, col2, col3 = st.columns([1, 2, 1])
+# DÙNG COLUMNS ĐỂ CĂN CHỈNH - THAY ĐỔI 2 SỐ NÀY ĐỂ DỊCH CANVAS
+col1, col2, col3 = st.columns([LEFT_COL_WIDTH, 2, RIGHT_COL_WIDTH])
+
 with col2:
     canvas_result = st_canvas(
         fill_color="rgba(255, 255, 255, 0)",
