@@ -80,14 +80,30 @@ if not st.session_state.show_app:
         #MainMenu, footer, header {
             display: none !important;
         }
+        
+        /* Ẩn nút START cũ nếu có */
+        .stButton button {
+            display: none !important;
+        }
     </style>
     """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
+        # HTML với nút X dùng JavaScript để gửi sự kiện
         st.markdown("""
         <div class="splash-box">
-            <button class="close-x" onclick="window.parent.document.querySelector('button[kind=\"secondary\"]').click()">✕</button>
+            <button class="close-x" onclick="
+                fetch('/_stcore/stream', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        'type': 'set_session_state',
+                        'key': 'show_app',
+                        'value': true
+                    })
+                }).then(() => window.location.reload());
+            ">✕</button>
             <div class="splash-text">
                 <div class="splash-desc">
                     Ứng dụng dự đoán emoji từ nét vẽ chuột của bạn một cách nhanh chóng và chính xác, được xây dựng trên kiến trúc MLP — phiên bản v1.0-2026.
@@ -100,11 +116,6 @@ if not st.session_state.show_app:
             </div>
         </div>
         """, unsafe_allow_html=True)
-        
-        # Button ẩn để nhận sự kiện từ nút X
-        if st.button("", key="hidden_close_btn"):
-            st.session_state.show_app = True
-            st.rerun()
     
     st.stop()
 
@@ -134,11 +145,6 @@ st.markdown("""
     }
     
     #MainMenu, footer, header {
-        display: none !important;
-    }
-    
-    /* Ẩn button hidden */
-    .stButton:has(button[kind="secondary"]) {
         display: none !important;
     }
     
