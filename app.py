@@ -51,7 +51,7 @@ st.markdown("""
         width: 100% !important;
     }
     
-    /* Nút Block 3D đậm */
+    /* Nút Block 3D - đủ 4 cạnh (trái, phải, dưới) */
     .stButton button {
         background-color: #FFFFFF !important;
         color: #000000 !important;
@@ -62,29 +62,42 @@ st.markdown("""
         font-size: 1rem !important;
         cursor: pointer !important;
         
-        /* Hiệu ứng Block 3D - mặt dưới và mặt phải */
-        box-shadow: 5px 5px 0 #000000, 8px 8px 0 rgba(0,0,0,0.1) !important;
+        /* Block 3D: mặt dưới + mặt phải + mặt trái */
+        box-shadow: 
+            -3px 3px 0 #888888,
+            3px 3px 0 #888888,
+            0 6px 0 #000000 !important;
+        
         transition: all 0.05s linear !important;
         outline: none !important;
     }
     
-    /* Hover */
+    /* Hover - nhấc lên, bóng đổ to hơn */
     .stButton button:hover {
-        transform: translate(-2px, -2px) !important;
-        box-shadow: 7px 7px 0 #000000, 10px 10px 0 rgba(0,0,0,0.1) !important;
-        background-color: #F5F5F5 !important;
+        transform: translate(-1px, -2px) !important;
+        box-shadow: 
+            -4px 4px 0 #888888,
+            4px 4px 0 #888888,
+            0 8px 0 #000000 !important;
+        background-color: #FAFAFA !important;
     }
     
-    /* Nhấn - lún sâu */
+    /* Active - lún xuống, bóng đổ nhỏ lại */
     .stButton button:active {
-        transform: translate(3px, 3px) !important;
-        box-shadow: 2px 2px 0 #000000, 4px 4px 0 rgba(0,0,0,0.05) !important;
+        transform: translate(1px, 3px) !important;
+        box-shadow: 
+            -1px 1px 0 #888888,
+            1px 1px 0 #888888,
+            0 2px 0 #000000 !important;
         transition: all 0.02s linear !important;
     }
     
     .stButton button:focus {
         outline: none !important;
-        box-shadow: 5px 5px 0 #000000 !important;
+        box-shadow: 
+            -3px 3px 0 #888888,
+            3px 3px 0 #888888,
+            0 6px 0 #000000 !important;
     }
     
     .prediction-box {
@@ -197,7 +210,6 @@ with col2:
         key=f"canvas_{st.session_state.canvas_key}",
     )
     
-    # Nút CONFIRM! - Block 3D đậm, căn giữa
     if st.button("CONFIRM!"):
         if canvas_result.image_data is not None and np.sum(canvas_result.image_data[:, :, 3]) > 100:
             img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
