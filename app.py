@@ -26,7 +26,6 @@ if not st.session_state.show_app:
         .splash-wrapper {
             max-width: 420px;
             margin: 100px auto 0 auto;
-            text-align: center;
         }
         
         .splash-box {
@@ -58,9 +57,15 @@ if not st.session_state.show_app:
             margin: 0.3rem 0;
         }
         
-        /* Nút START 3D - dùng st.button nhưng style lại */
+        /* Căn giữa nút START */
+        .start-btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+        
         .stButton {
-            margin-top: 1.5rem !important;
+            margin: 0 !important;
         }
         
         .stButton button {
@@ -117,10 +122,12 @@ if not st.session_state.show_app:
         </div>
         """, unsafe_allow_html=True)
         
-        # Nút START - dùng st.button nhưng đã CSS style 3D
+        # Nút START - căn giữa
+        st.markdown('<div class="start-btn-container">', unsafe_allow_html=True)
         if st.button("START!", key="start_btn"):
             st.session_state.show_app = True
             st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
         
         st.markdown('</div>', unsafe_allow_html=True)
     
