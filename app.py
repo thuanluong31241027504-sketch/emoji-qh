@@ -55,38 +55,45 @@ st.markdown("""
         display: flex !important;
         justify-content: center !important;
         margin-top: 1.5rem !important;
-        margin-bottom: 1rem !important;
     }
     
-    /* Nút CONFIRM - đen chữ trắng, không viền */
+    /* Nút 3D kiểu Google Quick Draw */
     .stButton button {
-        background-color: #000000 !important;
-        color: #FFFFFF !important;
+        background: #4CAF50 !important;
+        background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%) !important;
+        color: white !important;
         border: none !important;
-        border-radius: 0px !important;
-        padding: 0.6rem 2rem !important;
-        font-weight: 500 !important;
-        font-size: 0.8rem !important;
+        border-radius: 40px !important;
+        padding: 0.8rem 2.5rem !important;
+        font-weight: 600 !important;
+        font-size: 1.1rem !important;
+        font-family: 'Source Code Pro', monospace !important;
         width: auto !important;
-        min-width: 120px !important;
-        transition: 0.2s !important;
+        min-width: 180px !important;
         cursor: pointer !important;
+        box-shadow: 0 8px 0 #1B5E20, 0 4px 12px rgba(0,0,0,0.1) !important;
+        transition: all 0.08s linear !important;
+        letter-spacing: 0.5px !important;
     }
     
+    /* Hiệu ứng khi hover */
     .stButton button:hover {
-        background-color: #333333 !important;
-        color: #FFFFFF !important;
-        border: none !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 10px 0 #1B5E20, 0 6px 16px rgba(0,0,0,0.15) !important;
+        background: linear-gradient(135deg, #5CB860 0%, #388E3C 100%) !important;
     }
     
+    /* Hiệu ứng khi nhấn (pressed) */
     .stButton button:active {
-        background-color: #000000 !important;
-        color: #FFFFFF !important;
+        transform: translateY(4px) !important;
+        box-shadow: 0 4px 0 #1B5E20, 0 2px 8px rgba(0,0,0,0.1) !important;
+        transition: all 0.02s linear !important;
     }
     
-    .stButton button:focus {
+    .stButton button:focus, 
+    .stButton button:focus-visible {
         outline: none !important;
-        box-shadow: none !important;
+        box-shadow: 0 8px 0 #1B5E20, 0 4px 12px rgba(0,0,0,0.1) !important;
     }
     
     .prediction-box {
@@ -119,12 +126,6 @@ st.markdown("""
         margin-top: 2rem;
         margin-bottom: 2rem;
         border-color: #e0e0e0;
-    }
-    
-    /* Căn giữa canvas */
-    .canvas-wrapper {
-        display: flex;
-        justify-content: center;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -210,10 +211,8 @@ if 'confidence' not in st.session_state:
 if 'last_probs' not in st.session_state:
     st.session_state.last_probs = None
 
-# Canvas và nút giữa màn hình
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    # Canvas vẽ
     canvas_result = st_canvas(
         fill_color="rgba(255, 255, 255, 0)",
         stroke_width=12,
@@ -226,8 +225,8 @@ with col2:
         key=f"canvas_{st.session_state.canvas_key}",
     )
     
-    # Nút CONFIRM - đen chữ trắng, căn giữa
-    if st.button("CONFIRM", key="confirm_btn"):
+    # Nút 3D màu xanh lá
+    if st.button("LET'S DRAW!", key="confirm_btn"):
         if canvas_result.image_data is not None:
             if np.sum(canvas_result.image_data[:, :, 3]) > 100:
                 img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
