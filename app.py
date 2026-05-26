@@ -81,37 +81,54 @@ if not st.session_state.show_app:
             display: none !important;
         }
         
-        /* Ẩn tất cả button mặc định của Streamlit trên splash screen */
+        /* Ẩn button Streamlit nhưng vẫn giữ chức năng */
         .stButton {
-            display: none !important;
+            position: absolute !important;
+            top: 0 !important;
+            right: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            z-index: 20 !important;
+        }
+        
+        .stButton button {
+            position: absolute !important;
+            top: 8px !important;
+            right: 12px !important;
+            width: 30px !important;
+            height: 30px !important;
+            background: transparent !important;
+            color: #888888 !important;
+            border: none !important;
+            box-shadow: none !important;
+            font-size: 1.1rem !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            opacity: 1 !important;
+            cursor: pointer !important;
+        }
+        
+        .stButton button:hover {
+            color: #FFFFFF !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+        
+        .stButton button:active {
+            transform: none !important;
+            box-shadow: none !important;
         }
     </style>
-    
-    <script>
-        function goToApp() {
-            // Gửi request để set session state
-            fetch('/_stcore/stream', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    'type': 'set_session_state',
-                    'key': 'show_app',
-                    'value': true
-                })
-            }).then(() => {
-                window.location.reload();
-            });
-        }
-    </script>
     """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
+        # Khung đen với nội dung
         st.markdown("""
-        <div class="splash-box">
-            <button class="close-x" onclick="goToApp()">✕</button>
+        <div class="splash-box" id="splash-box">
             <div class="splash-text">
                 <div class="splash-desc">
                     Ứng dụng dự đoán emoji từ nét vẽ chuột của bạn một cách nhanh chóng và chính xác, được xây dựng trên kiến trúc MLP — phiên bản v1.0-2026.
@@ -124,6 +141,11 @@ if not st.session_state.show_app:
             </div>
         </div>
         """, unsafe_allow_html=True)
+        
+        # Button X - Streamlit nhưng được CSS ẩn để chỉ hiện chữ X
+        if st.button("✕", key="close_btn"):
+            st.session_state.show_app = True
+            st.rerun()
     
     st.stop()
 
