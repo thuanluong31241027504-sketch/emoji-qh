@@ -44,89 +44,32 @@ st.markdown("""
         align-items: center !important;
     }
     
-    /* === NÚT 3D BLOCK ĐÚNG CHUẨN === */
-    .block-btn {
-        position: relative;
-        display: inline-block;
-        background: none;
+    /* NÚT PUSHABLE 3D - TRẮNG ĐEN */
+    .pushable {
+        background: #000000;
+        border-radius: 0px;
         border: none;
+        padding: 0;
         cursor: pointer;
+        outline-offset: 4px;
         margin-top: 20px;
     }
     
-    /* Mặt chính (front face) */
-    .block-btn .front {
+    .front {
         display: block;
-        padding: 12px 28px;
-        background-color: #FFFFFF;
+        padding: 12px 32px;
+        border-radius: 0px;
+        font-size: 1rem;
+        font-weight: 700;
+        background: #FFFFFF;
         color: #000000;
-        font-size: 16px;
-        font-weight: 800;
-        text-decoration: none;
+        transform: translateY(-6px);
         border: 2px solid #000000;
-        transition: all 0.08s linear;
-        position: relative;
-        z-index: 2;
+        font-family: 'Source Code Pro', monospace !important;
     }
     
-    /* Mặt dưới (bottom face) - tạo chiều dày khối */
-    .block-btn .bottom {
-        position: absolute;
-        bottom: -8px;
-        left: 0px;
-        width: 100%;
-        height: 8px;
-        background-color: #666666;
-        border-left: 2px solid #000000;
-        border-right: 2px solid #000000;
-        border-bottom: 2px solid #000000;
-        box-sizing: border-box;
-        z-index: 1;
-    }
-    
-    /* Mặt phải (right face) */
-    .block-btn .right {
-        position: absolute;
-        top: 0px;
-        right: -8px;
-        width: 8px;
-        height: 100%;
-        background-color: #888888;
-        border-top: 2px solid #000000;
-        border-right: 2px solid #000000;
-        border-bottom: 2px solid #000000;
-        box-sizing: border-box;
-        z-index: 1;
-    }
-    
-    /* Hiệu ứng hover - nhấc lên */
-    .block-btn:hover .front {
-        transform: translate(-2px, -2px);
-    }
-    
-    .block-btn:hover .bottom {
-        bottom: -10px;
-        height: 10px;
-    }
-    
-    .block-btn:hover .right {
-        right: -10px;
-        width: 10px;
-    }
-    
-    /* Hiệu ứng click - lún xuống */
-    .block-btn:active .front {
-        transform: translate(3px, 3px);
-    }
-    
-    .block-btn:active .bottom {
-        bottom: -3px;
-        height: 3px;
-    }
-    
-    .block-btn:active .right {
-        right: -3px;
-        width: 3px;
+    .pushable:active .front {
+        transform: translateY(-2px);
     }
     
     .prediction-box {
@@ -239,30 +182,27 @@ with col2:
         key=f"canvas_{st.session_state.canvas_key}",
     )
     
-    # Nút 3D Block bằng HTML/CSS
+    # Nút pushable 3D
     import streamlit.components.v1 as components
     
-    components.html(f"""
-    <div style="display: flex; justify-content: center; margin-top: 20px;">
-        <button class="block-btn" id="btn_confirm">
+    components.html("""
+    <div style="display: flex; justify-content: center;">
+        <button class="pushable" id="confirmBtn">
             <span class="front">CONFIRM!</span>
-            <span class="bottom"></span>
-            <span class="right"></span>
         </button>
     </div>
     
     <script>
-        document.getElementById('btn_confirm').addEventListener('click', () => {{
-            const canvasData = window.parent.document.querySelector('.stCanvas').getAttribute('data');
-            // Gửi sự kiện lên Streamlit
-            window.parent.postMessage({{type: 'streamlit:setComponentValue', value: true}}, '*');
-        }});
+        document.getElementById('confirmBtn').addEventListener('click', () => {
+            // Tạo sự kiện click ảo lên Streamlit button ẩn
+            const btn = window.parent.document.querySelector('button[kind="secondary"]');
+            if (btn) btn.click();
+        });
     </script>
     """, height=100)
     
-    # Streamlit button để xử lý logic (ẩn)
-    col_placeholder = st.empty()
-    if col_placeholder.button("CONFIRM!", key="real_btn", use_container_width=False):
+    # Button ẩn để xử lý logic
+    if st.button("_confirm", key="hidden_btn", label_visibility="collapsed"):
         if canvas_result.image_data is not None and np.sum(canvas_result.image_data[:, :, 3]) > 100:
             img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
             pred = model.predict(preprocess_image(img), verbose=0)[0]
