@@ -19,73 +19,65 @@ if not st.session_state.show_app:
     
     st.markdown("""
     <style>
+        /* Nền trắng xung quanh */
         .stApp {
-            background-color: #000000 !important;
+            background-color: #FFFFFF !important;
         }
         
-        /* Container đen nhỏ giữa màn hình */
+        /* Khung đen vuông ở giữa */
         .splash-box {
-            background-color: #0a0a0a;
-            border: 1px solid #333;
-            border-radius: 16px;
-            max-width: 500px;
+            background-color: #000000;
+            max-width: 400px;
             margin: 0 auto;
-            margin-top: 80px;
+            margin-top: 120px;
             padding: 2rem;
             text-align: center;
+            border-radius: 0px;
         }
         
         .splash-title {
             font-family: 'Source Code Pro', monospace;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #FFFFFF;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
         }
         
-        .splash-sub {
+        .splash-rule {
             font-family: 'Source Code Pro', monospace;
-            font-size: 0.8rem;
-            color: #888888;
-            margin-bottom: 1.5rem;
+            font-size: 0.7rem;
+            color: #AAAAAA;
+            line-height: 1.6;
+            text-align: left;
+            margin: 1.5rem 0;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+            padding: 1rem 0;
         }
         
-        .splash-desc {
-            font-family: 'Source Code Pro', monospace;
-            font-size: 0.75rem;
-            color: #666666;
-            line-height: 1.5;
-            margin-bottom: 2rem;
+        .splash-rule p {
+            margin: 0.3rem 0;
         }
         
-        /* Nút START 3D động */
-        .start-btn {
-            background: linear-gradient(135deg, #FFFFFF 0%, #E0E0E0 100%);
-            color: #000000;
-            border: none;
-            border-radius: 40px;
-            padding: 0.7rem 2rem;
+        /* Nút X (close) */
+        .close-btn {
             font-family: 'Source Code Pro', monospace;
+            font-size: 1.2rem;
             font-weight: 700;
-            font-size: 1rem;
+            color: #FFFFFF;
+            background: transparent;
+            border: 1px solid #FFFFFF;
+            width: 40px;
+            height: 40px;
+            border-radius: 0px;
             cursor: pointer;
-            transition: all 0.08s linear;
-            box-shadow: 0 6px 0 #888888;
-            width: 100%;
-            max-width: 200px;
-            margin: 0 auto;
-            display: block;
+            transition: all 0.2s;
+            margin-top: 1rem;
         }
         
-        .start-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 0 #888888;
-            background: linear-gradient(135deg, #FFFFFF 0%, #F0F0F0 100%);
-        }
-        
-        .start-btn:active {
-            transform: translateY(3px);
-            box-shadow: 0 3px 0 #888888;
+        .close-btn:hover {
+            background-color: #FFFFFF;
+            color: #000000;
         }
         
         /* Ẩn các thành phần mặc định */
@@ -101,22 +93,23 @@ if not st.session_state.show_app:
     </style>
     """, unsafe_allow_html=True)
     
-    # Box đen nhỏ giữa màn hình
+    # Khung đen vuông giữa màn hình
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         st.markdown("""
         <div class="splash-box">
-            <div class="splash-title">✏️ EMOJI CLASSIFIER</div>
-            <div class="splash-sub">by MLP model v1.0 - 2026</div>
-            <div class="splash-desc">
-                Draw an emoji • AI will recognize<br>
-                ☁️ CLOUD • 😀 SMILEY • ❤️ HEART • 👿 HORNED • 👍 THUMB
+            <div class="splash-title">EMOJI CLASSIFIER</div>
+            <div class="splash-rule">
+                <p>> draw a simple emoji</p>
+                <p>> click CONFIRM</p>
+                <p>> AI will predict</p>
+                <p>> 5 classes available</p>
             </div>
         </div>
         """, unsafe_allow_html=True)
         
-        # Nút START 3D động
-        if st.button("▶ START", key="start_btn", use_container_width=False):
+        # Nút X
+        if st.button("✕", key="close_btn"):
             st.session_state.show_app = True
             st.rerun()
     
