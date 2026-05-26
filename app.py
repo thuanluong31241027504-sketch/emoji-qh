@@ -57,7 +57,7 @@ st.markdown("""
         margin-top: 1.5rem !important;
     }
     
-    /* NÚT 3D - NỀN TRẮNG, BÓNG ĐỔ ĐEN */
+    /* NÚT 3D - NỀN TRẮNG, BÓNG ĐỔ ĐEN, KHÔNG HOVER */
     .stButton button {
         background: #FFFFFF !important;
         color: #000000 !important;
@@ -71,18 +71,20 @@ st.markdown("""
         min-width: 180px !important;
         cursor: pointer !important;
         box-shadow: 0 8px 0 #000000, 0 4px 12px rgba(0,0,0,0.1) !important;
-        transition: all 0.08s linear !important;
+        transition: none !important;
         letter-spacing: 0.5px !important;
     }
     
-    /* Hiệu ứng khi hover */
+    /* KHÔNG CÓ HIỆU ỨNG HOVER - giữ nguyên */
     .stButton button:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 10px 0 #000000, 0 6px 16px rgba(0,0,0,0.15) !important;
-        background: #FAFAFA !important;
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        border: 2px solid #000000 !important;
+        transform: none !important;
+        box-shadow: 0 8px 0 #000000, 0 4px 12px rgba(0,0,0,0.1) !important;
     }
     
-    /* Hiệu ứng khi nhấn (pressed) */
+    /* Hiệu ứng khi nhấn (pressed) - vẫn giữ để tạo cảm giác bấm */
     .stButton button:active {
         transform: translateY(4px) !important;
         box-shadow: 0 4px 0 #000000, 0 2px 8px rgba(0,0,0,0.1) !important;
