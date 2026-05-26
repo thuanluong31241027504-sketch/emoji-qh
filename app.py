@@ -12,111 +12,59 @@ import os
 
 st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
-# ------------------- THANH TRƯỢT CĂN CHỈNH -------------------
-st.sidebar.markdown("## 🎛️ CĂN CHỈNH THỦ CÔNG")
-margin_left = st.sidebar.slider("Dịch canvas sang phải (px)", 0, 300, 100)
-margin_top = st.sidebar.slider("Dịch nút xuống dưới (px)", 0, 100, 20)
-
-st.markdown(f"""
+st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500;600;700&display=swap');
     
-    * {{
+    * {
         font-family: 'Source Code Pro', 'Courier New', monospace !important;
-    }}
+    }
     
-    .big-title {{
+    .big-title {
         font-size: 2.5rem;
         font-weight: 700;
         text-align: center;
         margin-top: 1rem;
-    }}
+    }
     
-    .sub-text {{
+    .sub-text {
         font-size: 0.8rem;
         text-align: center;
         color: #5f6368;
         margin-bottom: 2rem;
-    }}
+    }
     
-    #MainMenu, footer, header, .stActionButton, .stCanvasToolbar {{
+    #MainMenu, footer, header, .stActionButton, .stCanvasToolbar {
         display: none !important;
-    }}
+    }
     
-    .main .block-container {{
-        max-width: 500px !important;
-        margin: 0 auto !important;
-        padding-top: 2rem !important;
-    }}
-    
-    /* DỊCH TOÀN BỘ KHUNG CANVAS */
-    .element-container:has(canvas) {{
-        margin-left: {margin_left}px !important;
-    }}
-    
-    canvas {{
-        display: block !important;
-    }}
-    
-    /* DỊCH NÚT */
-    .stButton {{
-        display: flex !important;
-        justify-content: center !important;
-        margin-top: {margin_top}px !important;
-    }}
-    
-    /* NÚT 3D - TRẮNG VIỀN ĐEN */
-    .stButton button {{
-        background: #FFFFFF !important;
-        color: #000000 !important;
-        border: 2px solid #000000 !important;
-        border-radius: 40px !important;
-        padding: 0.7rem 2rem !important;
-        font-weight: 600 !important;
-        font-size: 1rem !important;
-        cursor: pointer !important;
-        box-shadow: 0 6px 0 #000000 !important;
-        transition: none !important;
-    }}
-    
-    .stButton button:hover {{
-        background: #FFFFFF !important;
-        transform: none !important;
-        box-shadow: 0 6px 0 #000000 !important;
-    }}
-    
-    .stButton button:active {{
-        transform: translateY(3px) !important;
-        box-shadow: 0 3px 0 #000000 !important;
-    }}
-    
-    .prediction-box {{
+    .prediction-box {
         text-align: center;
         font-size: 2rem;
         font-weight: 700;
         padding: 1rem;
         margin-top: 1.5rem;
         border-bottom: 2px solid #000000;
-    }}
+    }
     
-    .confidence-text {{
+    .confidence-text {
         text-align: center;
         font-size: 0.75rem;
         color: #5f6368;
         margin-top: 0.5rem;
-    }}
+    }
     
-    .prob-text {{
+    .prob-text {
         text-align: center;
         font-size: 0.7rem;
         margin-top: 1rem;
         line-height: 1.6;
-    }}
+    }
     
-    hr {{
+    hr {
         margin-top: 2rem;
         border-color: #e0e0e0;
-    }}
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -188,35 +136,72 @@ class_display = {
     'thumb': 'THUMB'
 }
 
-# ------------------- GIAO DIỆN -------------------
+# ------------------- GIAO DIỆN - DÙNG COLUMNS ĐỂ CĂN GIỮA -------------------
 if 'canvas_key' not in st.session_state:
     st.session_state.canvas_key = 0
     st.session_state.prediction = None
     st.session_state.confidence = None
     st.session_state.last_probs = None
 
-canvas_result = st_canvas(
-    fill_color="rgba(255, 255, 255, 0)",
-    stroke_width=12,
-    stroke_color="#000000",
-    background_color="#FFFFFF",
-    update_streamlit=True,
-    height=280,
-    width=280,
-    drawing_mode="freedraw",
-    key=f"canvas_{st.session_state.canvas_key}",
-)
+# TẠO 3 CỘT, ĐẶT CANVAS VÀO CỘT GIỮA
+col1, col2, col3 = st.columns([1, 2, 1])
 
-if st.button("CONFIRM!"):
-    if canvas_result.image_data is not None and np.sum(canvas_result.image_data[:, :, 3]) > 100:
-        img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
-        pred = model.predict(preprocess_image(img), verbose=0)[0]
-        st.session_state.last_probs = pred
-        st.session_state.prediction = class_names[np.argmax(pred)]
-        st.session_state.confidence = max(pred)
-        st.rerun()
-    else:
-        st.warning("draw something first")
+with col2:
+    canvas_result = st_canvas(
+        fill_color="rgba(255, 255, 255, 0)",
+        stroke_width=12,
+        stroke_color="#000000",
+        background_color="#FFFFFF",
+        update_streamlit=True,
+        height=280,
+        width=280,
+        drawing_mode="freedraw",
+        key=f"canvas_{st.session_state.canvas_key}",
+    )
+
+# NÚT - CŨNG ĐẶT TRONG CỘT GIỮA
+with col2:
+    # CSS cho nút trong col2
+    st.markdown("""
+    <style>
+        div[data-testid="column"]:nth-of-type(2) .stButton {
+            display: flex !important;
+            justify-content: center !important;
+        }
+        div[data-testid="column"]:nth-of-type(2) .stButton button {
+            background: #FFFFFF !important;
+            color: #000000 !important;
+            border: 2px solid #000000 !important;
+            border-radius: 40px !important;
+            padding: 0.7rem 2rem !important;
+            font-weight: 600 !important;
+            font-size: 1rem !important;
+            cursor: pointer !important;
+            box-shadow: 0 6px 0 #000000 !important;
+            transition: none !important;
+        }
+        div[data-testid="column"]:nth-of-type(2) .stButton button:hover {
+            background: #FFFFFF !important;
+            transform: none !important;
+            box-shadow: 0 6px 0 #000000 !important;
+        }
+        div[data-testid="column"]:nth-of-type(2) .stButton button:active {
+            transform: translateY(3px) !important;
+            box-shadow: 0 3px 0 #000000 !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    if st.button("CONFIRM!"):
+        if canvas_result.image_data is not None and np.sum(canvas_result.image_data[:, :, 3]) > 100:
+            img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
+            pred = model.predict(preprocess_image(img), verbose=0)[0]
+            st.session_state.last_probs = pred
+            st.session_state.prediction = class_names[np.argmax(pred)]
+            st.session_state.confidence = max(pred)
+            st.rerun()
+        else:
+            st.warning("draw something first")
 
 if st.session_state.prediction:
     st.markdown(f"""
