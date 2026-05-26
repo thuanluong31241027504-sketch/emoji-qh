@@ -29,7 +29,7 @@ if not st.session_state.show_app:
             margin: 0 auto;
             margin-top: 100px;
             padding: 2rem;
-            padding-top: 2.5rem;
+            padding-top: 2rem;
             text-align: center;
             border-radius: 0px;
             position: relative;
@@ -47,6 +47,7 @@ if not st.session_state.show_app:
             border: none;
             cursor: pointer;
             transition: opacity 0.2s;
+            z-index: 10;
         }
         
         .close-x:hover {
@@ -85,7 +86,6 @@ if not st.session_state.show_app:
     with col2:
         st.markdown("""
         <div class="splash-box">
-            <button class="close-x" onclick="parent.document.querySelector('button[kind=\'secondary\']').click()">✕</button>
             <div class="splash-text">
                 <div class="splash-desc">
                     Ứng dụng dự đoán emoji từ nét vẽ chuột của bạn một cách nhanh chóng và chính xác, được xây dựng trên kiến trúc MLP — phiên bản v1.0-2026.
@@ -99,9 +99,12 @@ if not st.session_state.show_app:
         </div>
         """, unsafe_allow_html=True)
         
-        if st.button("", key="close_btn", help="Close"):
-            st.session_state.show_app = True
-            st.rerun()
+        # Nút START để vào app
+        col_btn1, col_btn2, col_btn3 = st.columns([1, 2, 1])
+        with col_btn2:
+            if st.button("▶ START", key="start_btn"):
+                st.session_state.show_app = True
+                st.rerun()
     
     st.stop()
 
