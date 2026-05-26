@@ -23,36 +23,50 @@ if not st.session_state.show_app:
             background-color: #FFFFFF !important;
         }
         
+        .splash-wrapper {
+            position: relative;
+            max-width: 420px;
+            margin: 100px auto 0 auto;
+        }
+        
         .splash-box {
             background-color: #000000;
-            max-width: 420px;
-            margin: 0 auto;
-            margin-top: 100px;
             padding: 2rem;
-            padding-top: 2rem;
             text-align: center;
             border-radius: 0px;
-            position: relative;
         }
         
-        .close-x {
-            position: absolute;
-            top: 8px;
-            right: 12px;
-            font-family: 'Source Code Pro', monospace;
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: #888888;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            transition: color 0.2s;
-            z-index: 10;
-            padding: 4px 8px;
+        /* Button X - đặt góc trên bên phải của wrapper */
+        .stButton {
+            position: absolute !important;
+            top: -10px !important;
+            right: -10px !important;
+            z-index: 100 !important;
         }
         
-        .close-x:hover {
-            color: #FFFFFF;
+        .stButton button {
+            background: #000000 !important;
+            color: #888888 !important;
+            border: none !important;
+            border-radius: 0px !important;
+            padding: 4px 8px !important;
+            font-size: 1rem !important;
+            font-family: 'Source Code Pro', monospace !important;
+            box-shadow: none !important;
+            width: auto !important;
+            min-width: unset !important;
+        }
+        
+        .stButton button:hover {
+            color: #FFFFFF !important;
+            background: #000000 !important;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        
+        .stButton button:active {
+            transform: none !important;
+            box-shadow: none !important;
         }
         
         .splash-text {
@@ -80,55 +94,22 @@ if not st.session_state.show_app:
         #MainMenu, footer, header {
             display: none !important;
         }
-        
-        /* Ẩn button Streamlit nhưng vẫn giữ chức năng */
-        .stButton {
-            position: absolute !important;
-            top: 0 !important;
-            right: 0 !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            background: transparent !important;
-            box-shadow: none !important;
-            z-index: 20 !important;
-        }
-        
-        .stButton button {
-            position: absolute !important;
-            top: 8px !important;
-            right: 12px !important;
-            width: 30px !important;
-            height: 30px !important;
-            background: transparent !important;
-            color: #888888 !important;
-            border: none !important;
-            box-shadow: none !important;
-            font-size: 1.1rem !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            opacity: 1 !important;
-            cursor: pointer !important;
-        }
-        
-        .stButton button:hover {
-            color: #FFFFFF !important;
-            background: transparent !important;
-            box-shadow: none !important;
-            transform: none !important;
-        }
-        
-        .stButton button:active {
-            transform: none !important;
-            box-shadow: none !important;
-        }
     </style>
     """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        # Khung đen với nội dung
+        # Wrapper để định vị nút X
+        st.markdown('<div class="splash-wrapper">', unsafe_allow_html=True)
+        
+        # Nút X ở góc trên bên phải
+        if st.button("✕", key="close_btn"):
+            st.session_state.show_app = True
+            st.rerun()
+        
+        # Khung đen nội dung
         st.markdown("""
-        <div class="splash-box" id="splash-box">
+        <div class="splash-box">
             <div class="splash-text">
                 <div class="splash-desc">
                     Ứng dụng dự đoán emoji từ nét vẽ chuột của bạn một cách nhanh chóng và chính xác, được xây dựng trên kiến trúc MLP — phiên bản v1.0-2026.
@@ -140,12 +121,8 @@ if not st.session_state.show_app:
                 </div>
             </div>
         </div>
+        </div>
         """, unsafe_allow_html=True)
-        
-        # Button X - Streamlit nhưng được CSS ẩn để chỉ hiện chữ X
-        if st.button("✕", key="close_btn"):
-            st.session_state.show_app = True
-            st.rerun()
     
     st.stop()
 
