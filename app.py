@@ -17,49 +17,54 @@ if 'show_app' not in st.session_state:
 if not st.session_state.show_app:
     st.set_page_config(page_title="Emoji Classifier", layout="centered")
     
-    decor_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/qq32.png"
-    
-    st.markdown(f"""
+    st.markdown("""
     <style>
-        .stApp {{
+        .stApp {
             background-color: #FFFFFF !important;
-        }}
+        }
         
-        .splash-wrapper {{
+        .splash-wrapper {
             max-width: 420px;
-            margin: 80px auto 0 auto;
-        }}
+            margin: 100px auto 0 auto;
+        }
         
-        .splash-box {{
+        .splash-box {
             background-color: #000000;
             padding: 2rem;
             text-align: center;
             border-radius: 0px;
-        }}
+        }
         
-        .splash-text {{
+        .splash-text {
             font-family: 'Source Code Pro', monospace;
             color: #FFFFFF;
             text-align: left;
             line-height: 1.8;
-        }}
+        }
         
-        .splash-desc {{
+        .splash-desc {
             font-size: 0.85rem;
             margin-bottom: 1.5rem;
-        }}
+        }
         
-        .splash-rule {{
+        .splash-rule {
             font-size: 0.75rem;
             color: #AAAAAA;
             margin-top: 1rem;
-        }}
+        }
         
-        .splash-rule p {{
+        .splash-rule p {
             margin: 0.3rem 0;
-        }}
+        }
         
-        .splash-wrapper button[kind="secondary"] {{
+        /* Nút START 3D */
+        .stButton {
+            display: flex !important;
+            justify-content: center !important;
+            margin-top: 1.8rem !important;
+        }
+        
+        .stButton button {
             background: #FFFFFF !important;
             color: #000000 !important;
             border: 2px solid #000000 !important;
@@ -73,59 +78,44 @@ if not st.session_state.show_app:
             transition: all 0.05s linear !important;
             width: auto !important;
             min-width: 120px !important;
-            margin-top: 1.5rem !important;
-            display: block !important;
-            margin-left: auto !important;
-            margin-right: auto !important;
-        }}
+        }
         
-        .splash-wrapper button[kind="secondary"]:hover {{
+        .stButton button:hover {
             transform: translateY(-2px) !important;
             box-shadow: 0 8px 0 #000000 !important;
             background: #FAFAFA !important;
-        }}
+        }
         
-        .splash-wrapper button[kind="secondary"]:active {{
+        .stButton button:active {
             transform: translateY(3px) !important;
             box-shadow: 0 3px 0 #000000 !important;
-        }}
+        }
         
-        .decor-top {{
-            text-align: center;
-            margin-bottom: 1rem;
-        }}
-        
-        .decor-top img {{
-            width: 48px;
-            opacity: 0.6;
-        }}
-        
-        #MainMenu, footer, header {{
+        #MainMenu, footer, header {
             display: none !important;
-        }}
+        }
     </style>
-    
-    <div class="splash-wrapper">
-        <div class="decor-top">
-            <img src="{decor_url}" alt="decor">
-        </div>
-        <div class="splash-box">
-            <div class="splash-text">
-                <div class="splash-desc">
-                    Ứng dụng dự đoán emoji từ nét vẽ chuột của bạn một cách nhanh chóng và chính xác, được xây dựng trên kiến trúc MLP — phiên bản v1.0-2026.
-                </div>
-                <div class="splash-rule">
-                    <p>> vẽ bất cứ thứ gì trong khung trắng</p>
-                    <p>> nhấn CONFIRM</p>
-                    <p>> nhận kết quả dự đoán từ model</p>
-                </div>
-            </div>
-        </div>
-    </div>
     """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
+        st.markdown("""
+        <div class="splash-wrapper">
+            <div class="splash-box">
+                <div class="splash-text">
+                    <div class="splash-desc">
+                        Ứng dụng dự đoán emoji từ nét vẽ chuột của bạn một cách nhanh chóng và chính xác, được xây dựng trên kiến trúc MLP — phiên bản v1.0-2026.
+                    </div>
+                    <div class="splash-rule">
+                        <p>> vẽ bất cứ thứ gì trong khung trắng</p>
+                        <p>> nhấn CONFIRM</p>
+                        <p>> nhận kết quả dự đoán từ model</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
         if st.button("START!"):
             st.session_state.show_app = True
             st.rerun()
@@ -139,8 +129,9 @@ st.set_page_config(page_title="Emoji Classifier", layout="centered")
 hoa1_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa1.png"
 hoa2_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa2.png"
 hoa3_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa3.png"
-hoa4_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa4.png"
-may1_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/may1.png"
+emo1_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/emo1.png"
+emo2_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/emo2.png"
+emo3_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/emo3.png"
 
 st.markdown(f"""
 <style>
@@ -164,7 +155,7 @@ st.markdown(f"""
         margin-bottom: 2rem;
     }}
     
-    /* Trang trí mây và hoa4 rải khắp app */
+    /* Trang trí emo1, emo2, emo3 rải đều khắp màn hình - so le, rõ nét */
     .decor-item {{
         position: fixed;
         z-index: 0;
@@ -172,8 +163,8 @@ st.markdown(f"""
     }}
     
     .decor-item img {{
-        width: 45px;
-        opacity: 0.35;
+        width: 50px;
+        opacity: 0.7;
     }}
     
     /* Hàng hoa dưới đáy - 1 hàng ngang */
@@ -184,14 +175,14 @@ st.markdown(f"""
         margin-top: 2rem;
         padding: 1rem 0;
         width: 100%;
-        gap: 8px;
+        gap: 10px;
         flex-wrap: nowrap;
         overflow-x: auto;
     }}
     
     .flower-row img {{
-        width: 38px;
-        opacity: 0.9;
+        width: 42px;
+        opacity: 0.85;
         transition: transform 0.2s;
         flex-shrink: 0;
     }}
@@ -275,17 +266,26 @@ st.markdown(f"""
     }}
 </style>
 
-<!-- Trang trí mây + hoa4 rải khắp màn hình -->
-<div class="decor-item" style="top: 5%; left: 3%;"><img src="{may1_url}"></div>
-<div class="decor-item" style="top: 15%; right: 5%;"><img src="{hoa4_url}"></div>
-<div class="decor-item" style="top: 30%; left: 8%;"><img src="{may1_url}"></div>
-<div class="decor-item" style="top: 45%; right: 10%;"><img src="{hoa4_url}"></div>
-<div class="decor-item" style="top: 60%; left: 5%;"><img src="{may1_url}"></div>
-<div class="decor-item" style="top: 70%; right: 7%;"><img src="{hoa4_url}"></div>
-<div class="decor-item" style="top: 85%; left: 10%;"><img src="{may1_url}"></div>
-<div class="decor-item" style="top: 20%; left: 20%;"><img src="{hoa4_url}"></div>
-<div class="decor-item" style="top: 50%; left: 15%;"><img src="{may1_url}"></div>
-<div class="decor-item" style="top: 80%; right: 15%;"><img src="{hoa4_url}"></div>
+<!-- Trang trí emo1, emo2, emo3 so le nhau, rải đều khắp màn hình -->
+<div class="decor-item" style="top: 3%; left: 2%;"><img src="{emo1_url}"></div>
+<div class="decor-item" style="top: 8%; right: 5%;"><img src="{emo2_url}"></div>
+<div class="decor-item" style="top: 15%; left: 8%;"><img src="{emo3_url}"></div>
+<div class="decor-item" style="top: 22%; right: 3%;"><img src="{emo1_url}"></div>
+<div class="decor-item" style="top: 30%; left: 12%;"><img src="{emo2_url}"></div>
+<div class="decor-item" style="top: 38%; right: 8%;"><img src="{emo3_url}"></div>
+<div class="decor-item" style="top: 45%; left: 5%;"><img src="{emo1_url}"></div>
+<div class="decor-item" style="top: 52%; right: 12%;"><img src="{emo2_url}"></div>
+<div class="decor-item" style="top: 60%; left: 15%;"><img src="{emo3_url}"></div>
+<div class="decor-item" style="top: 68%; right: 6%;"><img src="{emo1_url}"></div>
+<div class="decor-item" style="top: 75%; left: 8%;"><img src="{emo2_url}"></div>
+<div class="decor-item" style="top: 82%; right: 10%;"><img src="{emo3_url}"></div>
+<div class="decor-item" style="top: 90%; left: 3%;"><img src="{emo1_url}"></div>
+<!-- Thêm ở giữa -->
+<div class="decor-item" style="top: 12%; left: 25%;"><img src="{emo2_url}"></div>
+<div class="decor-item" style="top: 28%; right: 20%;"><img src="{emo3_url}"></div>
+<div class="decor-item" style="top: 48%; left: 30%;"><img src="{emo1_url}"></div>
+<div class="decor-item" style="top: 65%; right: 25%;"><img src="{emo2_url}"></div>
+<div class="decor-item" style="top: 85%; left: 20%;"><img src="{emo3_url}"></div>
 
 <div class="title">EMOJI CLASSIFIER</div>
 <div class="sub">by MLP model v1.0 - 2026</div>
@@ -384,9 +384,7 @@ if st.session_state.pred:
         st.markdown(f'<div class="probs">{text}</div>', unsafe_allow_html=True)
 
 # ==================== HÀNG HOA PHÍA DƯỚI ====================
-# Chỉ 1 hàng ngang, đủ hoa trải dài
-flowers = [hoa1_url, hoa2_url, hoa3_url, hoa1_url, hoa2_url, hoa3_url, 
-           hoa1_url, hoa2_url, hoa3_url, hoa1_url, hoa2_url, hoa3_url]
+flowers = [hoa1_url, hoa2_url, hoa3_url] * 12
 
 flower_html = '<div class="flower-row">'
 for url in flowers:
