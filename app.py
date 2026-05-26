@@ -57,15 +57,14 @@ if not st.session_state.show_app:
             margin: 0.3rem 0;
         }
         
-        /* Căn giữa nút START */
-        div[data-testid="stButton"] {
+        /* Style nút START - selector mạnh hơn */
+        .splash-wrapper .stButton {
             display: flex !important;
             justify-content: center !important;
             margin-top: 1.8rem !important;
         }
         
-        /* Style nút START 3D block */
-        div[data-testid="stButton"] button {
+        .splash-wrapper .stButton button {
             background: #FFFFFF !important;
             color: #000000 !important;
             border: 2px solid #000000 !important;
@@ -81,13 +80,13 @@ if not st.session_state.show_app:
             min-width: 120px !important;
         }
         
-        div[data-testid="stButton"] button:hover {
+        .splash-wrapper .stButton button:hover {
             transform: translateY(-2px) !important;
             box-shadow: 0 8px 0 #000000 !important;
             background: #FAFAFA !important;
         }
         
-        div[data-testid="stButton"] button:active {
+        .splash-wrapper .stButton button:active {
             transform: translateY(3px) !important;
             box-shadow: 0 3px 0 #000000 !important;
             transition: all 0.02s linear !important;
@@ -119,7 +118,7 @@ if not st.session_state.show_app:
         </div>
         """, unsafe_allow_html=True)
         
-        # Nút START - dùng st.button nhưng CSS đã style
+        # Nút START
         if st.button("START!"):
             st.session_state.show_app = True
             st.rerun()
