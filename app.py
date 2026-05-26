@@ -81,29 +81,37 @@ if not st.session_state.show_app:
             display: none !important;
         }
         
-        /* Ẩn nút START cũ nếu có */
-        .stButton button {
+        /* Ẩn tất cả button mặc định của Streamlit trên splash screen */
+        .stButton {
             display: none !important;
         }
     </style>
+    
+    <script>
+        function goToApp() {
+            // Gửi request để set session state
+            fetch('/_stcore/stream', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    'type': 'set_session_state',
+                    'key': 'show_app',
+                    'value': true
+                })
+            }).then(() => {
+                window.location.reload();
+            });
+        }
+    </script>
     """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        # HTML với nút X dùng JavaScript để gửi sự kiện
         st.markdown("""
         <div class="splash-box">
-            <button class="close-x" onclick="
-                fetch('/_stcore/stream', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        'type': 'set_session_state',
-                        'key': 'show_app',
-                        'value': true
-                    })
-                }).then(() => window.location.reload());
-            ">✕</button>
+            <button class="close-x" onclick="goToApp()">✕</button>
             <div class="splash-text">
                 <div class="splash-desc">
                     Ứng dụng dự đoán emoji từ nét vẽ chuột của bạn một cách nhanh chóng và chính xác, được xây dựng trên kiến trúc MLP — phiên bản v1.0-2026.
