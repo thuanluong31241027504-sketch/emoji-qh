@@ -12,7 +12,7 @@ st.markdown("*Vẽ hoặc upload ảnh emoji - Hệ thống sẽ nhận diện*"
 
 @st.cache_resource
 def load_model():
-    model_path = 'emoji_modelqh5.h5'
+    model_path = 'emoji_modelqh5.keras'
     if not os.path.exists(model_path):
         st.error(f"❌ Không tìm thấy file model: {model_path}")
         return None
