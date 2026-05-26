@@ -17,47 +17,50 @@ if 'show_app' not in st.session_state:
 if not st.session_state.show_app:
     st.set_page_config(page_title="Emoji Classifier", layout="centered")
     
-    st.markdown("""
+    # Đường dẫn ảnh
+    decor_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/qq32.png"
+    
+    st.markdown(f"""
     <style>
-        .stApp {
+        .stApp {{
             background-color: #FFFFFF !important;
-        }
+        }}
         
-        .splash-wrapper {
+        .splash-wrapper {{
             max-width: 420px;
             margin: 80px auto 0 auto;
-        }
+        }}
         
-        .splash-box {
+        .splash-box {{
             background-color: #000000;
             padding: 2rem;
             text-align: center;
             border-radius: 0px;
-        }
+        }}
         
-        .splash-text {
+        .splash-text {{
             font-family: 'Source Code Pro', monospace;
             color: #FFFFFF;
             text-align: left;
             line-height: 1.8;
-        }
+        }}
         
-        .splash-desc {
+        .splash-desc {{
             font-size: 0.85rem;
             margin-bottom: 1.5rem;
-        }
+        }}
         
-        .splash-rule {
+        .splash-rule {{
             font-size: 0.75rem;
             color: #AAAAAA;
             margin-top: 1rem;
-        }
+        }}
         
-        .splash-rule p {
+        .splash-rule p {{
             margin: 0.3rem 0;
-        }
+        }}
         
-        .splash-wrapper button[kind="secondary"] {
+        .splash-wrapper button[kind="secondary"] {{
             background: #FFFFFF !important;
             color: #000000 !important;
             border: 2px solid #000000 !important;
@@ -75,47 +78,38 @@ if not st.session_state.show_app:
             display: block !important;
             margin-left: auto !important;
             margin-right: auto !important;
-        }
+        }}
         
-        .splash-wrapper button[kind="secondary"]:hover {
+        .splash-wrapper button[kind="secondary"]:hover {{
             transform: translateY(-2px) !important;
             box-shadow: 0 8px 0 #000000 !important;
             background: #FAFAFA !important;
-        }
+        }}
         
-        .splash-wrapper button[kind="secondary"]:active {
+        .splash-wrapper button[kind="secondary"]:active {{
             transform: translateY(3px) !important;
             box-shadow: 0 3px 0 #000000 !important;
-        }
+        }}
         
-        .decor-top {
+        .decor-top {{
             text-align: center;
             margin-bottom: 1rem;
-        }
+        }}
         
-        .decor-top img {
+        .decor-top img {{
             width: 48px;
             opacity: 0.6;
-        }
+        }}
         
-        #MainMenu, footer, header {
+        #MainMenu, footer, header {{
             display: none !important;
-        }
+        }}
     </style>
-    """, unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        st.markdown('<div class="splash-wrapper">', unsafe_allow_html=True)
-        
-        # Ảnh trang trí từ thư mục images
-        st.markdown("""
+    <div class="splash-wrapper">
         <div class="decor-top">
-            <img src="images/qq32.png" alt="decor">
+            <img src="{decor_url}" alt="decor">
         </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
         <div class="splash-box">
             <div class="splash-text">
                 <div class="splash-desc">
@@ -128,70 +122,74 @@ if not st.session_state.show_app:
                 </div>
             </div>
         </div>
-        """, unsafe_allow_html=True)
-        
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
         if st.button("START!"):
             st.session_state.show_app = True
             st.rerun()
-        
-        st.markdown('</div>', unsafe_allow_html=True)
     
     st.stop()
 
 # ==================== APP CHÍNH ====================
 st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
-st.markdown("""
+# Đường dẫn ảnh
+decor_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/qq32.png"
+
+st.markdown(f"""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;700&display=swap');
     
-    * {
+    * {{
         font-family: 'Source Code Pro', 'Courier New', monospace !important;
-    }
+    }}
     
-    .title {
+    .title {{
         font-size: 2.5rem;
         font-weight: 700;
         text-align: center;
         margin-top: 1rem;
-    }
+    }}
     
-    .sub {
+    .sub {{
         font-size: 0.8rem;
         text-align: center;
         color: #5f6368;
         margin-bottom: 2rem;
-    }
+    }}
     
-    .decor-app {
+    .decor-app {{
         text-align: center;
         margin-top: 1rem;
         margin-bottom: 0.5rem;
-    }
+    }}
     
-    .decor-app img {
+    .decor-app img {{
         width: 40px;
         opacity: 0.4;
-    }
+    }}
     
-    #MainMenu, footer, header {
+    #MainMenu, footer, header {{
         display: none !important;
-    }
+    }}
     
-    .stCanvas {
+    .stCanvas {{
         display: flex !important;
         justify-content: center !important;
-    }
+    }}
     
-    .stButton {
+    .stButton {{
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
         height: 100% !important;
         margin-top: 70px !important;
-    }
+    }}
     
-    .stButton button {
+    .stButton button {{
         background: #FFFFFF !important;
         color: #000000 !important;
         border: 2px solid #000000 !important;
@@ -204,53 +202,49 @@ st.markdown("""
         box-shadow: 0 6px 0 #000000 !important;
         transition: none !important;
         white-space: nowrap !important;
-    }
+    }}
     
-    .stButton button:hover {
+    .stButton button:hover {{
         background: #FFFFFF !important;
         transform: none !important;
         box-shadow: 0 6px 0 #000000 !important;
-    }
+    }}
     
-    .stButton button:active {
+    .stButton button:active {{
         transform: translateY(3px) !important;
         box-shadow: 0 3px 0 #000000 !important;
-    }
+    }}
     
-    .prediction {
+    .prediction {{
         text-align: center;
         font-size: 2rem;
         font-weight: 700;
         padding: 1rem;
         margin-top: 1.5rem;
         border-bottom: 2px solid #000;
-    }
+    }}
     
-    .confidence {
+    .confidence {{
         text-align: center;
         font-size: 0.75rem;
         color: #5f6368;
         margin-top: 0.5rem;
-    }
+    }}
     
-    .probs {
+    .probs {{
         text-align: center;
         font-size: 0.7rem;
         margin-top: 1rem;
         line-height: 1.6;
-    }
+    }}
 </style>
-""", unsafe_allow_html=True)
 
-# Ảnh trang trí trên app chính
-st.markdown("""
 <div class="decor-app">
-    <img src="images/qq32.png" alt="decor">
+    <img src="{decor_url}" alt="decor">
 </div>
+<div class="title">EMOJI CLASSIFIER</div>
+<div class="sub">by MLP model v1.0 - 2026</div>
 """, unsafe_allow_html=True)
-
-st.markdown('<div class="title">EMOJI CLASSIFIER</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub">by MLP model v1.0 - 2026</div>', unsafe_allow_html=True)
 
 # ------------------- MODEL -------------------
 @st.cache_resource
