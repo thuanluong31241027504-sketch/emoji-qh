@@ -20,10 +20,6 @@ st.markdown("""
         font-family: 'Source Code Pro', 'Courier New', monospace !important;
     }
     
-    html, body, .stApp, div, p, span, h1, h2, h3, h4, button, label {
-        font-family: 'Source Code Pro', monospace !important;
-    }
-    
     .big-title {
         font-size: 2.5rem;
         font-weight: 700;
@@ -42,51 +38,53 @@ st.markdown("""
         display: none !important;
     }
     
-    /* Container nút - căn giữa tuyệt đối */
+    /* Force căn giữa nút */
+    div[data-testid="column"] {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+    
     .stButton {
         display: flex !important;
         justify-content: center !important;
-        align-items: center !important;
         width: 100% !important;
-        margin-top: 1.5rem !important;
-        margin-bottom: 0rem !important;
     }
     
-    /* Nút khối 3D - căn giữa */
+    /* Nút Block 3D đậm */
     .stButton button {
         background-color: #FFFFFF !important;
         color: #000000 !important;
         border: 2px solid #000000 !important;
         border-radius: 0px !important;
-        padding: 0.7rem 2rem !important;
-        font-weight: 700 !important;
+        padding: 0.8rem 2rem !important;
+        font-weight: 800 !important;
         font-size: 1rem !important;
         cursor: pointer !important;
-        text-align: center !important;
-        display: inline-block !important;
         
-        /* Hiệu ứng khối 3D */
-        box-shadow: 4px 4px 0 #000000 !important;
+        /* Hiệu ứng Block 3D - mặt dưới và mặt phải */
+        box-shadow: 5px 5px 0 #000000, 8px 8px 0 rgba(0,0,0,0.1) !important;
         transition: all 0.05s linear !important;
         outline: none !important;
     }
     
     /* Hover */
     .stButton button:hover {
-        transform: translate(-1px, -1px) !important;
-        box-shadow: 6px 6px 0 #000000 !important;
-        background-color: #FAFAFA !important;
+        transform: translate(-2px, -2px) !important;
+        box-shadow: 7px 7px 0 #000000, 10px 10px 0 rgba(0,0,0,0.1) !important;
+        background-color: #F5F5F5 !important;
     }
     
-    /* Nhấn */
+    /* Nhấn - lún sâu */
     .stButton button:active {
-        transform: translate(2px, 2px) !important;
-        box-shadow: 1px 1px 0 #000000 !important;
+        transform: translate(3px, 3px) !important;
+        box-shadow: 2px 2px 0 #000000, 4px 4px 0 rgba(0,0,0,0.05) !important;
+        transition: all 0.02s linear !important;
     }
     
     .stButton button:focus {
         outline: none !important;
-        box-shadow: 4px 4px 0 #000000 !important;
+        box-shadow: 5px 5px 0 #000000 !important;
     }
     
     .prediction-box {
@@ -95,7 +93,7 @@ st.markdown("""
         font-weight: 700;
         padding: 1rem;
         margin-top: 1.5rem;
-        border-bottom: 2px solid #e0e0e0;
+        border-bottom: 2px solid #000000;
     }
     
     .confidence-text {
@@ -199,7 +197,7 @@ with col2:
         key=f"canvas_{st.session_state.canvas_key}",
     )
     
-    # Nút CONFIRM! - đã căn giữa
+    # Nút CONFIRM! - Block 3D đậm, căn giữa
     if st.button("CONFIRM!"):
         if canvas_result.image_data is not None and np.sum(canvas_result.image_data[:, :, 3]) > 100:
             img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
