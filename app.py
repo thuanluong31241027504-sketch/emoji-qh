@@ -20,12 +20,15 @@ st.markdown("""
         font-family: 'Source Code Pro', 'Courier New', monospace !important;
     }
     
+    html, body, .stApp, div, p, span, h1, h2, h3, h4, button, label {
+        font-family: 'Source Code Pro', monospace !important;
+    }
+    
     .big-title {
         font-size: 2.5rem;
         font-weight: 700;
         text-align: center;
         margin-top: 1rem;
-        letter-spacing: -0.5px;
     }
     
     .sub-text {
@@ -39,13 +42,17 @@ st.markdown("""
         display: none !important;
     }
     
+    /* Container nút - căn giữa tuyệt đối */
     .stButton {
         display: flex !important;
         justify-content: center !important;
-        margin-top: 2rem !important;
+        align-items: center !important;
+        width: 100% !important;
+        margin-top: 1.5rem !important;
+        margin-bottom: 0rem !important;
     }
     
-    /* Nút khối 3D - vuông vức */
+    /* Nút khối 3D - căn giữa */
     .stButton button {
         background-color: #FFFFFF !important;
         color: #000000 !important;
@@ -55,28 +62,26 @@ st.markdown("""
         font-weight: 700 !important;
         font-size: 1rem !important;
         cursor: pointer !important;
+        text-align: center !important;
+        display: inline-block !important;
         
-        /* Hiệu ứng khối 3D: mặt dưới + mặt phải */
-        box-shadow: 
-            4px 4px 0 #000000,
-            0 0 0 0 transparent !important;
-        
+        /* Hiệu ứng khối 3D */
+        box-shadow: 4px 4px 0 #000000 !important;
         transition: all 0.05s linear !important;
         outline: none !important;
     }
     
-    /* Hiệu ứng khi hover */
+    /* Hover */
     .stButton button:hover {
         transform: translate(-1px, -1px) !important;
         box-shadow: 6px 6px 0 #000000 !important;
         background-color: #FAFAFA !important;
     }
     
-    /* Hiệu ứng khi nhấn - lún xuống */
+    /* Nhấn */
     .stButton button:active {
         transform: translate(2px, 2px) !important;
         box-shadow: 1px 1px 0 #000000 !important;
-        transition: all 0.02s linear !important;
     }
     
     .stButton button:focus {
@@ -194,7 +199,8 @@ with col2:
         key=f"canvas_{st.session_state.canvas_key}",
     )
     
-    if st.button("CONFIRM"):
+    # Nút CONFIRM! - đã căn giữa
+    if st.button("CONFIRM!"):
         if canvas_result.image_data is not None and np.sum(canvas_result.image_data[:, :, 3]) > 100:
             img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
             pred = model.predict(preprocess_image(img), verbose=0)[0]
