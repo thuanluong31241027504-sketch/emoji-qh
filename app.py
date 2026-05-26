@@ -38,41 +38,46 @@ st.markdown("""
         margin-bottom: 2rem;
     }
     
-    /* Ẩn toàn bộ thanh công cụ thừa */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
     
-    /* Ẩn Send to Streamlit, Undo, Redo */
     .stActionButton, .stActionButton button, [data-testid="baseActionButton"] {
         display: none !important;
     }
     
-    /* Ẩn thanh công cụ của canvas */
     .stCanvasToolbar {
         display: none !important;
     }
     
-    /* Nút CLEAR và CONFIRM */
+    /* Nút CONFIRM - trắng chữ đen */
     .stButton button {
-        background-color: #000000 !important;
-        color: #FFFFFF !important;
-        border: none !important;
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
+        border: 1px solid #000000 !important;
         border-radius: 0px !important;
-        padding: 0.5rem 1rem !important;
+        padding: 0.5rem 2rem !important;
         font-weight: 500 !important;
         font-size: 0.8rem !important;
-        width: 100% !important;
+        width: auto !important;
+        margin: 0 auto !important;
+        display: inline-block !important;
     }
     
     .stButton button:hover {
-        background-color: #333333 !important;
-        color: #FFFFFF !important;
+        background-color: #f0f0f0 !important;
+        color: #000000 !important;
+        border: 1px solid #000000 !important;
     }
     
     .stButton button:focus {
         outline: none !important;
         box-shadow: none !important;
+    }
+    
+    /* Căn giữa nút */
+    .stButton {
+        text-align: center !important;
     }
     
     .prediction-box {
@@ -204,30 +209,21 @@ with col2:
         key=f"canvas_{st.session_state.canvas_key}",
     )
     
-    btn_col1, btn_col2 = st.columns(2)
-    with btn_col1:
-        if st.button("CLEAR"):
-            st.session_state.canvas_key += 1
-            st.session_state.prediction = None
-            st.session_state.confidence = None
-            st.session_state.last_probs = None
-            st.rerun()
-    
-    with btn_col2:
-        if st.button("CONFIRM"):
-            if canvas_result.image_data is not None:
-                if np.sum(canvas_result.image_data[:, :, 3]) > 100:
-                    img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
-                    processed = preprocess_image(img)
-                    predictions = model.predict(processed, verbose=0)[0]
-                    st.session_state.last_probs = predictions
-                    predicted_idx = np.argmax(predictions)
-                    st.session_state.prediction = class_names[predicted_idx]
-                    st.session_state.confidence = predictions[predicted_idx]
-                else:
-                    st.warning("draw something first")
+    # Chỉ 1 nút CONFIRM ở giữa
+    if st.button("CONFIRM", key="confirm_btn"):
+        if canvas_result.image_data is not None:
+            if np.sum(canvas_result.image_data[:, :, 3]) > 100:
+                img = Image.fromarray(canvas_result.image_data.astype('uint8'), mode='RGBA')
+                processed = preprocess_image(img)
+                predictions = model.predict(processed, verbose=0)[0]
+                st.session_state.last_probs = predictions
+                predicted_idx = np.argmax(predictions)
+                st.session_state.prediction = class_names[predicted_idx]
+                st.session_state.confidence = predictions[predicted_idx]
             else:
                 st.warning("draw something first")
+        else:
+            st.warning("draw something first")
 
 if st.session_state.prediction:
     display_name = class_display.get(st.session_state.prediction, st.session_state.prediction.upper())
