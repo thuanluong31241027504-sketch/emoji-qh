@@ -12,59 +12,57 @@ import os
 
 st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
-st.markdown("""
+# ------------------- THANH TRƯỢT CĂN CHỈNH -------------------
+st.sidebar.markdown("## 🎛️ CĂN CHỈNH THỦ CÔNG")
+margin_left = st.sidebar.slider("Dịch canvas sang phải (px)", 0, 300, 100)
+margin_top = st.sidebar.slider("Dịch nút xuống dưới (px)", 0, 100, 20)
+
+st.markdown(f"""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;500;600;700&display=swap');
     
-    * {
+    * {{
         font-family: 'Source Code Pro', 'Courier New', monospace !important;
-    }
+    }}
     
-    .big-title {
+    .big-title {{
         font-size: 2.5rem;
         font-weight: 700;
         text-align: center;
         margin-top: 1rem;
-    }
+    }}
     
-    .sub-text {
+    .sub-text {{
         font-size: 0.8rem;
         text-align: center;
         color: #5f6368;
         margin-bottom: 2rem;
-    }
+    }}
     
-    #MainMenu, footer, header, .stActionButton, .stCanvasToolbar {
+    #MainMenu, footer, header, .stActionButton, .stCanvasToolbar {{
         display: none !important;
-    }
+    }}
     
-    /* CĂN GIỮA TẤT CẢ */
-    .main .block-container {
+    /* CĂN CHỈNH THEO THANH TRƯỢT */
+    .main .block-container {{
         max-width: 500px !important;
         margin: 0 auto !important;
         padding-top: 2rem !important;
-    }
+    }}
     
-    /* Căn giữa canvas */
-    .stCanvas {
-        display: flex !important;
-        justify-content: center !important;
-    }
-    
-    canvas {
-        margin: 0 auto !important;
+    canvas {{
+        margin-left: {margin_left}px !important;
         display: block !important;
-    }
+    }}
     
-    /* Căn giữa nút */
-    .stButton {
+    .stButton {{
         display: flex !important;
         justify-content: center !important;
-        margin-top: 1.5rem !important;
-    }
+        margin-top: {margin_top}px !important;
+    }}
     
     /* NÚT 3D - TRẮNG VIỀN ĐEN */
-    .stButton button {
+    .stButton button {{
         background: #FFFFFF !important;
         color: #000000 !important;
         border: 2px solid #000000 !important;
@@ -75,46 +73,46 @@ st.markdown("""
         cursor: pointer !important;
         box-shadow: 0 6px 0 #000000 !important;
         transition: none !important;
-    }
+    }}
     
-    .stButton button:hover {
+    .stButton button:hover {{
         background: #FFFFFF !important;
         transform: none !important;
         box-shadow: 0 6px 0 #000000 !important;
-    }
+    }}
     
-    .stButton button:active {
+    .stButton button:active {{
         transform: translateY(3px) !important;
         box-shadow: 0 3px 0 #000000 !important;
-    }
+    }}
     
-    .prediction-box {
+    .prediction-box {{
         text-align: center;
         font-size: 2rem;
         font-weight: 700;
         padding: 1rem;
         margin-top: 1.5rem;
         border-bottom: 2px solid #000000;
-    }
+    }}
     
-    .confidence-text {
+    .confidence-text {{
         text-align: center;
         font-size: 0.75rem;
         color: #5f6368;
         margin-top: 0.5rem;
-    }
+    }}
     
-    .prob-text {
+    .prob-text {{
         text-align: center;
         font-size: 0.7rem;
         margin-top: 1rem;
         line-height: 1.6;
-    }
+    }}
     
-    hr {
+    hr {{
         margin-top: 2rem;
         border-color: #e0e0e0;
-    }
+    }}
 </style>
 """, unsafe_allow_html=True)
 
@@ -193,7 +191,6 @@ if 'canvas_key' not in st.session_state:
     st.session_state.confidence = None
     st.session_state.last_probs = None
 
-# Canvas + nút - đã được CSS căn giữa
 canvas_result = st_canvas(
     fill_color="rgba(255, 255, 255, 0)",
     stroke_width=12,
