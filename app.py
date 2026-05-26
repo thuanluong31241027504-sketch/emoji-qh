@@ -17,7 +17,6 @@ if 'show_app' not in st.session_state:
 if not st.session_state.show_app:
     st.set_page_config(page_title="Emoji Classifier", layout="centered")
     
-    # Đường dẫn ảnh
     decor_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/qq32.png"
     
     st.markdown(f"""
@@ -141,6 +140,8 @@ hoa1_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji
 hoa2_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa2.png"
 hoa3_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa3.png"
 may1_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/may1.png"
+may2_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/may1.png"
+may3_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/may1.png"
 
 st.markdown(f"""
 <style>
@@ -164,38 +165,58 @@ st.markdown(f"""
         margin-bottom: 2rem;
     }}
     
-    /* Ảnh mây phía trên - góc trái */
-    .cloud-decor {{
+    /* Mây thả tự nhiên khắp nơi */
+    .cloud-1 {{
         position: fixed;
-        top: 10px;
-        left: 10px;
-        z-index: 100;
-        opacity: 0.5;
+        top: 15%;
+        left: 5%;
+        z-index: 0;
+        opacity: 0.4;
+        pointer-events: none;
     }}
     
-    .cloud-decor img {{
-        width: 60px;
+    .cloud-2 {{
+        position: fixed;
+        top: 40%;
+        right: 3%;
+        z-index: 0;
+        opacity: 0.35;
+        pointer-events: none;
     }}
     
-    /* Hàng hoa phía dưới */
+    .cloud-3 {{
+        position: fixed;
+        bottom: 20%;
+        left: 8%;
+        z-index: 0;
+        opacity: 0.3;
+        pointer-events: none;
+    }}
+    
+    .cloud-1 img, .cloud-2 img, .cloud-3 img {{
+        width: 80px;
+    }}
+    
+    /* Hàng hoa dưới đáy - rõ nét, full ngang */
     .flower-row {{
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: center;
         margin-top: 2rem;
         padding: 1rem 0;
+        width: 100%;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 5px;
     }}
     
     .flower-row img {{
-        width: 35px;
-        opacity: 0.5;
-        transition: opacity 0.2s;
+        width: 40px;
+        opacity: 1;
+        transition: transform 0.2s;
     }}
     
     .flower-row img:hover {{
-        opacity: 0.8;
+        transform: scale(1.1);
     }}
     
     #MainMenu, footer, header {{
@@ -205,6 +226,8 @@ st.markdown(f"""
     .stCanvas {{
         display: flex !important;
         justify-content: center !important;
+        z-index: 1;
+        position: relative;
     }}
     
     .stButton {{
@@ -213,6 +236,8 @@ st.markdown(f"""
         align-items: center !important;
         height: 100% !important;
         margin-top: 70px !important;
+        z-index: 1;
+        position: relative;
     }}
     
     .stButton button {{
@@ -248,6 +273,9 @@ st.markdown(f"""
         padding: 1rem;
         margin-top: 1.5rem;
         border-bottom: 2px solid #000;
+        position: relative;
+        z-index: 1;
+        background-color: #FFFFFF;
     }}
     
     .confidence {{
@@ -265,9 +293,15 @@ st.markdown(f"""
     }}
 </style>
 
-<!-- Ảnh mây góc trái phía trên -->
-<div class="cloud-decor">
+<!-- Mây thả tự nhiên -->
+<div class="cloud-1">
     <img src="{may1_url}" alt="cloud">
+</div>
+<div class="cloud-2">
+    <img src="{may2_url}" alt="cloud">
+</div>
+<div class="cloud-3">
+    <img src="{may3_url}" alt="cloud">
 </div>
 
 <div class="title">EMOJI CLASSIFIER</div>
@@ -367,11 +401,11 @@ if st.session_state.pred:
         st.markdown(f'<div class="probs">{text}</div>', unsafe_allow_html=True)
 
 # ==================== HÀNG HOA PHÍA DƯỚI ====================
-# Tạo chuỗi hoa xen kẽ: hoa1, hoa2, hoa3, hoa1, hoa2, hoa3...
-flowers = [hoa1_url, hoa2_url, hoa3_url] * 8  # lặp 8 lần = 24 bông hoa
+# Tạo chuỗi hoa xen kẽ full ngang
+flowers = [hoa1_url, hoa2_url, hoa3_url] * 10
 
 flower_html = '<div class="flower-row">'
-for i, url in enumerate(flowers):
+for url in flowers:
     flower_html += f'<img src="{url}" alt="flower">'
 flower_html += '</div>'
 
