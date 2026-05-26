@@ -135,13 +135,12 @@ if not st.session_state.show_app:
 # ==================== APP CHÍNH ====================
 st.set_page_config(page_title="Emoji Classifier", layout="centered")
 
-# Đường dẫn ảnh hoa và mây
+# Đường dẫn ảnh
 hoa1_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa1.png"
 hoa2_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa2.png"
 hoa3_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa3.png"
+hoa4_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/hoa4.png"
 may1_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/may1.png"
-may2_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/may1.png"
-may3_url = "https://raw.githubusercontent.com/thuanluong31241027504-sketch/emoji-qh/main/images/may1.png"
 
 st.markdown(f"""
 <style>
@@ -165,58 +164,41 @@ st.markdown(f"""
         margin-bottom: 2rem;
     }}
     
-    /* Mây thả tự nhiên khắp nơi */
-    .cloud-1 {{
+    /* Trang trí mây và hoa4 rải khắp app */
+    .decor-item {{
         position: fixed;
-        top: 15%;
-        left: 5%;
         z-index: 0;
-        opacity: 0.4;
         pointer-events: none;
     }}
     
-    .cloud-2 {{
-        position: fixed;
-        top: 40%;
-        right: 3%;
-        z-index: 0;
+    .decor-item img {{
+        width: 45px;
         opacity: 0.35;
-        pointer-events: none;
     }}
     
-    .cloud-3 {{
-        position: fixed;
-        bottom: 20%;
-        left: 8%;
-        z-index: 0;
-        opacity: 0.3;
-        pointer-events: none;
-    }}
-    
-    .cloud-1 img, .cloud-2 img, .cloud-3 img {{
-        width: 80px;
-    }}
-    
-    /* Hàng hoa dưới đáy - rõ nét, full ngang */
+    /* Hàng hoa dưới đáy - 1 hàng ngang */
     .flower-row {{
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
         margin-top: 2rem;
         padding: 1rem 0;
         width: 100%;
-        flex-wrap: wrap;
-        gap: 5px;
+        gap: 8px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
     }}
     
     .flower-row img {{
-        width: 40px;
-        opacity: 1;
+        width: 38px;
+        opacity: 0.9;
         transition: transform 0.2s;
+        flex-shrink: 0;
     }}
     
     .flower-row img:hover {{
-        transform: scale(1.1);
+        transform: scale(1.05);
+        opacity: 1;
     }}
     
     #MainMenu, footer, header {{
@@ -293,16 +275,17 @@ st.markdown(f"""
     }}
 </style>
 
-<!-- Mây thả tự nhiên -->
-<div class="cloud-1">
-    <img src="{may1_url}" alt="cloud">
-</div>
-<div class="cloud-2">
-    <img src="{may2_url}" alt="cloud">
-</div>
-<div class="cloud-3">
-    <img src="{may3_url}" alt="cloud">
-</div>
+<!-- Trang trí mây + hoa4 rải khắp màn hình -->
+<div class="decor-item" style="top: 5%; left: 3%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 15%; right: 5%;"><img src="{hoa4_url}"></div>
+<div class="decor-item" style="top: 30%; left: 8%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 45%; right: 10%;"><img src="{hoa4_url}"></div>
+<div class="decor-item" style="top: 60%; left: 5%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 70%; right: 7%;"><img src="{hoa4_url}"></div>
+<div class="decor-item" style="top: 85%; left: 10%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 20%; left: 20%;"><img src="{hoa4_url}"></div>
+<div class="decor-item" style="top: 50%; left: 15%;"><img src="{may1_url}"></div>
+<div class="decor-item" style="top: 80%; right: 15%;"><img src="{hoa4_url}"></div>
 
 <div class="title">EMOJI CLASSIFIER</div>
 <div class="sub">by MLP model v1.0 - 2026</div>
@@ -401,8 +384,9 @@ if st.session_state.pred:
         st.markdown(f'<div class="probs">{text}</div>', unsafe_allow_html=True)
 
 # ==================== HÀNG HOA PHÍA DƯỚI ====================
-# Tạo chuỗi hoa xen kẽ full ngang
-flowers = [hoa1_url, hoa2_url, hoa3_url] * 10
+# Chỉ 1 hàng ngang, đủ hoa trải dài
+flowers = [hoa1_url, hoa2_url, hoa3_url, hoa1_url, hoa2_url, hoa3_url, 
+           hoa1_url, hoa2_url, hoa3_url, hoa1_url, hoa2_url, hoa3_url]
 
 flower_html = '<div class="flower-row">'
 for url in flowers:
